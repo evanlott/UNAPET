@@ -23,8 +23,8 @@
 		PrivLevel tinyint NOT NULL,
 		LastLogin datetime,
 		PwdChangeFlag boolean,
-		NumLoginAttempts tinyint
-		Enabled bit,
+		NumLoginAttempts tinyint,
+		Enabled bit
 	);
 
 	/* change this number to indicate where user id's start at */
