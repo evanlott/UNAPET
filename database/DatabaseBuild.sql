@@ -22,7 +22,7 @@
 		Password varchar (20) NOT NULL,
 		PrivLevel tinyint NOT NULL DEFAULT 1,
 		LastLogin datetime,
-		PwdChangeFlag bit 1,
+		PwdChangeFlag bit DEFAULT 1,
 		NumLoginAttempts tinyint DEFAULT 0,
 		Enabled bit DEFAULT 1
 	);
