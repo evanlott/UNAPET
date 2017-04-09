@@ -1,0 +1,130 @@
+<html>
+<head>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+   $(function(){
+      $("#header").load("/SI/header.html");
+      $("#footer").load("/SI/footer.html");
+    //   $("#assignments").load("/SI/assignments.html");
+   });
+</script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="container">
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">View Assignments</a></li>
+    <li><a data-toggle="tab" href="#edit">Edit Asssignments</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <h3>Assigments</h3>
+            <div class="container">
+              
+            <!--<table id="myTable" class="table table-hover">-->
+            <!--<thead>-->
+            <!--  <tr>-->
+            <!--    <th>Assignment</th>-->
+            <!--    <th>Student</th>-->
+            <!--    <th>Grade</th>-->
+            <!--  </tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--  <tr>-->
+            <!--    <td class="dropdown"><a class="btn btn-default actionButton"-->
+            <!--      data-toggle="dropdown" href="#"> Select Assignment</a></td>-->
+                    
+            <!--    <td class="dropdown"><a class="btn btn-default actionButton"-->
+            <!--      data-toggle="dropdown" href="#"> Select Student </a></td>-->
+            <!--    <td class="dropdown"><a class="btn btn-default actionButton"-->
+            <!--      data-toggle="dropdown" href="#"> Select Grade </a></td>-->
+            <!--  </tr>-->
+            <!--  </tbody>-->
+            <!--  </table>-->
+              <table>
+                <tr>
+                  <td><div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Select Assignment
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="#">Assignment 1</a></li>
+                    <li><a href="#">Assignment 2</a></li>
+                    <li><a href="#">Assignment 3</a></li>
+                  </ul>
+                </div></td>
+              <td>
+              <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Select Student
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#">John</a></li>
+                <li><a href="#">Bill</a></li>
+                <li><a href="#">Sue</a></li>
+              </ul>
+            </div>
+            </td>
+            <td>
+              <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Select Grade
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#">A</a></li>
+                <li><a href="#">B</a></li>
+                <li><a href="#">C</a></li>
+                <li><a href="#">D</a></li>
+                <li><a href="#">F</a></li>
+              </ul>
+            </div>
+            </td>
+                </tr>
+              </table>
+            </div>
+    </div>
+    
+    
+    
+    <div id="edit" class="tab-pane fade">
+        <h3>Edit</h3>
+      <div class="form-group">        
+     
+          <div class="container">
+          <form class="form-horizontal">
+            <div class="form-group">
+               
+                <label for="exampleInputFile">Import Test Case</label>
+                <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+                    
+              <label class="control-label col-sm-2" for="email">Run-time:</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="email" placeholder="Enter Run-time">
+              </div>
+            </div>
+            <div class="form-group">        
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      
+    </div>
+   
+      
+    </div>
+    
+  </div>
+</div>
+    
+</body>
+<div id = "footer"></div>
+</html>

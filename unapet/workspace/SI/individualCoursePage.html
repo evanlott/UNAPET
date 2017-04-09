@@ -1,0 +1,30 @@
+<html>
+<head>
+<!--<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">-->
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+<!--<link rel="stylesheet" href="/CSS/style.css">-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+   $(function(){
+      $("#header").load("/SI/header.html");
+      $("#footer").load("/SI/footer.html");
+      $("#assignments").load("/SI/assignments.html");
+   });
+</script>
+</head>
+<!-- End Of Head Tag -->
+<body>
+<div id="header"></div>
+    
+   <div class="container">
+      <a class = "btn btn-default" href = "assignments.html" role = "button">Assignments</a>
+      <a class = "btn btn-default" href = "grades.html" role = "button">Grades</a>
+      <a class = "btn btn-default" href = "submissions.html" role = "button">Submissions</a>
+   </div>
+
+<div id="footer"></div>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-3.2.0.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+   $(function(){
+      $("#header").load("/Instructor/header.html");
+      $("#footer").load("/Instructor/footer.html");
+   });
+</script>
+
+<div id="header"></div>
+
+<body>
+  
+  <div class="row" style="text-align: center;">
+      <a href="individualCoursePage.html" style="text-decoration: none;"><h3 class="courseTitle" style="text-align: center;">CS-155-01</h3></a>
+      <a class = "btn coursePageButtons" href = "assignments.html" role = "button"><h3 class="color">Assignments</h3></a>
+      <a class = "btn coursePageButtons" href = "grades.html" role = "button"><h3 class="color">Grades</h3></a>
+      <a class = "btn coursePageButtons" href = "submissions.html" role = "button"><h3 class="color">Submissions</h3></a>
+   </div>
+   
+  <div class="container">
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">View Assignments</a></li>
+    <li><a data-toggle="tab" href="#edit">Edit Asssignments</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <h3>Assigments</h3>
+            <div class="container">
+              
+            <table id="myTable" class="table table-hover">
+            <thead>
+              <tr>
+                <th>Assignment</th>
+                <th>Student</th>
+                <th>Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="dropdown"><a class="btn btn-default actionButton"
+                  data-toggle="dropdown" href="#"> Select Assignment</a></td>
+                <td class="dropdown"><a class="btn btn-default actionButton"
+                  data-toggle="dropdown" href="#"> Select Student </a></td>
+                <td class="dropdown"><a class="btn btn-default actionButton"
+                  data-toggle="dropdown" href="#"> Select Grade </a></td>
+              </tr>
+              </tbody>
+              </table>
+            </div>
+    </div>
+    
+    
+    
+    <div id="edit" class="tab-pane fade">
+        <h3>Edit</h3>
+      <div class="form-group">        
+     
+          <div class="container">
+          <form class="form-horizontal">
+            <div class="form-group">
+               
+                <label for="exampleInputFile">Import Test Case</label>
+                <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+                    
+              <label class="control-label col-sm-2" for="email">Run-time:</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="email" placeholder="Enter Run-time">
+              </div>
+            </div>
+            <div class="form-group">        
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      
+    </div>
+   
+      
+    </div>
+    
+  </div>
+</div>
+    
+</body>
+
+<div id = "footer"></div>

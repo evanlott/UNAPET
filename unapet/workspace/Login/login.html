@@ -1,0 +1,27 @@
+<!--
+<DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>UNA PET Login</title>
+</head> -->
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+   $(function(){
+      $("#header").load("/Login/header.html");
+      $("#footer").load("/Login/footer.html");
+   });
+</script>
+
+<div id="header"></div>
+
+<body>
+  <h1 align="center">Login</h1>
+  <form action="/GO/login.go" method="post">
+  <p align="center"><input type="text" name="username" placeholder="username" /></p>
+  <p align="center"><input type="password" input type="hidden" name="password" placeholder="password" /></p>
+  <p align="center"><input type="submit" value="Login" /></p>
+</body>
+
+<div id="footer"></div>
+

@@ -1,0 +1,45 @@
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+   $(function(){
+      $("#header").load("/Student/header.html");
+      $("#footer").load("/Student/footer.html");
+   });
+</script>
+
+<div id="header"></div>
+
+<body>
+
+    
+    <div class="container">
+	    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#submit">Submit</a></li>
+        <li><a data-toggle="tab" href="#analysis">Analysis</a></li>
+  	  </ul>
+
+  <div class="tab-content">
+    <div id="submit" class="tab-pane fade in active">
+      <h3>Submit Assignment</h3>
+            <div class="container">
+              <!-- Submit script -->
+              <div class="form-group">
+               
+                <label align="center" for="exampleInputFile">Upload Assignment</label>
+                <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+                <p></p>
+                <input type="submit" value="Submit" />
+              </div>
+            </div>
+    </div>
+    <div id="analysis" class="tab-pane fade">
+      <h3>Assignment Analysis</h3>
+            <div class="container">
+              <!-- Display -->
+            </div>
+    </div>
+  </div>
+
+<div id="footer"></div>
+</body>
+
+</html>
