@@ -370,6 +370,28 @@ func storeResults(results Submission) {
 	}
 }
 
+func importCSV() {
+	
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	if err != nil {
+		panic("No connection")
+	}
+	
+	importStatement, err := db.Prepare("LOAD DATA INFILE 'team404studentsFile1.csv' INTO TABLE Users FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 LINES (@dummy, FirstName, MiddleInitial, LastName, UserName, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy)")
+	
+	if err != nil {
+		panic("Failed to prepare.")
+	}
+	
+	_, err = importStatement.Exec();
+	
+	if err != nil {
+		panic("Import failed.")
+	} else {
+		fmt.Println("Imported the csv file. \n")
+	}
+}
+
 /*
 
 
