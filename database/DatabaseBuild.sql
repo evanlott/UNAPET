@@ -18,13 +18,13 @@
 		MiddleInitial varchar (1),
 		LastName varchar (30),
 		Username varchar (35) NOT NULL UNIQUE,
-		Email varchar (35) NOT NULL UNIQUE,
 		/* change length of password when she provides it */
 		Password varchar (20) NOT NULL,
 		PrivLevel tinyint NOT NULL,
 		LastLogin datetime,
 		PwdChangeFlag boolean,
 		NumLoginAttempts tinyint
+		Enabled bit,
 	);
 
 	/* change this number to indicate where user id's start at */
@@ -122,31 +122,31 @@
 		Users, classes, assignments, etc.
 	*/
 
-	insert into Users values (NULL, "James", "A", "Jerkins", "jajerkins", "jajerkins@una.edu", "1234", 15, NULL, true, 0);
-	insert into Users values (NULL, "Mark", "G", "Terwilliger", "mterwilliger", "mterwilliger@una.edu", "PerlRules", 10, NULL, true, 0);
-	insert into Users values (NULL, "Patricia", "L", "Roden", "plroden", "plroden@una.edu", "password", 10, NULL, true, 0);
-	insert into Users values (NULL, "John", "W", "Doe", "jdoe", "jdoe@una.edu", "password", 1, NULL, true, 0);
-	insert into Users values (NULL, "Eileen", "R", "Drass", "edrass", "edrass@una.edu", "Mattie9423!", 5, NULL, true, 0);
-	insert into Users values (NULL, "Turner", "J", "Brian", "bmiller1", "bmiller1@una.edu", "Whomp2!", 1, NULL, true, 0);
-	insert into Users values (NULL, "Martin", "W", "Nicholas", "nmartin2", "nmartin2@una.edu", "unaLions16!", 1, NULL, false, 0);
-	insert into Users values (NULL, "Smith", "E", "Jessica", "jsmith4", "jsmith4@una.edu", "waFFles108!", 0, NULL, true, 0);
-	insert into Users values (NULL, "Bradly", "A", "Updike", "bupdike", "bupdike@una.edu", "MyRealPass17!", 1, NULL, true, 0);
-	insert into Users values (NULL, "Edward", "J", "Snowden", "esnowden", "esnowden@una.edu", "TryMeNSA13!", 1, NULL, true, 0);
-	insert into Users values (NULL, "William", "H", "Gates", "wgates1", "wgates1@una.edu", "I<3Jobs", 1, NULL, false, 0);
-	insert into Users values (NULL, "Tyrion", "I", "Lannister", "tlannister", "tlannister@una.edu", "IDrink&Know", 0, NULL, true, 0);
-	insert into Users values (NULL, "Abdullah", "M", "Karaman", "akaraman", "akaraman@una.edu", "WhatsApp123!", 1, NULL, true, 0);
-	insert into Users values (NULL, "Richard", "J", "Hendricks", "rhendricks", "rhendricks@una.edu", "awkwardMan2017!", 1, NULL, true, 0);
-	insert into Users values (NULL, "Erlich", "M", "Bachman", "ebachman", "ebachman@una.edu", "AviatoListen2016!", 1, NULL, false, 0);
-	insert into Users values (NULL, "Hannah", "M", "Hopkins", "hhopkins", "hhopkins@una.edu", "ginger12", 5, NULL, true, 0);
-	insert into Users values (NULL, "Frank", "L", "Liles", "fliles", "fliles@una.edu", "mysteryd0g2", 1, NULL, true, 0);
-	insert into Users values (NULL, "Cody", "C", "Klein", "cklein", "cklein@una.edu", "ilovehannahlol", 1, NULL, true, 0);
-	insert into Users value (NULL, "Albert", "K", "Einstein", "aeinstein", "aeinstein@una.edu", "eequalsmcsquare", 15, NULL, true, 0);
-	insert into Users values (NULL, "Chance", "T", "Rapper", "crapper", "crapper@una.edu", "n0pr0bl3m", 1, NULL, true, 0);
-	insert into Users values (NULL, "Timothy", "T", "Tanner", "ttanner1", "ttanner1@una.edu", "passWoRd", 1, NULL, true, 0);
-	insert into Users values (NULL, "Bob", "G", "Dylan", "bdylan1", "bdylan1@una.edu", "SingingForAll", 1, NULL, true, 0);
-	insert into Users values (NULL, "Elvis", "A", "Pressley", "epressley1", "epressley1@una.edu", "PiNKCADDy123", 1, NULL, true, 0);
-	insert into Users values (NULL, "David", "R", "Johnson", "djohnson2", "djohnson2@una.edu", "DAvvYJ", 1, NULL, true, 0);
-	insert into Users values (NULL, "Sheila", "H", "Jordan", "sjordan1", "sjordan1@una.edu", "OleSheila", 1, NULL, true, 0);
+	insert into Users values (NULL, "James", "A", "Jerkins", "jajerkins", "1234", 15, NULL, true, 0);
+	insert into Users values (NULL, "Mark", "G", "Terwilliger", "mterwilliger", "PerlRules", 10, NULL, true, 0);
+	insert into Users values (NULL, "Patricia", "L", "Roden", "plroden", "password", 10, NULL, true, 0);
+	insert into Users values (NULL, "John", "W", "Doe", "jdoe", "password", 1, NULL, true, 0);
+	insert into Users values (NULL, "Eileen", "R", "Drass", "edrass", "Mattie9423!", 5, NULL, true, 0);
+	insert into Users values (NULL, "Turner", "J", "Brian", "bmiller1", "Whomp2!", 1, NULL, true, 0);
+	insert into Users values (NULL, "Martin", "W", "Nicholas", "nmartin2", "unaLions16!", 1, NULL, false, 0);
+	insert into Users values (NULL, "Smith", "E", "Jessica", "jsmith4", "waFFles108!", 0, NULL, true, 0);
+	insert into Users values (NULL, "Bradly", "A", "Updike", "bupdike", "MyRealPass17!", 1, NULL, true, 0);
+	insert into Users values (NULL, "Edward", "J", "Snowden", "esnowden", "TryMeNSA13!", 1, NULL, true, 0);
+	insert into Users values (NULL, "William", "H", "Gates", "wgates1", "I<3Jobs", 1, NULL, false, 0);
+	insert into Users values (NULL, "Tyrion", "I", "Lannister", "tlannister", "IDrink&Know", 0, NULL, true, 0);
+	insert into Users values (NULL, "Abdullah", "M", "Karaman", "akaraman", "WhatsApp123!", 1, NULL, true, 0);
+	insert into Users values (NULL, "Richard", "J", "Hendricks", "rhendricks", "awkwardMan2017!", 1, NULL, true, 0);
+	insert into Users values (NULL, "Erlich", "M", "Bachman", "ebachman", "AviatoListen2016!", 1, NULL, false, 0);
+	insert into Users values (NULL, "Hannah", "M", "Hopkins", "hhopkins", "ginger12", 5, NULL, true, 0);
+	insert into Users values (NULL, "Frank", "L", "Liles", "fliles", "mysteryd0g2", 1, NULL, true, 0);
+	insert into Users values (NULL, "Cody", "C", "Klein", "cklein", "ilovehannahlol", 1, NULL, true, 0);
+	insert into Users value (NULL, "Albert", "K", "Einstein", "aeinstein", "eequalsmcsquare", 15, NULL, true, 0);
+	insert into Users values (NULL, "Chance", "T", "Rapper", "crapper", "n0pr0bl3m", 1, NULL, true, 0);
+	insert into Users values (NULL, "Timothy", "T", "Tanner", "ttanner1", "passWoRd", 1, NULL, true, 0);
+	insert into Users values (NULL, "Bob", "G", "Dylan", "bdylan1", "SingingForAll", 1, NULL, true, 0);
+	insert into Users values (NULL, "Elvis", "A", "Pressley", "epressley1", "PiNKCADDy123", 1, NULL, true, 0);
+	insert into Users values (NULL, "David", "R", "Johnson", "djohnson2", "DAvvYJ", 1, NULL, true, 0);
+	insert into Users values (NULL, "Sheila", "H", "Jordan", "sjordan1", "OleSheila", 1, NULL, true, 0);
 	
 
 	insert into CourseDescription values ("TerwilligerCS15501SP17", "Computer Science I", "This is CS 1.", (select UserID from Users where username="mterwilliger"), NOW(), NOW(), NULL, NULL, false, false);
