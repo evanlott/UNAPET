@@ -20,11 +20,11 @@
 		Username varchar (35) NOT NULL UNIQUE,
 		/* change length of password when she provides it */
 		Password varchar (20) NOT NULL,
-		PrivLevel tinyint NOT NULL,
+		PrivLevel tinyint NOT NULL DEFAULT 1,
 		LastLogin datetime,
-		PwdChangeFlag boolean,
-		NumLoginAttempts tinyint,
-		Enabled bit
+		PwdChangeFlag bit 1,
+		NumLoginAttempts tinyint DEFAULT 0,
+		Enabled bit DEFAULT 1
 	);
 
 	/* change this number to indicate where user id's start at */
