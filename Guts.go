@@ -102,9 +102,11 @@ func evaluate(courseName string, assignmentName string, userName string) {
 		panic("DB error")
 	}
 
-	// TODO : query returning no results causes rows.Next() to throw segmentation fault
-	rows.Next()
-	rows.Scan(&results.userID)
+	if rows.Next() == false {
+		panic("Invalid user.")
+	} else {
+		rows.Scan(&results.userID)
+	}
 
 	// get number of test cases, compiler options, and maxRuntime from DB
 	rows, err = db.Query("select NumTestCases, MaxRuntime, CompilerOptions from Assignments where CourseName=? and AssignmentName=?", courseName, assignmentName)
@@ -112,18 +114,22 @@ func evaluate(courseName string, assignmentName string, userName string) {
 		panic("DB error")
 	}
 
-	// TODO : query returning no results causes rows.Next() to throw segmentation fault
-	rows.Next()
-	rows.Scan(&results.numTestCases, &results.maxRuntime, &results.compilerOptions)
+	if rows.Next() == false {
+		panic("Invalid assignment.")
+	} else {
+		rows.Scan(&results.numTestCases, &results.maxRuntime, &results.compilerOptions)
+	}
 
 	rows, err = db.Query("select SubmissionNumber from Submissions where Student=? and AssignmentName=? order by SubmissionNumber DESC limit 1", results.userID, assignmentName)
 	if err != nil {
 		panic("DB error")
 	}
 
-	// TODO : query returning no results causes rows.Next() to throw segmentation fault
-	rows.Next()
-	rows.Scan(&results.submissionNum)
+	if rows.Next() == false {
+		panic("No submission for user.")
+	} else {
+		rows.Scan(&results.submissionNum)
+	}
 
 	results.courseName = courseName
 	results.assignmentName = assignmentName
@@ -217,15 +223,22 @@ func execute(results Submission) {
 	// defer deletion of the executable to ensure it happens
 	defer os.Remove(programName)
 
+	testCaseNum := results.numTestCases
+
 	// execute program on each test case
-	for i := 0; i < results.numTestCases; i++ {
+	for i := 0; i < testCaseNum; i++ {
 
 		programOutputFile := programName + strconv.Itoa(i) + ".txt"
 
 		// delete the output .txt file after function finishes
 		defer os.Remove(programOutputFile)
 
-		// TODO : make sure the test case exists
+		// make sure the test case exists, test cases may have been deleted, account for this
+		_, err := os.Stat("test" + strconv.Itoa(i) + ".txt")
+		if err != nil {
+			testCaseNum++
+			continue
+		}
 
 		// redirect stdin and stdout:
 		//./programName < [input file].txt 1> [output file].txt
@@ -334,7 +347,6 @@ func compareOutput(results Submission, testCaseNum int) bool {
  */
 
 func storeResults(results Submission) {
-	// TODO : maybe not open twice
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
