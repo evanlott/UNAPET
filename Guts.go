@@ -3,10 +3,6 @@
 //		Add some kind of erorr logging, for when true errors occur, i.e. directory not existing that's suppossed to exist. Also need to notify admin
 //		UI needs to verify that compiler options are valid before accepting them
 
-// Possible problems:
-// 		Instructer creates 2 test cases: test0.txt and test1.txt, deletes test0.txt, numTestCases is now 1, only test1.txt on disk, not test0.txt -> ERROR
-// 			Solution: no deleting test cases, or rename them everytime one is deleted, or store names instead of just a number..
-
 package main
 
 import (
@@ -18,7 +14,7 @@ import (
 	"strconv"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-sql-driver/mysql"
 )
 
 /*
@@ -370,25 +366,20 @@ func storeResults(results Submission) {
 	}
 }
 
-func importCSV() {
-	
+func importCSV(name string) {
+
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
 		panic("No connection")
 	}
-	
-	importStatement, err := db.Prepare("LOAD DATA INFILE 'team404studentsFile1.csv' INTO TABLE Users FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 LINES (@dummy, FirstName, MiddleInitial, LastName, UserName, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy)")
-	
-	if err != nil {
-		panic("Failed to prepare.")
-	}
-	
-	_, err = importStatement.Exec();
-	
+
+	mysql.RegisterLocalFile(name)
+
+	// TODO : Solve password @dummy issue, also CSV quotation issue, trailing comma issue
+	_, err = db.Exec("LOAD DATA LOCAL INFILE '" + name + "' INTO TABLE Users FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\n' IGNORE 1 LINES (@dummy, FirstName, MiddleInitial, LastName, UserName, Password, @dummy, @dummy, @dummy, @dummy, @dummy)")
+
 	if err != nil {
 		panic("Import failed.")
-	} else {
-		fmt.Println("Imported the csv file. \n")
 	}
 }
 
@@ -398,8 +389,8 @@ func importCSV() {
  */
 
 func main() {
-
-	evaluate("TerwilligerCS15501SP17", "Assignment 1", "jdoe")
+	importCSV("Users.csv")
+	//evaluate("TerwilligerCS15501SP17", "Assignment 1", "jdoe")
 
 }
 
