@@ -514,6 +514,33 @@ func editStartEndAssignment(courseName string, assignmentName string, startDate 
 
 
  */
+func editSubmissionComments(studentId int, assignmentName string, comments string)
+{
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	if err != nil {
+		panic("No connection")
+	}
+	
+	editStatement, err := db.Prepare("")
+	
+	if err != nil {
+		panic("Failed to prepare")
+	}
+	
+	_, err = editStatement.Exec("UPDATE Submissions SET Submissions.comment = CONCAT(Submissions.comment," + comments + ") WHERE Submissions.student = " + studentId + " AND Submissions.AssignmentName = " + assignmentName + ");
+	
+	if err != nil {
+		panic("Update failed.")
+	} else {
+		fmt.Println("Updated submission comments\n")
+	}
+	
+}
+
+/*
+
+
+ */
 
 func main() {
 	importCSV("Users.csv")
