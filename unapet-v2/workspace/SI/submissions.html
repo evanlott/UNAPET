@@ -1,0 +1,51 @@
+
+<head>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+   $(function(){
+      $("#header").load("/SI/header.html");
+      $("#footer").load("/SI/footer.html");
+    //   $("#assignments").load("/SI/assignments.html");
+   });
+</script>
+</head>
+
+<div id="header"></div>
+<body>
+    
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <h3>Grades</h3>
+      
+           
+              
+            <table id="myTable" class="table table-hover">
+            <thead>
+              <tr>
+                <th>Assignment</th>
+                <th>Student</th>
+                <th>Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="dropdown"><a class="btn btn-default actionButton"
+                  data-toggle="dropdown" href="#"> Select Assignment</a></td>
+                <td class="dropdown"><a class="btn btn-default actionButton"
+                  data-toggle="dropdown" href="#"> Select Student </a></td>
+                <td class="dropdown"><a class="btn btn-default actionButton"
+                  data-toggle="dropdown" href="#"> Select Grade </a></td>
+              </tr>
+              </tbody>
+              </table>
+            
+            <div class ="submitButton">
+            <div class="form-group">        
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+              </div>
+            </div>
+            </div
+    </div>
+</body>
+<div id = "footer"></div>

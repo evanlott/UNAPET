@@ -1,0 +1,190 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-3.2.0.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/Instructor/style.css">
+
+<script>
+   $(function(){
+      $("#header").load("/SI/header.html");
+      $("#footer").load("/SI/footer.html");
+   });
+</script>
+
+<!--<style>-->
+<!--	.tgFormFieldsStyle{-->
+		
+<!--	}-->
+<!--</style>-->
+<div id="header"></div>
+<body>
+<div class="container">
+
+<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#home">View Assignments</a></li>
+<li><a data-toggle="tab" href="#submissions">Submissions</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="home" class="tab-pane fade in active">
+    <h3>Assigments</h3>
+   
+  <div class="container">
+    <div class="row headerStudent">
+			<div class="col-md-3">
+				<h4>Assignment Name</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Import Test Case</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Run Time</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Edit/Delete</h4>
+			</div>
+	</div>
+		
+		<br>
+		<div class="row rowStudent">
+			<div class="col-md-3">
+				<h4>Hello World</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>
+					<input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+				</h4>
+			</div>
+			<div class="col-md-3">
+				<h4><input type ="text">m/s</h4>
+			</div>
+			<div class="col-md-1">
+				<div class="form-group">        
+                  <div class="col-sm-offset-2 col-sm-10">
+                     <button type="submit" class="btn btn-default">Submit</button>
+                  </div>
+                </div>
+			</div>
+		</div>
+		<br>
+		<div class="row rowStudent">
+			<div class="col-md-3">
+				<h4>Add, Subtract, Multiply, Divide</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>
+                <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+                </h4>
+			</div>
+			<div class="col-md-3">
+				<h4><input type ="text">m/s</h4>
+			</div>
+			<div class="col-md-1">
+				<div class="form-group">        
+                  <div class="col-sm-offset-2 col-sm-10">
+                     <button type="submit" class="btn btn-default">Submit</button>
+                  </div>
+                </div>
+			</div>
+		</div>
+		</div>
+		</div>
+  
+<!--space-->
+<!--space-->
+<!--space-->
+<!--space-->
+<!--space-->
+<div id="submissions" class="tab-pane fade">
+       <h3>Submissions</h3>
+   
+  <div class="container">
+    <div class="row headerStudent">
+			<div class="col-md-3">
+				<h4>Student Name</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Select Assignment</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Select Grade</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Edit/Delete</h4>
+			</div>
+		</div>
+		<br>
+		<div class="row rowStudent">
+			<div class="col-md-3">
+				<h4>Fred</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>
+					<select name="Assignments">
+					<option value="" disabled selection>Select Assignment</option>
+				  <option value="assignments">Assignment 1</option>
+				  <option value="assignments">Assignment 2</option>
+				  <option value="assignments">Assignment 3</option>
+				 
+				</select>
+				</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>
+					<div class= "form-group">
+					<input type="text" placeholder="Enter Grade" style="width: 100 px;"></type>
+					</div>
+				</h4>
+			</div>
+			<div class="col-md-1">
+				<div class="form-group">        
+                  <div class="col-sm-offset-2 col-sm-10">
+                     <button type="submit" class="btn btn-default">Submit</button>
+                  </div>
+                </div>
+			</div>
+		</div>
+		<br>
+		<div class="row rowStudent">
+			<div class="col-md-3">
+				<h4>Timmy</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>
+                	<select name="Assignments">
+					<option value="" disabled selection>Select Assignment</option>
+				  <option value="assignments">Assignment 1</option>
+				  <option value="assignments">Assignment 2</option>
+				  <option value="assignments">Assignment 3</option>
+				</select>
+                </h4>
+			</div>
+			<div class="col-md-3">
+				<h4>
+					<div class = "textInput"><input type="text" placeholder="Enter Grade"></type>	</div>
+				</h4>
+			</div>
+			<div class="col-md-1">
+				<div class="form-group">        
+                  <div class="col-sm-offset-2 col-sm-10">
+                     <button type="submit" class="btn btn-default">Submit</button>
+                  </div>
+                </div>
+			</div>
+		</div>
+		</div>
+		</div>
+
+      
+    </div>
+   
+      
+</div>
+
+</body>
+
+<div id = "footer"></div>
+
+<!--<script>-->
+<!--        history.replaceState('assignments.html', 'Title of the page', 'unapet.com');-->
+<!--</script>-->
