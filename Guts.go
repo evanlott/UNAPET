@@ -415,6 +415,105 @@ func editCourseDescription(courseName string, courseDescription string)
 
 
  */
+					 
+ func gradeAssignment(userID int, courseName string, assignmentName string, submissionNum int, grade int) {
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	if err != nil {
+		panic("No connection")
+	}
+
+	res, err := db.Exec("update Submissions set grade=? where Student=? and CourseName=? and AssignmentName=? and SubmissionNumber=?", grade, userID, courseName, assignmentName, submissionNum)
+
+	if err != nil {
+		panic("Grade update failed.")
+	}
+
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		panic("Query didn't match any submissions.")
+	}
+
+}
+
+/*
+
+
+ */
+
+func editStartEndCourse(courseName string, startDate string, endDate string) {
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	if err != nil {
+		panic("No connection")
+	}
+
+	res, err := db.Exec("update CourseDescription set StartDate=?, EndDate=? where CourseName=?", startDate+" 23:59:59", endDate+" 23:59:59", courseName)
+
+	if err != nil {
+		panic("Start/end update failed.")
+	}
+
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		panic("Query didn't match any courses.")
+	}
+
+}
+
+/*
+
+
+ */
+
+func editUser(userID int, firstName string, MI string, lastName string, privLevel int) {
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	if err != nil {
+		panic("No connection")
+	}
+
+	res, err := db.Exec("update Users set FirstName=?, MiddleInitial=?, LastName=?, PrivLevel=? where UserID=?", firstName, MI, lastName, privLevel, userID)
+
+	if err != nil {
+		panic("User update failed.")
+	}
+
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		panic("Query didn't match any users.")
+	}
+
+}
+
+func editStartEndAssignment(courseName string, assignmentName string, startDate string, endDate string) {
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	if err != nil {
+		panic("No connection")
+	}
+
+	res, err := db.Exec("update Assignments set StartDate=?, EndDate=? where CourseName=? and AssignmentName=?", startDate+" 23:59:59", endDate+" 23:59:59", courseName, assignmentName)
+
+	if err != nil {
+		panic("Start/end update failed.")
+	}
+
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		panic("Query didn't match any assignments.")
+	}
+
+}
+
+/*
+
+
+ */
 
 func main() {
 	importCSV("Users.csv")
