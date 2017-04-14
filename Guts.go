@@ -388,6 +388,34 @@ func importCSV(name string) {
 
  */
 
+func editCourseDescription(courseName string, courseDescription string)
+{
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	if err != nil {
+		panic("No connection")
+	}
+	
+	editStatement, err := db.Prepare("UPDATE CourseDescription SET CourseDescription.CourseDescription = " + courseName + " WHERE CourseDescription.CourseName = " + courseDescription + ")
+	
+	if err != nil {
+		panic("Failed to prepare")
+	}
+	
+	_, err = editStatement.Exec();
+	
+	if err != nil {
+		panic("Update failed.")
+	} else {
+		fmt.Println("Updated course description table\n")
+	}
+	
+}
+
+/*
+
+
+ */
+
 func main() {
 	importCSV("Users.csv")
 	//evaluate("TerwilligerCS15501SP17", "Assignment 1", "jdoe")
