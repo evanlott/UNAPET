@@ -102,7 +102,7 @@
 		AssignmentName varchar(40),
 		Student int,
 		Grade tinyint,
-		comment varchar(240),
+		comment text,
 		Compile bool,
 		Results text,
 		SubmissionNumber smallint,
