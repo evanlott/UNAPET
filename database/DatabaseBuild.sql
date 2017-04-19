@@ -19,7 +19,7 @@
 		LastName varchar (30),
 		Username varchar (35) NOT NULL UNIQUE,
 		/* change length of password when she provides it */
-		Password varchar (65) NOT NULL,
+		Password varchar (60) NOT NULL,
 		PrivLevel tinyint NOT NULL DEFAULT 1,
 		LastLogin datetime,
 		PwdChangeFlag bit DEFAULT 1,
