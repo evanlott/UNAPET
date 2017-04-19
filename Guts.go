@@ -527,7 +527,10 @@ func editSubmissionComments(studentId int, assignmentName string, comments strin
 		panic("Failed to prepare")
 	}
 	
-	_, err = editStatement.Exec('UPDATE Submissions SET Submissions.comment = CONCAT(Submissions.comment,"' + comments + '") WHERE Submissions.student = "' + studentId + '" AND Submissions.AssignmentName = "' + assignmentName + '');
+	t := time.Now()
+	t.Format("Mon Jan _2 15:04:05 2006")	// formats the time as shown by example hard code
+	
+	_, err = editStatement.Exec('UPDATE Submissions SET Submissions.comment = CONCAT(Submissions.comment,"' + currentTime + '  - ' + comments + '") WHERE Submissions.student = "' + studentId + '" AND Submissions.AssignmentName = "' + assignmentName + '');
 	
 	if err != nil {
 		panic("Update failed.")
