@@ -521,7 +521,6 @@ func editSubmissionComments(studentId int, assignmentName string, comments strin
 		panic("No connection")
 	}
 	
-	editStatement, err := db.Prepare("")
 	
 	if err != nil {
 		panic("Failed to prepare")
@@ -530,13 +529,22 @@ func editSubmissionComments(studentId int, assignmentName string, comments strin
 	t := time.Now()
 	t.Format("Mon Jan _2 15:04:05 2006")	// formats the time as shown by example hard code
 	
-	_, err = editStatement.Exec('UPDATE Submissions SET Submissions.comment = CONCAT(Submissions.comment,"' + currentTime + '  - ' + comments + '") WHERE Submissions.student = "' + studentId + '" AND Submissions.AssignmentName = "' + assignmentName + '');
+	editStatement, err = db.Exec('UPDATE Submissions SET Submissions.comment = CONCAT(Submissions.comment,"? - ?") WHERE Submissions.student = ? AND Submissions.AssignmentName =?', currentTime, comments, studentId, assignmentName);
 	
 	if err != nil {
 		panic("Update failed.")
 	} else {
 		fmt.Println("Updated submission comments\n")
 	}
+	
+	
+	rowsAffected, err := res.rowsAffected
+	
+	if rowsAffected != 1 {
+		panic("Query didn't match any users.")
+	}
+	
+	
 	
 }
 
