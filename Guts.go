@@ -548,6 +548,88 @@ func editSubmissionComments(studentId int, assignmentName string, comments strin
 	
 }
 
+//this likely will not work
+func deleteUser(userID int) {
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	if err != nil {
+		panic("No connection")
+	}
+
+	res, err := db.Exec("delete from Users where UserID not in (select UserID from StudentsCourses where UserID is not null)")
+
+	if err != nil {
+		panic("User is currently enrolled in a class. Please remove the student from the class before deleting the user.")
+	}
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		panic("Query didn't match any users.")
+	}
+}
+
+//this likely will not work
+func deleteCourse(courseName string) {
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	
+	if err != nil {
+		panic("No connection")
+	}
+
+	res, err := db.Exec("delete from CourseDescription where CourseName = courseName")
+
+	if err != nil {
+		panic("Course failed to delete.")
+	}
+	
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		panic("Query didn't match any courses.")
+	}
+}
+
+//this likely will not work
+func deleteAssignment(courseName string, assignmentName string) {
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	
+	if err != nil {
+		panic("No connection")
+	}
+
+	res, err := db.Exec("delete from Assignments where (AssignmentName = assignmentName and CourseName = courseName)")
+
+	if err != nil {
+		panic("Assignment failed to delete.")
+	}
+	
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		panic("Query didn't match any assignments or courses.")
+	}
+}
+
+//this likely will not work
+func deleteAssignment(courseName string, assignmentName string) {
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	
+	if err != nil {
+		panic("No connection")
+	}
+
+	res, err := db.Exec("delete from Assignments where (AssignmentName = assignmentName and CourseName = courseName)")
+
+	if err != nil {
+		panic("Assignment failed to delete.")
+	}
+	
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		panic("Query didn't match any assignments or courses.")
+	}
+}
+
 /*
 
 
