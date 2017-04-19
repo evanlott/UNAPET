@@ -514,38 +514,31 @@ func editStartEndAssignment(courseName string, assignmentName string, startDate 
 
 
  */
-func editSubmissionComments(studentId int, assignmentName string, comments string)
-{
+func editSubmissionComments(studentId int, assignmentName string, comments string) {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
 		panic("No connection")
 	}
-	
-	
-	if err != nil {
-		panic("Failed to prepare")
-	}
-	
+
 	t := time.Now()
-	t.Format("Mon Jan _2 15:04:05 2006")	// formats the time as shown by example hard code
-	
-	editStatement, err = db.Exec('UPDATE Submissions SET Submissions.comment = CONCAT(Submissions.comment,"? - ?") WHERE Submissions.student = ? AND Submissions.AssignmentName =?', currentTime, comments, studentId, assignmentName);
-	
+	currentTime := t.Format("2006-01-02 15:04:05")
+
+	currentComments, err := db.Exec("SELECT Submissions.comment FROM Submissions WHERE Submissions.student = \"10004\" AND AssignmentName = \"Assignment 1\"")
+	currentComments += currentTime + " - " + comments + "\n"
+
+	editStatement, err := db.Exec("UPDATE Submissions SET Submissions.comment =? WHERE Submissions.student =? AND Submissions.AssignmentName =?", currentComments, studentId, assignmentName)
+
 	if err != nil {
 		panic("Update failed.")
 	} else {
 		fmt.Println("Updated submission comments\n")
 	}
-	
-	
+
 	rowsAffected, err := res.rowsAffected
-	
+
 	if rowsAffected != 1 {
 		panic("Query didn't match any users.")
 	}
-	
-	
-	
 }
 
 func deleteUser(userID int) {
