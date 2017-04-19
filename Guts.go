@@ -548,7 +548,6 @@ func editSubmissionComments(studentId int, assignmentName string, comments strin
 	
 }
 
-//this likely will not work
 func deleteUser(userID int) {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
@@ -567,7 +566,6 @@ func deleteUser(userID int) {
 	}
 }
 
-//this likely will not work
 func deleteCourse(courseName string) {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	
@@ -588,28 +586,6 @@ func deleteCourse(courseName string) {
 	}
 }
 
-//this likely will not work
-func deleteAssignment(courseName string, assignmentName string) {
-	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
-	
-	if err != nil {
-		panic("No connection")
-	}
-
-	res, err := db.Exec("delete from Assignments where (AssignmentName = assignmentName and CourseName = courseName)")
-
-	if err != nil {
-		panic("Assignment failed to delete.")
-	}
-	
-	rowsAffected, err := res.RowsAffected()
-
-	if rowsAffected != 1 {
-		panic("Query didn't match any assignments or courses.")
-	}
-}
-
-//this likely will not work
 func deleteAssignment(courseName string, assignmentName string) {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	
