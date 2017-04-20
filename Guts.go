@@ -567,7 +567,7 @@ func deleteCourse(courseName string) {
 		panic("No connection")
 	}
 
-	res, err := db.Exec("delete from CourseDescription where CourseName = courseName")
+	res, err := db.Exec("delete from CourseDescription where CourseName =?", courseName)
 
 	if err != nil {
 		panic("Course failed to delete.")
@@ -587,7 +587,7 @@ func deleteAssignment(courseName string, assignmentName string) {
 		panic("No connection")
 	}
 
-	res, err := db.Exec("delete from Assignments where (AssignmentName = assignmentName and CourseName = courseName)")
+	res, err := db.Exec("delete from Assignments where (AssignmentName =? and CourseName =?)", assignmentName, courseName)
 
 	if err != nil {
 		panic("Assignment failed to delete.")
