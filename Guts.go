@@ -617,6 +617,32 @@ func deleteAssignment(courseName string, assignmentName string) {
 
  */
 
+func createCourse(courseName string, courseDisplayName string, courseDescription, instructor int, startDate string, endDate string, si1 int, si2 int, siGradeFlag boolean, siTestCaseFlag boolean)
+{
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	
+	if err != nil {
+		panic("No connection")
+	}
+	
+	res, err := db.Exec("INSERT INTO CourseDescription VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", courseName, courseDisplayName, courseDescription, instructor, startDate, endDate, si1, si2, siGradeFlag, siTestCaseFlag)
+	
+	if err != nil{
+		panic("Error inserting course.")
+	}
+	
+	rowsAffected, err := res.rowsAffected()
+	
+	if rowsAffected != 1 {
+		panic("Query didn't match any assignments.")
+	}
+}
+
+/*
+
+
+ */
+
 func main() {
 	importCSV("Users.csv")
 	//evaluate("TerwilligerCS15501SP17", "Assignment 1", "jdoe")
