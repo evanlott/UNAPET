@@ -1,0 +1,8 @@
+1. Make a better course description area (maybe edit button).
+2. Make the upload of test cases be able to handle multiple txt files
+3. Make checks to make sure the user isn't entering characters when they should only be entering numbers.
+
+SI issues
+1. Grade set to view instead of alter
+2. click the analyze button will be attached to view grades flag
+3. View source code from students flag

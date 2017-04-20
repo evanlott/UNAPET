@@ -1,0 +1,325 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-3.2.0.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/Instructor/style.css">
+
+<script>
+   $(function(){
+      $("#header").load("/SI/header.html");
+      $("#footer").load("/SI/footer.html");
+   });
+</script>
+
+<div id="header"></div>
+<body>
+<div class="container">
+
+<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#home">View Assignments</a></li>
+<!--<li><a data-toggle="tab" href="#submissions">Submissions</a></li>-->
+<li><a data-toggle="tab" href="#abc">Submissions and Analysis</a></li>
+</ul>
+
+<!--modal-->
+<div id="analyze" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Analysis Results</h4>
+                </div>
+                <div class="modal-body">
+                    	<p>
+                    		Test Case 1: Pass<br>
+                    		Test Case 2: Pass<br>
+                    		Test Case 3: Fail<br>
+                    		Test Case 4: Fail<br>
+                    		Test Case 5: Fail<br>
+                    		
+                    		Overall: 40% 
+                    	</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button data-target="#code" type="button" class="btn btn-primary" data-toggle="modal">View Submitted Code</button>
+                </div>
+            	</div>
+     </div>
+ </div>
+<!--end of modal-->
+<!--code modal-->
+    <div id="code" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Submitted Code</h4>
+                </div>
+                <div class="modal-body">
+	               <p>
+	               	Source Code shows here
+	               </p>
+               	</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--end code modal-->
+<!-- grade Modal -->
+    <div id="grade" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Assign Grade</h4>
+                </div>
+                <div class="modal-body">
+	               <form style="margin: 0 auto;">
+	               		<div class="form-group">
+							<input type="text" class="form-control formFieldsStyle" id="grade" placeholder="0.0" maxlength="4">
+						</div>
+	               </form>
+               	</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- End grade Modal -->
+<div class="tab-content">
+  <div id="home" class="tab-pane fade in active">
+    <!--<h3>Assigments</h3>-->
+  <div class="container">
+    <div class="row headerStudent">
+			<div class="col-md-3">
+				<h4>Assignment Name</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Import Test Case</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Run Time</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Submit</h4>
+			</div>
+	</div>
+		
+		<br>
+		<div class="row rowStudent">
+			<div class="col-md-3">
+				<h4>Hello World</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>
+					<input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" multiple>
+				</h4>
+			</div>
+			<div class="col-md-3">
+				<h4><input type ="text">m/s</h4>
+			</div>
+			<div class="col-md-1">
+				<div class="form-group">        
+                  <div class="col-sm-offset-2 col-sm-10">
+                     <button type="submit" class="btn btn-default">Submit</button>
+                  </div>
+                </div>
+			</div>
+		</div>
+		<br>
+		<div class="row rowStudent">
+			<div class="col-md-3">
+				<h4>Add, Subtract, Multiply, Divide</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>
+                <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" multiple>
+                </h4>
+			</div>
+			<div class="col-md-3">
+				<h4><input type ="text">m/s</h4>
+			</div>
+			<div class="col-md-1">
+				<div class="form-group">        
+                  <div class="col-sm-offset-2 col-sm-10">
+                     <button type="submit" class="btn btn-default">Submit</button>
+                  </div>
+                </div>
+			</div>
+		</div>
+		</div>
+		</div>
+  
+<!--space-->
+<!--space-->
+<!--space-->
+<!--space-->
+<!--space-->
+<!--<div id="submissions" class="tab-pane fade">-->
+<!--       <h3>Submissions</h3>-->
+   
+<!--  <div class="container">-->
+<!--    <div class="row headerStudent">-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>Student Name</h4>-->
+<!--			</div>-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>Select Assignment</h4>-->
+<!--			</div>-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>Select Grade</h4>-->
+<!--			</div>-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>Edit/Delete</h4>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		<br>-->
+<!--		<div class="row rowStudent">-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>Fred</h4>-->
+<!--			</div>-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>-->
+<!--					<select name="Assignments">-->
+<!--					<option value="" disabled selection>Select Assignment</option>-->
+<!--				  <option value="assignments">Assignment 1</option>-->
+<!--				  <option value="assignments">Assignment 2</option>-->
+<!--				  <option value="assignments">Assignment 3</option>-->
+				 
+<!--				</select>-->
+<!--				</h4>-->
+<!--			</div>-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>-->
+<!--					<div class= "form-group">-->
+<!--					<input type="text" placeholder="Enter Grade" style="width: 100 px;"></type>-->
+<!--					</div>-->
+<!--				</h4>-->
+<!--			</div>-->
+<!--			<div class="col-md-1">-->
+<!--				<div class="form-group">        -->
+<!--                  <div class="col-sm-offset-2 col-sm-10">-->
+<!--                     <button type="submit" class="btn btn-default">Submit</button>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		<br>-->
+<!--		<div class="row rowStudent">-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>Timmy</h4>-->
+<!--			</div>-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>-->
+<!--                	<select name="Assignments">-->
+<!--					<option value="" disabled selection>Select Assignment</option>-->
+<!--				  <option value="assignments">Assignment 1</option>-->
+<!--				  <option value="assignments">Assignment 2</option>-->
+<!--				  <option value="assignments">Assignment 3</option>-->
+<!--				</select>-->
+<!--                </h4>-->
+<!--			</div>-->
+<!--			<div class="col-md-3">-->
+<!--				<h4>-->
+<!--					<div class = "textInput"><input type="text" placeholder="Enter Grade"></type>	</div>-->
+<!--				</h4>-->
+<!--			</div>-->
+<!--			<div class="col-md-1">-->
+<!--				<div class="form-group">        -->
+<!--                  <div class="col-sm-offset-2 col-sm-10">-->
+<!--                     <button type="submit" class="btn btn-default">Submit</button>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
+<!---->      
+<!---->
+<!---->
+  <div id="abc" class="tab-pane fade">
+       <!--<h3>Submissions and Analysis</h3>-->
+       <br>
+       <form>
+    		<div class="form-group">
+                <label for="subAssignment">Select assignment:</label>
+                <select class="form-control formFieldsStyle" id="subAssignment">
+                    <option value="" disabled selected>Assignments</option>
+                    <option value="1">Hello World</option>
+                    <option value="2">Build a Calculator</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="subStudent">Select student:</label>
+                <select class="form-control formFieldsStyle" id="subStudent">
+                    <option value="" disabled selected>Students</option>
+                    <option value="Lannister">Spielberg, Stephen</option>
+                    <option value="Snowden">Beuford, Carter</option>
+                </select>
+            </div>
+
+    		<!--<div style="text-align: center; margin-top: 50px;">-->
+    		<div style="text-align: center; margin-top: 35px; margin-bottom:0px;">
+    			<button type="submit" class="btn btn-default" id="createUserBtn" style="text-align: center">Search</button>
+    		</div>
+    	</form>
+   
+  <div class="container">
+    <div class="row headerStudent">
+    		<div class="col-md-3">
+				<h4>Assignments</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Name</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Submitted</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Analyze/Grade</h4>
+			</div>
+	</div>
+		<br>
+	<div class="row rowStudent">
+		<div class="col-md-3">
+			<h4>
+			    Hello World
+			</h4>
+		</div>
+		<div class="col-md-3">
+			<h4>
+				Speilberg Stephen
+			</h4>
+		</div>
+		<div class="col-md-3">
+			<h4>time stamp</h4>
+        </div>
+    	
+		<div class="col-md-3">
+			<button data-target="#analyze" type="button" class="btn btn-default analyzeBtn" data-toggle="modal"><span class="glyphicon glyphicon-search"></span></button>
+			<button data-target="#grade" type="button" class="btn btn-default gradeBtn" data-toggle="modal"><span class="glyphicon glyphicon-education"></span></button>
+			
+			<!--<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span></button>-->
+        </div>
+		</div>
+	</div>
+		
+	  </div>
+    </div>
+      
+      
+      
+ </div>
+</div>
+
+</body>
+
+<div id = "footer"></div>
+
+// <script>
+//         history.replaceState('assignments.html', 'Title of the page', 'unapet.com');
+// </script>
