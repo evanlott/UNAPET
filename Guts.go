@@ -523,7 +523,20 @@ func editSubmissionComments(studentId int, assignmentName string, comments strin
 	t := time.Now()
 	currentTime := t.Format("2006-01-02 15:04:05")
 
-	currentComments, err := db.Exec("SELECT Submissions.comment FROM Submissions WHERE Submissions.student = \"10004\" AND AssignmentName = \"Assignment 1\"")
+	rows, err := db.Exec("SELECT Submissions.comment FROM Submissions WHERE Submissions.student = \"10004\" AND AssignmentName = \"Assignment 1\"")
+	
+	if err != nil {
+		panic("DB error")
+	}
+	
+	var currentComments string
+
+	if rows.Next() == false {
+		panic("Invalid comments.")
+	} else {
+		rows.Scan(&currentComments)
+	}
+	
 	currentComments += currentTime + " - " + comments + "\n"
 
 	editStatement, err := db.Exec("UPDATE Submissions SET Submissions.comment =? WHERE Submissions.student =? AND Submissions.AssignmentName =?", currentComments, studentId, assignmentName)
