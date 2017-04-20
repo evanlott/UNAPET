@@ -541,14 +541,13 @@ func editSubmissionComments(studentId int, assignmentName string, comments strin
 	}
 }
 
-//this doesn't work right now-HH is working on it 
 func deleteUser(userID int) {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
 		panic("No connection")
 	}
 
-	res, err := db.Exec("delete from Users where UserID not in (select UserID from StudentCourses where UserID is not null)")
+	res, err := db.Exec("delete from Users where UserID=? and not exists(select 1 from StudentCourses where Student=? limit 1)", userID, userID)
 
 	if err != nil {
 		panic("User is currently enrolled in a class. Please remove the student from the class before deleting the user.")
