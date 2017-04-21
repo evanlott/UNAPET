@@ -162,6 +162,8 @@
 	insert into Submissions values ("TerwilligerCS15501SP17", "Assignment 1", (select UserID from Users where username="jdoe"), 90, "Good program.", true, "Some results...", 1);
 	insert into Submissions values ("TerwilligerCS15501SP17", "Assignment 1", (select UserID from Users where username = "nmartin2"), 90, "Good program.", true, "Some results...", 1);
 	insert into Submissions values ("JerkinsCS15502SP17", "Assignment 0", (select UserID from Users where username="bmiller1"), 80, "Decent program. Work on style.", true, "Some results...", 1);
+	insert into Submissions values ("JerkinsCS15502SP17", "Assignment 1", (select UserID from Users where username="crapper"), 70, "Yuck.", true, "Some results...", 1);
+	insert into Submissions values ("JerkinsCS15502SP17", "Assignment 0", (select UserID from Users where username="crapper"), 100, "You iz blessed with programming abilities.", true, "Some results...", 1);
 
 	/* check tables */
 	show tables;
