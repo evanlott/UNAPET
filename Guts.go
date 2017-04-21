@@ -637,6 +637,12 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 		panic("Query didn't match any assignments.")
 	}
 }
+					 
+//export Student CSV SQL Query-currently generating access denied 
+//SELECT FirstName, MiddleInitial, LastName, Username INTO OUTFILE '/Home/hannah/test.txt'
+//FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+//LINES TERMINATED BY '\n'
+//FROM Users WHERE UserID IN (SELECT Student FROM StudentCourses WHERE CourseName="JerkinsCS15502SP17”)
 
 /*
 
