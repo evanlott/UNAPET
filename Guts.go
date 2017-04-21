@@ -638,11 +638,13 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 	}
 }
 					 
-//export Student CSV SQL Query-currently generating access denied 
-//SELECT FirstName, MiddleInitial, LastName, Username INTO OUTFILE '/Home/hannah/test.txt'
-//FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
-//LINES TERMINATED BY '\n'
-//FROM Users WHERE UserID IN (SELECT Student FROM StudentCourses WHERE CourseName="JerkinsCS15502SP17”)
+func databaseDump() {
+	fullCommand := "mysqldump -u "+DB_USER_NAME+" -p "+DB_NAME+" > dbBackup.sql --password="+DB_PASSWORD
+
+	// dump database
+	dumpCmd := exec.Command(SHELL_NAME, "-c", fullCommand)
+
+}
 
 /*
 
