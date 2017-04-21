@@ -73,6 +73,20 @@
 			ON UPDATE CASCADE
 			ON DELETE CASCADE
 	);
+	
+	create table GradeReport
+	(
+		Student int NOT NULL,
+		CourseName varchar(42) NOT NULL,
+
+		FOREIGN KEY (Student) REFERENCES Users(UserID)
+			ON UPDATE CASCADE
+			ON DELETE CASCADE,
+
+		FOREIGN KEY (CourseName) REFERENCES CourseDescription(CourseName)
+			ON UPDATE CASCADE
+			ON DELETE CASCADE
+	);
 
 
 	create table Assignments
