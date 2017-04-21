@@ -426,7 +426,19 @@ func editCourseDescription(courseName string, courseDescription string)
 	res, err := db.Exec("update Submissions set grade=? where Student=? and CourseName=? and AssignmentName=? and SubmissionNumber=?", grade, userID, courseName, assignmentName, submissionNum)
 
 	if err != nil {
-		panic("Grade update failed.")
+		panic("Grade update failed in Submissions table.")
+	}
+
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		panic("Query didn't match any submissions.")
+	}
+	 
+	res, err := db.Exec("update GradeReport set assignmentName=? where Student=? and CourseName=?", grade, userID, courseName)
+
+	if err != nil {
+		panic("Grade update failed in GradeReport table.")
 	}
 
 	rowsAffected, err := res.RowsAffected()
