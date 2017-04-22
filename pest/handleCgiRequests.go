@@ -16,6 +16,7 @@ type LoggedInUser struct {
 */
 
 type Request struct {
+	actionType        string
 	action            string
 	courseName        string
 	assignmentName    string
@@ -49,8 +50,10 @@ func redirectTo(page string) {
 
 // returns a Request struct with all info from form put into variables
 func processForm(req *http.Request) Request {
+
 	var form Request
 
+	form.actionType = req.FormValue("actionType")
 	form.action = req.FormValue("action")
 	form.userID, _ = strconv.Atoi(req.FormValue("userID"))
 	form.courseName = req.FormValue("courseName")
@@ -83,21 +86,31 @@ func main() {
 
 	form := processForm(req)
 
-	if form.action == "" {
+	if form.actionType == "" || form.action == "" {
 		errorResponse("Cannot process CGI request. Malformed HTTP POST or server error.")
 		return
 	}
 
+	var success bool
+	var retString string
+
 	// call the function with name == action, pass it the form
 	// returns bool, string
-	success, page := Invoke(dbHelpers{}, form.action, form)
+	switch form.actionType {
+	case "db":
+		success, retString = Invoke(dbHelpers{}, form.action, form)
+	case "upload":
+		success, retString = Invoke(UploadFunctions{}, form.action, form)
+	default:
+		errorResponse("Unknown request received.")
+	}
 
 	// redirect to the appropriate page if the action succeeded
 	// send an error if it did not
 	if success {
-		redirectTo(page)
+		redirectTo(retString)
 	} else {
-		errorResponse(page)
+		errorResponse(retString)
 	}
 
 }
