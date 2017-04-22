@@ -16,23 +16,27 @@ type LoggedInUser struct {
 */
 
 type Request struct {
-	actionType        string
-	action            string
-	courseName        string
-	assignmentName    string
-	subNum            int
-	grade             int
-	userID            int
-	userName          string
-	courseDescription string
-	startDate         string
-	endDate           string
-	firstName         string
-	MI                string
-	lastName          string
-	privLevel         int
-	comments          string
-	fileName          string
+	actionType            string
+	action                string
+	courseName            string
+	assignmentName        string
+	assignmentDisplayName string
+	subNum                int
+	grade                 int
+	userID                int
+	userName              string
+	courseDescription     string
+	startDate             string
+	endDate               string
+	firstName             string
+	MI                    string
+	lastName              string
+	privLevel             int
+	comments              string
+	fileName              string
+	compilerOptions       string
+	numTestCases          int
+	runtime               int
 }
 
 func errorResponse(msg string) {
@@ -72,6 +76,10 @@ func processForm(req *http.Request) Request {
 	form.privLevel, _ = strconv.Atoi(req.FormValue("privLevel"))
 	form.comments = req.FormValue("comments")
 	form.fileName = req.FormValue("fileName")
+	form.assignmentDisplayName = req.FormValue("assignmentDisplayName")
+	form.compilerOptions = req.FormValue("compilerOptions")
+	form.numTestCases, _ = strconv.Atoi(req.FormValue("numTestCases"))
+	form.runtime, _ = strconv.Atoi(req.FormValue("runtime"))
 
 	return form
 }

@@ -136,22 +136,32 @@ func editUser(userID int, firstName string, MI string, lastName string, privLeve
 	return nil
 }
 
-/*
-func createAssignment(courseName string, assignmentName string, runtime int, numTestCases int, compilerOptions string, startDate string, endDate string) {
+// TODO
+// test this!!!
+// have to incorporate out naming convention into this..
+// pull last assignment name, increment it
+func createAssignment(courseName string, assignmentDisplayName string, assignmentName string, runtime int, numTestCases int, compilerOptions string, startDate string, endDate string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
-		panic("No connection")
+		return errors.New("No connection")
 	}
 
-	res, err := db.Exec("INSERT INTO `Assignments` (`CourseName`, `AssignmentName`, `StartDate`, `EndDate`, `MaxRuntime`, `CompilerOptions`, `NumTestCases`) VALUES (?, ?, '2017-04-11 00:00:00', '2017-04-29 00:00:00', '2000', '-Wall', '0');, startDate+" 23:59:59", ?, ?, ?")
+	res, err := db.Exec("INSERT INTO `Assignments` (`CourseName`, `AssignmentDisplayName`, `AssignmentName`, `StartDate`, `EndDate`, `MaxRuntime`, `CompilerOptions`, `NumTestCases`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", courseName, assignmentDisplayName, assignmentName, startDate+" 23:59:59", endDate+" 23:59:59", runtime, compilerOptions, numTestCases)
 
 	if err != nil {
-		panic("Start/end update failed.")
+		return errors.New("Create assignment failed. Please fill out all fields.")
 	}
 
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		return errors.New("Could not create assignment.")
+	}
+
+	return nil
+
 }
-*/
 
 func editStartEndAssignment(courseName string, assignmentName string, startDate string, endDate string) error {
 
@@ -242,6 +252,7 @@ func deleteUser(userID int) error {
 	return nil
 }
 
+// TODO : delete course's folder from disk
 func deleteCourse(courseName string) error {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 
@@ -264,6 +275,7 @@ func deleteCourse(courseName string) error {
 	return nil
 }
 
+// TODO : delete assignment's folder from disk
 func deleteAssignment(courseName string, assignmentName string) error {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 

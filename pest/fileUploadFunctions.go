@@ -1,6 +1,7 @@
 package pest
 
 import (
+	"errors"
 	"io"
 	"net/http"
 	"os"
@@ -34,16 +35,40 @@ func (_ UploadFunctions) sourceCodeUpload(req *http.Request) (bool, string) {
 	// build the save path depending on the class, assignment, student name, and sub number -_-
 	savePath := "some path"
 
+	err = saveFile(savePath, uploadedFile)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	return true, "?.html"
+}
+
+// How to accept multiple test case files at once.. Just have a max number, 5?
+// create a folder for this assignment on disk
+func (_ UploadFunctions) callCreateAssignment(form Request) (bool, string) {
+
+	err := createAssignment(form.courseName, form.assignmentDisplayName, form.assignmentName, form.runtime, form.numTestCases, form.compilerOptions, form.startDate, form.endDate)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	return true, "?.html"
+}
+
+func saveFile(savePath string, inputFile io.Reader) error {
+
 	saveFile, err := os.OpenFile(savePath, os.O_WRONLY|os.O_CREATE, 0666)
 
 	if err != nil {
-		return false, "Error. Couldn't save file to server. Disk full or access denied."
+		return errors.New("Error. Couldn't save file to server. Disk full or access denied.")
 	}
 
 	defer saveFile.Close()
 
 	// copy the uploaded file from memory to the new location
-	io.Copy(saveFile, uploadedFile)
+	io.Copy(saveFile, inputFile)
 
-	return true, "?.html"
+	return nil
 }
