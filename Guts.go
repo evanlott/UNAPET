@@ -663,6 +663,35 @@ func databaseDump() {
 
  */
 
+func createAssignment(courseName string, assignmentName string, startDate string, endDate string, maxRuntime int, compilerOptions string, numTestCases int){
+	
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	
+	defer db.close()
+	
+	if err != nil {
+		panic("No connection")
+	}
+	
+	res, err := db.Exec("INSERT INTO Assignments VALUES (?, ?, ?, ?, ?, ?, ?)", courseName, assignmentName, startDate, endDate, maxRuntime, compilerOptions, numTestCases)
+	
+	if err != nil {
+		panic("Error creating assignment")
+	}
+	
+	// TODO : verify query on server, figure out how to pull test cases from UI and upload to server
+	res, err := db.Exec("ALTER TABLE GradeReport ADD " + assignmentName + "")
+	
+	if err != nil {
+		panic("Error adding assignment to GradeReport")
+	}
+}
+
+/*
+
+
+ */
+
 func main() {
 	importCSV("Users.csv")
 	//evaluate("TerwilligerCS15501SP17", "Assignment 1", "jdoe")
