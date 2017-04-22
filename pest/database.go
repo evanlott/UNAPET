@@ -58,6 +58,10 @@ func courseOpen(courseName string) (error, bool) {}
 
 func changePassword(userID int, newPassword string) error {}
 
+func getLastAssignmentname(courseName string) (error, string) {}
+
+func getLastSubmissionName(courseName string, assignmentName, student int) (error, string) {}
+
 // may or may not need this
 func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
 */
@@ -85,6 +89,7 @@ func importCSV(name string) error {
 
 
  */
+
 // not tested yet
 func createCourse(courseName string, courseDisplayName string, courseDescription string, instructor int, startDate string, endDate string, si1 int, si2 int, siGradeFlag bool, siTestCaseFlag bool) error {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)

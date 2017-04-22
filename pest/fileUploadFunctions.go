@@ -38,8 +38,26 @@ func (_ UploadFunctions) sourceCodeUpload(req *http.Request) (bool, string) {
 		return false, "You may only upload .cpp files."
 	}
 
+	form := processForm(req)
+
+	// change this!!!
+	thisSubmissionName := 0
+
+	// call function that doesn't exist
+	//
+	// lastSubName, err := lastSubmissionName(courseName string, student int)
+	//
+	// if  err != nil {
+	// 		return false, err.Error()
+	// }
+	//
+	// thisSubmissionName, _ := strconv.Atoi(lastSubName)
+	//
+	// thisSubmissionName++
+	//
+
 	// build the save path depending on the class, assignment, student name, and sub number -_-
-	savePath := "some path"
+	savePath := "data/" + form.courseName + "/" + form.assignmentName + "/" + strconv.Itoa(thisSubmissionName)
 
 	err = saveFile(savePath, uploadedFile)
 
