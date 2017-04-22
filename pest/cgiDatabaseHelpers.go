@@ -40,6 +40,17 @@ func (_ dbHelpers) callEvaluate(form Request) (bool, string) {
 	return true, "?.html"
 }
 
+func (_ dbHelpers) callCreateCourse(form Request) (bool, string) {
+
+	err := createCourse(form.courseName, form.courseDisplayName, form.courseDescription, form.instructor, form.startDate, form.endDate, form.si1, form.si2, form.siGradeFlag, form.siTestCaseFlag)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	return true, "?.html"
+}
+
 func (_ dbHelpers) callGradeAssignment(form Request) (bool, string) {
 
 	err := gradeAssignment(form.userID, form.courseName, form.assignmentName, form.subNum, form.grade)

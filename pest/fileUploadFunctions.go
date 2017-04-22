@@ -11,6 +11,11 @@ import (
 
 type UploadFunctions struct{}
 
+/*
+
+
+ */
+
 func (_ UploadFunctions) sourceCodeUpload(req *http.Request) (bool, string) {
 
 	// set max memory to hold uploaded file to.. what should this be?
@@ -44,6 +49,11 @@ func (_ UploadFunctions) sourceCodeUpload(req *http.Request) (bool, string) {
 
 	return true, "?.html"
 }
+
+/*
+
+
+ */
 
 // must incorporate naming convention into this
 // pull last assignment name, increment it
@@ -112,6 +122,11 @@ func (_ UploadFunctions) callCreateAssignment(req *http.Request) (bool, string) 
 
 	return true, "?.html"
 }
+
+/*
+
+
+ */
 
 func saveFile(savePath string, inputFile io.Reader) error {
 

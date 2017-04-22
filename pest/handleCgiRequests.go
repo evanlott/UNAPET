@@ -19,6 +19,7 @@ type Request struct {
 	actionType            string
 	action                string
 	courseName            string
+	courseDisplayName     string
 	assignmentName        string
 	assignmentDisplayName string
 	subNum                int
@@ -37,6 +38,11 @@ type Request struct {
 	compilerOptions       string
 	numTestCases          int
 	runtime               int
+	instructor            int
+	si1                   int
+	si2                   int
+	siGradeFlag           bool
+	siTestCaseFlag        bool
 }
 
 func errorResponse(msg string) {
@@ -62,6 +68,7 @@ func processForm(req *http.Request) Request {
 	form.action = req.FormValue("action")
 	form.userID, _ = strconv.Atoi(req.FormValue("userID"))
 	form.courseName = req.FormValue("courseName")
+	form.courseDisplayName = req.FormValue("courseDisplayName")
 	form.assignmentName = req.FormValue("assignmentName")
 	form.subNum, _ = strconv.Atoi(req.FormValue("submissionNum"))
 	form.grade, _ = strconv.Atoi(req.FormValue("grade"))
@@ -80,6 +87,23 @@ func processForm(req *http.Request) Request {
 	form.compilerOptions = req.FormValue("compilerOptions")
 	form.numTestCases, _ = strconv.Atoi(req.FormValue("numTestCases"))
 	form.runtime, _ = strconv.Atoi(req.FormValue("runtime"))
+	form.instructor, _ = strconv.Atoi(req.FormValue("instructor"))
+	form.si1, _ = strconv.Atoi(req.FormValue("si1"))
+	form.si2, _ = strconv.Atoi(req.FormValue("si2"))
+
+	temp, _ := strconv.Atoi(req.FormValue("siGradeFlag"))
+	if temp == 1 {
+		form.siGradeFlag = true
+	} else {
+		form.siGradeFlag = false
+	}
+
+	temp, _ = strconv.Atoi(req.FormValue("siTestCaseFlag"))
+	if temp == 1 {
+		form.siTestCaseFlag = true
+	} else {
+		form.siGradeFlag = false
+	}
 
 	return form
 }
