@@ -13,90 +13,87 @@ const DB_USER_NAME string = "dbadmin"
 const DB_PASSWORD string = "EX0evNtl"
 const DB_NAME string = "pest"
 
-
 // return a users priv level
-func getPrivLevel(userID int) (error, int) {
+func getPrivLevel(userID int) (int, error) {
+
+	privLevel := -1
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
-	
+
 	if err != nil {
-		return errors.New("No connection")
+		return privLevel, errors.New("No connection")
 	}
-	
+
 	defer db.Close()
-	
-	res, err := db.Exec("SELECT privelegeLevel FROM Users WHERE UserID =?", userID)
-	
+
+	rows, err := db.Query("SELECT privelegeLevel FROM Users WHERE UserID =?", userID)
+
 	if err != nil {
-		return errors.New("Error retrieving privelege level.")
+		return privLevel, errors.New("Error retrieving privelege level.")
 	}
-	
-	rowsAffected, err := res.RowsAffected()
-	
-	if rowsAffected != 1 {
-		return errors.New("Query didn't match any users.")
+
+	if rows.Next() == false {
+		return privLevel, errors.New("Query didn't match any users.")
 	}
-	
-	var privLevel int
-	
-	rowsAffected.Scan(&privLevel)
-	
-	return privLevel == 10
+
+	rows.Scan(&privLevel)
+
+	return privLevel, nil
 }
 
-
 // returns T or F if user is instructor for the course or not
-func isInstructor(userID int, courseName string) (error, bool) {
+func isInstructor(userID int, courseName string) (bool, error) {
+
+	retVal := false
+
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
-	
+
 	if err != nil {
-		return errors.New("No connection")
+		return retVal, errors.New("No connection")
 	}
-	
+
 	defer db.Close()
-	
-	res, err := db.Exec("SELECT firstName FROM Users WHERE UserID =?", userID)
-	
+
+	rows, err := db.Query("SELECT firstName FROM Users WHERE UserID =?", userID)
+
 	if err != nil {
-		return errors.New("Error retrieving instructor name.")
+		return retVal, errors.New("Error retrieving instructor name.")
 	}
-	
-	rowsAffected, err := res.RowsAffected()
-	
-	if rowsAffected != 1 {
-		return errors.New("Query didn't match any users.")
+
+	if rows.Next() == false {
+		return retVal, errors.New("Query didn't match any users.")
 	}
-	
-	
-	// compare firstName to the name in courseName 
+
+	// compare firstName to the name in courseName
 	var firstName string
 	nameSubstr := courseName[:len(firstName)]
-	
+
 	// fill firstName variable
-	rowsAffected.Scan(&firstName)
-	
+	rows.Scan(&firstName)
+
 	if firstName != nameSubstr {
-		return false
+		retVal = true
+	} else {
+		retVal = true
 	}
-	else {
-		return true
-	}
+
+	return retVal, nil
 }
 
 /*
 // returns T or F if user if enrolled in class or not
-func isEnrolled(userID int, courseName string) (error, bool) {}
+func isEnrolled(userID int, courseName string) (bool, error) {}
 
 // returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
-func assignmentOpen(courseName string, assignmentName string) (error, bool) {}
+func assignmentOpen(courseName string, assignmentName string) (bool, error) {}
 
 // returns T or F if course is open or not
-func courseOpen(courseName string) (error, bool) {}
+func courseOpen(courseName string) (bool, error) {}
 
 func changePassword(userID int, newPassword string) error {}
 
-func getLastAssignmentname(courseName string) (error, string) {}
+func getLastAssignmentname(courseName string) (string, string) {}
 
-func getLastSubmissionName(courseName string, assignmentName, student int) (error, string) {}
+func getLastSubmissionName(courseName string, assignmentName, student int) (string, string) {}
 
 // may or may not need this
 func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
