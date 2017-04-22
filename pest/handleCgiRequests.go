@@ -103,6 +103,7 @@ func main() {
 	case "upload":
 		success, retString = Invoke(UploadFunctions{}, form.action, form)
 	case "email":
+		success, retString = Invoke(EmailFunctions{}, form.action, form)
 	default:
 		errorResponse("Unknown request received.")
 	}
