@@ -43,10 +43,46 @@ func getPrivLevel(userID int) (error, int) {
 	return privLevel == 10
 }
 
-/*
-// returns T or F if user is instructor for the course or not
-func isInstructor(userID int, courseName string) (error, bool) {}
 
+// returns T or F if user is instructor for the course or not
+func isInstructor(userID int, courseName string) (error, bool) {
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	
+	if err != nil {
+		return errors.New("No connection")
+	}
+	
+	defer db.Close()
+	
+	res, err := db.Exec("SELECT firstName FROM Users WHERE UserID =?", userID)
+	
+	if err != nil {
+		return errors.New("Error retrieving instructor name.")
+	}
+	
+	rowsAffected, err := res.RowsAffected()
+	
+	if rowsAffected != 1 {
+		return errors.New("Query didn't match any users.")
+	}
+	
+	
+	// compare firstName to the name in courseName 
+	var firstName string
+	nameSubstr := courseName[:len(firstName)]
+	
+	// fill firstName variable
+	rowsAffected.Scan(&firstName)
+	
+	if firstName != nameSubstr {
+		return false
+	}
+	else {
+		return true
+	}
+}
+
+/*
 // returns T or F if user if enrolled in class or not
 func isEnrolled(userID int, courseName string) (error, bool) {}
 
