@@ -348,6 +348,8 @@ func storeResults(results Submission) {
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 
 	printResults(results)
 
@@ -372,6 +374,8 @@ func importCSV(name string) {
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 
 	mysql.RegisterLocalFile(name)
 
@@ -394,6 +398,8 @@ func editCourseDescription(courseName string, courseDescription string)
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 	
 	editStatement, err := db.Prepare("UPDATE CourseDescription SET CourseDescription.CourseDescription = " + courseName + " WHERE CourseDescription.CourseName = " + courseDescription + ")
 	
@@ -422,6 +428,8 @@ func editCourseDescription(courseName string, courseDescription string)
 	if err != nil {
 		panic("No connection")
 	}
+	 
+	 defer db.Close()
 
 	res, err := db.Exec("update Submissions set grade=? where Student=? and CourseName=? and AssignmentName=? and SubmissionNumber=?", grade, userID, courseName, assignmentName, submissionNum)
 
@@ -460,6 +468,8 @@ func editStartEndCourse(courseName string, startDate string, endDate string) {
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 
 	res, err := db.Exec("update CourseDescription set StartDate=?, EndDate=? where CourseName=?", startDate+" 23:59:59", endDate+" 23:59:59", courseName)
 
@@ -486,6 +496,8 @@ func editUser(userID int, firstName string, MI string, lastName string, privLeve
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 
 	res, err := db.Exec("update Users set FirstName=?, MiddleInitial=?, LastName=?, PrivLevel=? where UserID=?", firstName, MI, lastName, privLevel, userID)
 
@@ -507,6 +519,8 @@ func editStartEndAssignment(courseName string, assignmentName string, startDate 
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 
 	res, err := db.Exec("update Assignments set StartDate=?, EndDate=? where CourseName=? and AssignmentName=?", startDate+" 23:59:59", endDate+" 23:59:59", courseName, assignmentName)
 
@@ -531,6 +545,8 @@ func editSubmissionComments(studentId int, assignmentName string, comments strin
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 
 	t := time.Now()
 	currentTime := t.Format("2006-01-02 15:04:05")
@@ -571,6 +587,8 @@ func deleteUser(userID int) {
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 
 	res, err := db.Exec("delete from Users where UserID=? and not exists(select 1 from StudentCourses where Student=? limit 1)", userID, userID)
 
@@ -590,6 +608,8 @@ func deleteCourse(courseName string) {
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 
 	res, err := db.Exec("delete from CourseDescription where CourseName =?", courseName)
 
@@ -610,6 +630,8 @@ func deleteAssignment(courseName string, assignmentName string) {
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 
 	res, err := db.Exec("delete from Assignments where (AssignmentName =? and CourseName =?)", assignmentName, courseName)
 
@@ -636,6 +658,8 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 	if err != nil {
 		panic("No connection")
 	}
+	
+	defer db.Close()
 	
 	res, err := db.Exec("INSERT INTO CourseDescription VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", courseName, courseDisplayName, courseDescription, instructor, startDate, endDate, si1, si2, siGradeFlag, siTestCaseFlag)
 	
