@@ -40,6 +40,7 @@ func errorResponse(msg string) {
 	fmt.Printf("Content-Type: text/plain\r\n")
 	fmt.Printf("\r\n")
 	fmt.Printf("%s\r\n", msg)
+	fmt.Printf("If problem persists, please contact system admin.\r\n")
 }
 
 func redirectTo(page string) {
@@ -101,6 +102,7 @@ func main() {
 		success, retString = Invoke(dbHelpers{}, form.action, form)
 	case "upload":
 		success, retString = Invoke(UploadFunctions{}, form.action, form)
+	case "email":
 	default:
 		errorResponse("Unknown request received.")
 	}
