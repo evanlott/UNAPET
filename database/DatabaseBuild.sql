@@ -171,9 +171,9 @@
 	insert into StudentCourses values ((select UserID from Users where username = "nmartin2"), "TerwilligerCS15501SP17");
 	insert into StudentCourses values ((select UserID from Users where username = "bmiller1"), "JerkinsCS15502SP17");
 
-	insert into Assignments values ("TerwilligerCS15501SP17", "Assignment 1", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
-	insert into Assignments values ("JerkinsCS15502SP17", "Assignment 0", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
-	insert into Assignments values ("JerkinsCS15502SP17", "Assignment 1", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
+	insert into Assignments values ("TerwilligerCS15501SP17", "Assignment 1", "0", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
+	insert into Assignments values ("JerkinsCS15502SP17", "Assignment 0", "0", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
+	insert into Assignments values ("JerkinsCS15502SP17", "Assignment 1", "1", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
 
 	insert into Submissions values ("TerwilligerCS15501SP17", "Assignment 1", (select UserID from Users where username="jdoe"), 90, "Good program.", true, "Some results...", 1);
 	insert into Submissions values ("TerwilligerCS15501SP17", "Assignment 1", (select UserID from Users where username = "nmartin2"), 90, "Good program.", true, "Some results...", 1);
