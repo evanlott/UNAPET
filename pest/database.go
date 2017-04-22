@@ -13,10 +13,37 @@ const DB_USER_NAME string = "dbadmin"
 const DB_PASSWORD string = "EX0evNtl"
 const DB_NAME string = "pest"
 
-/*
-// returns a users priv level
-func getPrivLevel(userID int) (error, int) {}
 
+// return a users priv level
+func getPrivLevel(userID int) (error, int) {
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	
+	if err != nil {
+		return errors.New("No connection")
+	}
+	
+	defer db.Close()
+	
+	res, err := db.Exec("SELECT privelegeLevel FROM Users WHERE UserID =?", userID)
+	
+	if err != nil {
+		return errors.New("Error retrieving privelege level.")
+	}
+	
+	rowsAffected, err := res.RowsAffected()
+	
+	if rowsAffected != 1 {
+		return errors.New("Query didn't match any users.")
+	}
+	
+	var privLevel int
+	
+	rowsAffected.Scan(&privLevel)
+	
+	return privLevel == 10
+}
+
+/*
 // returns T or F if user is instructor for the course or not
 func isInstructor(userID int, courseName string) (error, bool) {}
 
