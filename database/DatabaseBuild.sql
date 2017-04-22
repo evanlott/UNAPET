@@ -7,6 +7,7 @@
 	drop table if exists Submissions;	
 	drop table if exists Assignments;	
 	drop table if exists StudentCourses;
+	drop table if exists GradeReport;
 	drop table if exists CourseDescription;
 	drop table if exists Users;
 
@@ -171,15 +172,15 @@
 	insert into StudentCourses values ((select UserID from Users where username = "nmartin2"), "TerwilligerCS15501SP17");
 	insert into StudentCourses values ((select UserID from Users where username = "bmiller1"), "JerkinsCS15502SP17");
 
-	insert into Assignments values ("TerwilligerCS15501SP17", "Assignment 1", "0", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
+	insert into Assignments values ("TerwilligerCS15501SP17", "Assignment 1", "1", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
 	insert into Assignments values ("JerkinsCS15502SP17", "Assignment 0", "0", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
 	insert into Assignments values ("JerkinsCS15502SP17", "Assignment 1", "1", NOW(), NOW(), 1000, "-Wall -std=c++0x", 2);
 
-	insert into Submissions values ("TerwilligerCS15501SP17", "Assignment 1", (select UserID from Users where username="jdoe"), 90, "Good program.", true, "Some results...", 1);
-	insert into Submissions values ("TerwilligerCS15501SP17", "Assignment 1", (select UserID from Users where username = "nmartin2"), 90, "Good program.", true, "Some results...", 1);
-	insert into Submissions values ("JerkinsCS15502SP17", "Assignment 0", (select UserID from Users where username="bmiller1"), 80, "Decent program. Work on style.", true, "Some results...", 1);
-	insert into Submissions values ("JerkinsCS15502SP17", "Assignment 1", (select UserID from Users where username="crapper"), 70, "Yuck.", true, "Some results...", 1);
-	insert into Submissions values ("JerkinsCS15502SP17", "Assignment 0", (select UserID from Users where username="crapper"), 100, "You iz blessed with programming abilities.", true, "Some results...", 1);
+	insert into Submissions values ("TerwilligerCS15501SP17", "1", (select UserID from Users where username="jdoe"), 90, "Good program.", true, "Some results...", 1);
+	insert into Submissions values ("TerwilligerCS15501SP17", "1", (select UserID from Users where username = "nmartin2"), 90, "Good program.", true, "Some results...", 1);
+	insert into Submissions values ("JerkinsCS15502SP17", "0", (select UserID from Users where username="bmiller1"), 80, "Decent program. Work on style.", true, "Some results...", 1);
+	insert into Submissions values ("JerkinsCS15502SP17", "1", (select UserID from Users where username="crapper"), 70, "Yuck.", true, "Some results...", 1);
+	insert into Submissions values ("JerkinsCS15502SP17", "0", (select UserID from Users where username="crapper"), 100, "You iz blessed with programming abilities.", true, "Some results...", 1);
 
 	/* check tables */
 	show tables;
