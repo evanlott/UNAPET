@@ -3,11 +3,11 @@ package pest
 import "reflect"
 
 // calls a function of an interface by name and passes it args
-func Invoke(function interface{}, name string, form Request) (bool, string) {
+func Invoke(function interface{}, name string, arg interface{}) (bool, string) {
 
 	input := make([]reflect.Value, 1)
 
-	input[0] = reflect.ValueOf(form)
+	input[0] = reflect.ValueOf(arg)
 
 	method := reflect.ValueOf(function).MethodByName(name)
 

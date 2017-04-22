@@ -109,7 +109,7 @@ func main() {
 	case "db":
 		success, retString = Invoke(dbHelpers{}, form.action, form)
 	case "upload":
-		success, retString = Invoke(UploadFunctions{}, form.action, form)
+		success, retString = Invoke(UploadFunctions{}, form.action, req)
 	case "email":
 		success, retString = Invoke(EmailFunctions{}, form.action, form)
 	default:

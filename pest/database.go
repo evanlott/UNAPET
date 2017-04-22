@@ -13,6 +13,28 @@ const DB_USER_NAME string = "dbadmin"
 const DB_PASSWORD string = "EX0evNtl"
 const DB_NAME string = "pest"
 
+/*
+// returns a users priv level
+func getPrivLevel(userID int) (error, int) {}
+
+// returns T or F if user is instructor for the course or not
+func isInstructor(userID int, courseName string) (error, bool) {}
+
+// returns T or F if user if enrolled in class or not
+func isEnrolled(userID int, courseName string) (error, bool) {}
+
+// returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
+func assignmentOpen(courseName string, assignmentName string) (error, bool) {}
+
+// returns T or F if course is open or not
+func courseOpen(courseName string) (error, bool) {}
+
+func changePassword(userID int, newPassword string) error {}
+
+// may or may not need this
+func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
+*/
+
 func importCSV(name string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
@@ -138,8 +160,6 @@ func editUser(userID int, firstName string, MI string, lastName string, privLeve
 
 // TODO
 // test this!!!
-// have to incorporate out naming convention into this..
-// pull last assignment name, increment it
 func createAssignment(courseName string, assignmentDisplayName string, assignmentName string, runtime int, numTestCases int, compilerOptions string, startDate string, endDate string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
