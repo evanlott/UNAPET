@@ -704,7 +704,7 @@ func createAssignment(courseName string, assignmentName string, startDate string
 	}
 	
 	// TODO : verify query on server, figure out how to pull test cases from UI and upload to server
-	res, err := db.Exec("ALTER TABLE GradeReport ADD " + assignmentName + "")
+	res, err := db.Exec("ALTER TABLE GradeReport ADD " + assignmentName + " varchar(40)")
 	
 	if err != nil {
 		panic("Error adding assignment to GradeReport")
