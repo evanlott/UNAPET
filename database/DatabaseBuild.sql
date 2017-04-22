@@ -94,7 +94,7 @@
 		CourseName varchar(42) NOT NULL,
 		/* size for assignment name field? */
 		AssignmentDisplayName varchar(40) NOT NULL,
-		AssignmentNum int NOT NULL,
+		AssignmentName varchar(40) NOT NULL,
 		StartDate datetime,
 		EndDate datetime,
 		/* is this seconds or milliseconds? */
