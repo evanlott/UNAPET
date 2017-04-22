@@ -58,6 +58,35 @@ func importCSV(name string) error {
 
 
  */
+// not tested yet
+func createCourse(courseName string, courseDisplayName string, courseDescription, instructor int, startDate string, endDate string, si1 int, si2 int, siGradeFlag bool, siTestCaseFlag bool) error {
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	res, err := db.Exec("INSERT INTO CourseDescription VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", courseName, courseDisplayName, courseDescription, instructor, startDate, endDate, si1, si2, siGradeFlag, siTestCaseFlag)
+
+	if err != nil {
+		return errors.New("Error inserting course.")
+	}
+
+	rowsAffected, err := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		return errors.New("Query didn't match any assignments.")
+	}
+
+	return nil
+}
+
+/*
+
+
+ */
 
 func editCourseDescription(courseName string, courseDescription string) error {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
