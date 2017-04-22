@@ -12,6 +12,9 @@ import (
 
  */
 
+// Need:
+// func createUser( -some stuff- ) {}
+
 func editUser(userID int, firstName string, MI string, lastName string, privLevel int) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)

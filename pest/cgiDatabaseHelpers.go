@@ -26,7 +26,6 @@ func Invoke(function interface{}, name string, arg interface{}) (bool, string) {
 type dbHelpers struct{}
 
 // Will have to check user access priv. before executing these!
-// So need a checkPriv function that goes to the database and returns their priv level
 // Will also have to check that they are logged in as the user they claim to be in the request!
 
 func (_ dbHelpers) callEvaluate(form Request) (bool, string) {
@@ -51,9 +50,9 @@ func (_ dbHelpers) callCreateCourse(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callGradeAssignment(form Request) (bool, string) {
+func (_ dbHelpers) callGradeSubmission(form Request) (bool, string) {
 
-	err := gradeAssignment(form.userID, form.courseName, form.assignmentName, form.subNum, form.grade)
+	err := gradeSubmission(form.userID, form.courseName, form.assignmentName, form.subNum, form.grade)
 
 	if err != nil {
 		return false, err.Error()

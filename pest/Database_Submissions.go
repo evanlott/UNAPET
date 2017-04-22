@@ -13,7 +13,7 @@ import (
 
  */
 
-func gradeAssignment(userID int, courseName string, assignmentName string, submissionNum int, grade int) error {
+func gradeSubmission(userID int, courseName string, assignmentName string, submissionNum int, grade int) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
