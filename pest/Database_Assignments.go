@@ -36,6 +36,13 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 	if rowsAffected != 1 {
 		return errors.New("Could not create assignment.")
 	}
+	
+	// TODO : verify query on server, figure out how to pull test cases from UI and upload to server
+	res, err := db.Exec("ALTER TABLE GradeReport ADD " + assignmentName + " tinyint")
+	
+	if err != nil {
+		panic("Error adding assignment to GradeReport")
+	}
 
 	return nil
 
