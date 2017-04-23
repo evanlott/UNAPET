@@ -63,7 +63,7 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 /*
@@ -136,7 +136,7 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 		}
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 /*
