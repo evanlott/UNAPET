@@ -8,11 +8,13 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-/*
-
-
- */
-
+//---------------------------------------------------------------------------
+//Inputs: user ID, course name, assignment name, submission number, grade
+//Outputs: None
+//Written By: Hannah Hopkins and Nathan Huckaba 
+//Purpose: This function will be used by the instructor to grade assignments.
+//	It will update the grade in the Submissions table in the database.  
+//---------------------------------------------------------------------------
 func gradeSubmission(userID int, courseName string, assignmentName string, submissionNum int, grade int) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
@@ -36,12 +38,15 @@ func gradeSubmission(userID int, courseName string, assignmentName string, submi
 
 }
 
-/*
-
-
- */
-
-// add coursename to this, and plug in vars instead of hardcode
+// TODO add coursename to this, and plug in vars instead of hardcode
+//---------------------------------------------------------------------------
+//Inputs: user/student ID number, assignment name, comments
+//Outputs: None
+//Written By: Eileen Drass and Evan Lott 
+//Purpose: This function will be used by the instructor to make comments
+//	on a student's submission. It will update the comment in the 
+//	Submissions table in the database.  
+//---------------------------------------------------------------------------
 func editSubmissionComments(studentId int, assignmentName string, comments string) error {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
