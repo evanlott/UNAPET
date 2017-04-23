@@ -64,10 +64,44 @@ func isEnrolled(userID int, courseName string) (bool, error) {
 	return true, nil
 }
 
-/*
-// returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
-func assignmentOpen(courseName string, assignmentName string) (bool, error) {}
 
+// returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
+func assignmentOpen(courseName string, assignmentName string) (bool, error) {
+	
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return false, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rowsAffected, err := db.Query("SELECT StartDate, EndDate FROM Assignments WHERE AssignmentName =?", assignmentName)
+	
+	if err != nil {
+		return false, errors.New("Error retrieving start/end date.")
+	}
+	
+	if rowsAffected.Next() == false {
+		return false, errors.New("No assignments matched with query.")
+	}
+	
+	var startDate, endDate time.Time
+	currentTime := time.Now()
+	
+	rowsAffected.Scan(&startDate, endDate)
+	
+	// TODO : figure out how to parse vars as time.Time
+	
+	// note: will not work because startDate/endDate have not been converted from SQL DATETIME to golang time.Time
+	if startDate <= currentTime && endDate >= currentTime {
+		return true, nil
+	}
+	
+	return false, nil
+}
+
+/*
 // returns T or F if course is open or not
 func courseOpen(courseName string) (bool, error) {}
 
