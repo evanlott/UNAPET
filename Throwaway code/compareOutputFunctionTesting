@@ -1,0 +1,83 @@
+// Eileen Drass
+// compareOutputFunctionTesting
+// This is throwaway code for testing the compareOutput function.
+
+package main
+
+import (
+	"fmt"
+	"os/exec"
+)
+
+
+const SHELL_NAME string = "ksh"
+
+//------------------------------------------------------------------------------
+func compareOutput(studentFile string, instructorFile string) bool {
+
+	fullCommand := "diff " + studentFile + " " + instructorFile
+
+	// compare stuff
+	compareCmd := exec.Command(SHELL_NAME, "-c", fullCommand)
+	compareResults, err := compareCmd.CombinedOutput()
+
+	if compareResults != nil {
+	}
+
+	rvalue := true
+
+	if err != nil {
+		rvalue = false
+	}
+
+	return rvalue
+}
+
+//------------------------------------------------------------------------------
+
+func main() {
+
+	test0 := compareOutput("team404CompareOutputFunctionStudentTest1-1.txt", "team404CompareOutputFunctionInstructorTest1.txt")
+	test1 := compareOutput("team404CompareOutputFunctionStudentTest1-2.txt", "team404CompareOutputFunctionInstructorTest1.txt")
+	test2 := compareOutput("team404CompareOutputFunctionStudentTest1-3.txt", "team404CompareOutputFunctionInstructorTest1.txt")
+	test3 := compareOutput("team404CompareOutputFunctionStudentTest1-4.txt", "team404CompareOutputFunctionInstructorTest1.txt")
+	test4 := compareOutput("team404CompareOutputFunctionStudentTest1-5.txt", "team404CompareOutputFunctionInstructorTest1.txt")
+	test5 := compareOutput("team404CompareOutputFunctionStudentTest1-6.txt", "team404CompareOutputFunctionInstructorTest1.txt")
+	test6 := compareOutput("team404CompareOutputFunctionStudentTest1-7.txt", "team404CompareOutputFunctionInstructorTest1.txt") //passed
+	test7 := compareOutput("team404CompareOutputFunctionStudentTest2-1.txt", "team404CompareOutputFunctionInstructorTest2.txt")
+	test8 := compareOutput("team404CompareOutputFunctionStudentTest2-2.txt", "team404CompareOutputFunctionInstructorTest2.txt")
+	test9 := compareOutput("team404CompareOutputFunctionStudentTest2-3.txt", "team404CompareOutputFunctionInstructorTest2.txt")
+	test10 := compareOutput("team404CompareOutputFunctionStudentTest2-4.txt", "team404CompareOutputFunctionInstructorTest2.txt")
+	test11 := compareOutput("team404CompareOutputFunctionStudentTest2-5.txt", "team404CompareOutputFunctionInstructorTest2.txt")
+	test12 := compareOutput("team404CompareOutputFunctionStudentTest2-6.txt", "team404CompareOutputFunctionInstructorTest2.txt")
+	test13 := compareOutput("team404CompareOutputFunctionStudentTest2-7.txt", "team404CompareOutputFunctionInstructorTest2.txt") // passed
+	test14 := compareOutput("team404CompareOutputFunctionStudentTest2-8.txt", "team404CompareOutputFunctionInstructorTest2.txt")
+	test15 := compareOutput("team404CompareOutputFunctionStudentTest3-1.txt", "team404CompareOutputFunctionInstructorTest3.txt") // passed
+	test16 := compareOutput("team404CompareOutputFunctionStudentTest3-2.txt", "team404CompareOutputFunctionInstructorTest3.txt")
+	test17 := compareOutput("team404CompareOutputFunctionStudentTest3-3.txt", "team404CompareOutputFunctionInstructorTest3.txt")
+	test18 := compareOutput("team404CompareOutputFunctionStudentTest3-4.txt", "team404CompareOutputFunctionInstructorTest3.txt")
+	test19 := compareOutput("team404CompareOutputFunctionStudentTest3-5.txt", "team404CompareOutputFunctionInstructorTest3.txt")
+	test20 := compareOutput("team404CompareOutputFunctionStudentTest3-6.txt", "team404CompareOutputFunctionInstructorTest3.txt")
+
+	fmt.Println(test0)
+	fmt.Println(test1)
+	fmt.Println(test2)
+	fmt.Println(test3)
+	fmt.Println(test4)
+	fmt.Println(test5)
+	fmt.Println(test6)
+	fmt.Println(test7)
+	fmt.Println(test8)
+	fmt.Println(test9)
+	fmt.Println(test10)
+	fmt.Println(test11)
+	fmt.Println(test12)
+	fmt.Println(test13)
+	fmt.Println(test14)
+	fmt.Println(test15)
+	fmt.Println(test16)
+	fmt.Println(test17)
+	fmt.Println(test18)
+	fmt.Println(test19)
+	fmt.Println(test20)
+}
