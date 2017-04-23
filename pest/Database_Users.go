@@ -35,6 +35,18 @@ func createUser(firstName string, MI string, lastName string, username string, p
 	if err != nil {
 		return errors.New("User creation failed.")
 	}
+	
+	res, err := db.Exec("INSERT INTO StudentCourses(Student, CourseName) VALUES((select UserID from Users where Username=" + username + "), ?)", courseName)
+	
+	if err != nil {
+		return errors.New("User unable to be added to student courses.")
+	}
+	
+	res, err := db.Exec("INSERT INTO GradeReport" + courseName + "(Student) VALUES(select UserID from users where Username=" + username + ")")
+	
+	if err != nil {
+		return errors.New("User unable to be added to GradeReport table.")
+	}
 
 	return nil
 }
