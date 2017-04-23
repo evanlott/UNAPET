@@ -18,6 +18,7 @@ const PRIV_INSTRUCTOR = 10
 const PRIV_ADMIN = 15
 
 // returns true or false if user is enrolled in class or not
+// Evan
 func isEnrolled(userID int, courseName string) (bool, error) {
 	
 	enabled := 1
@@ -66,6 +67,7 @@ func isEnrolled(userID int, courseName string) (bool, error) {
 
 
 // returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
+// Evan, Eileen
 func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 	
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME+"?parseTime=true")
@@ -115,6 +117,7 @@ func deleteTestCase(courseName string, assignmentName string, testCaseNum int) e
 */
 
 // return a users priv level
+// Evan
 func getPrivLevel(userID int) (int, error) {
 
 	privLevel := -1
@@ -142,6 +145,7 @@ func getPrivLevel(userID int) (int, error) {
 }
 
 // returns T or F if user is instructor for the course or not
+// Evan
 func isInstructor(userID int, courseName string) (bool, error) {
 
 	retVal := false
