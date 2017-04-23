@@ -1,0 +1,89 @@
+// Eileen Drass
+// This is throw-away code which was used to test the compile function. 
+package main
+
+import (
+	"fmt"
+	"os"
+	"os/exec"
+	"strconv"
+)
+
+type Submission struct {
+	courseName      string
+	assignmentName  string
+	userName        string
+	userID          int
+	sourceName      string // without .cpp, call this submission name..?
+	numTestCases    int
+	compiled        bool
+	results         string
+	maxRuntime      int
+	compilerOptions string
+	submissionNum   int
+}
+
+const SHELL_NAME string = "ksh"
+
+
+//------------------------------------------------------------------------------
+func compile(results Submission) {
+
+	// working directory is still the assignmentRoot
+
+	sourceName := results.sourceName + ".cpp"
+
+	outputName := results.sourceName + "Out"
+
+	// make sure source file exists, if not, panic
+	_, err := os.Stat(sourceName)
+
+	if err != nil {
+		panic("Source file does not exist or permission eror: " + sourceName)
+	}
+
+	// verified that source exists, try to compile it
+	compileCmd := exec.Command(SHELL_NAME, "-c", "g++ "+results.compilerOptions+" "+sourceName+" -o "+outputName)
+
+	compileResults, err := compileCmd.CombinedOutput()
+
+	// useless to check err of compile command, will be set even if simply errors in source
+	// instead, check if output file was produced
+	_, err = os.Stat(outputName)
+
+	if err != nil {
+		// did not compile.. or permission error -_-
+		results.compiled = false
+
+		// compiler output is in compileResults
+		results.results = string(compileResults)
+	}
+
+	fmt.Println(results.compiled)
+
+	//	if results.compiled {
+	// call execute
+	//		execute(results)
+	//	} else {
+	// store results with the failed output
+	//		storeResults(results)
+	//	}
+}
+
+//------------------------------------------------------------------------------
+func main() {
+
+	results := Submission{}
+	results.compilerOptions = "-Wall"
+	//results.submissionNum = 1
+	//results.submissionNum = 2
+	//results.submissionNum = 3
+	results.submissionNum = 4
+	results.userName = "edrass"
+	results.sourceName = results.userName + strconv.Itoa(results.submissionNum)
+	results.compiled = true
+	results.results = ""
+
+	compile(results)
+
+}
