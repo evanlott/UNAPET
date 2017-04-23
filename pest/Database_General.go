@@ -19,6 +19,7 @@ const PRIV_INSTRUCTOR = 10
 const PRIV_ADMIN = 15
 
 // returns true or false if user is enrolled in class or not
+// Evan
 func isEnrolled(userID int, courseName string) (bool, error) {
 
 	enabled := 1
@@ -66,6 +67,7 @@ func isEnrolled(userID int, courseName string) (bool, error) {
 }
 
 // returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
+// Evan, Eileen
 func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME+"?parseTime=true")
@@ -98,10 +100,49 @@ func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 	return false, nil
 }
 
-/*
-// returns T or F if course is open or not
-func courseOpen(courseName string) (bool, error) {}
 
+// returns T or F if course is open or not
+// Evan, Eileen
+func courseOpen(courseName string) (error, bool) {
+	
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME+"?parseTime=true")
+
+	if err != nil {
+		return false, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rowsAffected, err := db.Query("SELECT StartDate, EndDate FROM CourseDescription WHERE CourseName =?", courseName)
+	
+	if err != nil {
+		return false, errors.New("Error retrieving start/end date.")
+	}
+	
+	if rowsAffected.Next() == false {
+		return false, errors.New("No courses matched with query.")
+	}
+	
+	var startDate, endDate time.Time
+	
+	rowsAffected.Scan(&startDate, endDate)
+	
+	if startDate.Format("01/02/2006 15:04:05") <= currentTime.Format("01/02/2006 15:04:05") && endDate.Format("01/02/2006 15:04:05") >= currentTime.Format("01/02/2006 15:04:05") {
+		return true, nil
+	}
+	
+	return false, nil
+}
+
+<<<<<<< HEAD
+=======
+/*
+func changePassword(userID int, newPassword string) error {}
+
+func getLastAssignmentname(courseName string) (string, string) {}
+
+func getLastSubmissionName(courseName string, assignmentName, student int) (string, string) {}
+>>>>>>> origin/master
 
 func zipAssignment(courseName string, assignmentName) {}
 
@@ -121,6 +162,7 @@ func getLastSubmissionName(courseName string, assignmentName, student int) (stri
 */
 
 // return a users priv level
+// Evan
 func getPrivLevel(userID int) (int, error) {
 
 	privLevel := -1
@@ -148,6 +190,7 @@ func getPrivLevel(userID int) (int, error) {
 }
 
 // returns T or F if user is instructor for the course or not
+// Evan
 func isInstructor(userID int, courseName string) (bool, error) {
 
 	retVal := false
