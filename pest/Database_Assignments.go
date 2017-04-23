@@ -12,8 +12,17 @@ import (
 
  */
 
-// TODO
-// test this
+// TODO: test this
+//---------------------------------------------------------------------------------------
+//Inputs: course name, assignment display name, assignment name, runtime, 
+//			number of test cases, compiler options, start date of assignment
+//			end date of assignment 
+//Outputs: None
+//Written By: Evan Lott 
+//Purpose: This function will be used by the instructors to create an 
+//			assignment for their class. It will add an assignment to the 
+//			Assignments table in the database. 
+//---------------------------------------------------------------------------------------
 func createAssignment(courseName string, assignmentDisplayName string, assignmentName string, runtime int, numTestCases int, compilerOptions string, startDate string, endDate string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
@@ -37,12 +46,15 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 
 }
 
-/*
-
-
- */
-
 // TODO : delete assignment's folder from disk
+//---------------------------------------------------------------------------------------
+//Inputs: course name, assignment name
+//Outputs: None
+//Written By: Hannah Hopkins  
+//Purpose: This function will be used by the instructors to delete an 
+//			assignment for their class. It will remove an assignment from
+//			the Assignments table in the database. 
+//---------------------------------------------------------------------------------------
 func deleteAssignment(courseName string, assignmentName string) error {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 
@@ -65,11 +77,15 @@ func deleteAssignment(courseName string, assignmentName string) error {
 	return nil
 }
 
-/*
-
-
- */
-
+//---------------------------------------------------------------------------------------
+//Inputs: course name, assignment name, start date for the assignment, 
+//			end date for an assignment 
+//Outputs: None
+//Written By: Hannah Hopkins and Nathan Huckaba 
+//Purpose: This function will be used by the instructors to edit the 
+//			start and end date for an assignment. It will update the 
+//			Assignments table in the database. 
+//---------------------------------------------------------------------------------------
 func editStartEndAssignment(courseName string, assignmentName string, startDate string, endDate string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
