@@ -28,6 +28,8 @@ func getLastAssignmentname(courseName string) (string, string) {}
 
 func getLastSubmissionName(courseName string, assignmentName, student int) (string, string) {}
 
+func zipAssignment(courseName string, assignmentName) {}
+
 // may or may not need this
 func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
 */
