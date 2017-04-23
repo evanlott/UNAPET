@@ -1,4 +1,4 @@
-package pest
+package main
 
 import (
 	"database/sql"
@@ -10,6 +10,12 @@ import (
 const DB_USER_NAME string = "dbadmin"
 const DB_PASSWORD string = "EX0evNtl"
 const DB_NAME string = "pest"
+
+const PRIV_DISABLED = 0
+const PRIV_STUDENT = 1
+const PRIV_SI = 5
+const PRIV_INSTRUCTOR = 10
+const PRIV_ADMIN = 15
 
 /*
 

@@ -4,4 +4,4 @@
 pest document
 */
 
-package pest
+package main

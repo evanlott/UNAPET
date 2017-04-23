@@ -1,4 +1,4 @@
-package pest
+package main
 
 import (
 	"errors"
@@ -9,14 +9,12 @@ import (
 	"strconv"
 )
 
-type UploadFunctions struct{}
-
 /*
 
 
  */
 
-func (_ UploadFunctions) sourceCodeUpload(req *http.Request) (bool, string) {
+func sourceCodeUpload(req *http.Request) (bool, string) {
 
 	// set max memory to hold uploaded file to.. what should this be?
 	req.ParseMultipartForm(32 << 20)
@@ -75,7 +73,7 @@ func (_ UploadFunctions) sourceCodeUpload(req *http.Request) (bool, string) {
 
 // must incorporate naming convention into this
 // pull last assignment name, increment it
-func (_ UploadFunctions) callCreateAssignment(req *http.Request) (bool, string) {
+func callCreateAssignment(req *http.Request) (bool, string) {
 
 	form := processForm(req)
 

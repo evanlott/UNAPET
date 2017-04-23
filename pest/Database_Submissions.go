@@ -1,4 +1,4 @@
-package pest
+package main
 
 import (
 	"database/sql"

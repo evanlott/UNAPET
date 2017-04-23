@@ -1,56 +1,67 @@
-package pest
+package main
 
-import "reflect"
+import (
+	"net/http"
+)
 
-// calls a function of an interface by name and passes it args
-func Invoke(function interface{}, name string, arg interface{}) (bool, string) {
+func callDbHelper(name string, form Request) (bool, string) {
 
-	input := make([]reflect.Value, 1)
-
-	input[0] = reflect.ValueOf(arg)
-
-	method := reflect.ValueOf(function).MethodByName(name)
-
-	// function exists, call it
-	if method.IsValid() {
-		result := method.Call(input)
-
-		// function existed return what it returns
-		return result[0].Interface().(bool), result[1].Interface().(string)
+	switch name {
+	case "callGradeSubmission":
+		return callGradeSubmission(form)
+	case "callEvaluate":
+		return callEvaluate(form)
+	case "callImportCSV":
+		return callImportCSV(form)
+	case "callDeleteCourse":
+		return callDeleteCourse(form)
+	case "callEditCourseDescription":
+		return callEditCourseDescription(form)
+	case "callEditStartEndCourse":
+		return callEditStartEndCourse(form)
+	case "callEditUser":
+		return callEditUser(form)
+	case "callEditStartEndAssignment":
+		return callEditStartEndAssignment(form)
+	case "callEditSubmissionComments":
+		return callEditSubmissionComments(form)
+	case "callDeleteUser":
+		return callDeleteUser(form)
+	case "callDeleteAssignment":
+		return callDeleteAssignment(form)
+	case "callCreateCourse":
+		return callCreateCourse(form)
 	}
 
-	// function doesn't exist, return false and err msg
 	return false, "Requested action is not implemented, or you have made an invalid request."
+
 }
 
-type dbHelpers struct{}
+func callUpload(name string, req *http.Request) (bool, string) {
 
-// Will have to check user access priv. before executing these!
-// Will also have to check that they are logged in as the user they claim to be in the request!
-
-func (_ dbHelpers) callEvaluate(form Request) (bool, string) {
-
-	err := evaluate(form.courseName, form.assignmentName, form.userName)
-
-	if err != nil {
-		return false, err.Error()
+	switch name {
+	case "callCreateAssignment":
+		return callCreateAssignment(req)
+	case "sourceCodeUpload":
+		return sourceCodeUpload(req)
 	}
 
-	return true, "?.html"
+	return false, "Requested action is not implemented, or you have made an invalid request."
+
 }
 
-func (_ dbHelpers) callCreateCourse(form Request) (bool, string) {
+func callEmailFunction(name string, form Request) (bool, string) {
 
-	err := createCourse(form.courseName, form.courseDisplayName, form.courseDescription, form.instructor, form.startDate, form.endDate, form.si1, form.si2, form.siGradeFlag, form.siTestCaseFlag)
-
-	if err != nil {
-		return false, err.Error()
+	switch name {
+	case "sendRandomPassword":
+		return sendRandomPassword(form)
 	}
 
-	return true, "?.html"
+	return false, "Requested action is not implemented, or you have made an invalid request."
+
 }
 
-func (_ dbHelpers) callGradeSubmission(form Request) (bool, string) {
+func callGradeSubmission(form Request) (bool, string) {
 
 	err := gradeSubmission(form.userID, form.courseName, form.assignmentName, form.subNum, form.grade)
 
@@ -61,7 +72,49 @@ func (_ dbHelpers) callGradeSubmission(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callImportCSV(form Request) (bool, string) {
+func callEvaluate(form Request) (bool, string) {
+
+	/*
+		// also check if this user is who they claim to be
+
+		if (!(isLoggedIn(form.userID)) || !(isEnrolled(form.userID, form.courseName))) {
+			return false, "You are not logged in, or you do not have permission to submit to this class."
+		}
+	*/
+
+	err := evaluate(form.courseName, form.assignmentName, form.userName)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	return true, "?.html"
+}
+
+func callCreateCourse(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) || (getPrivLevel(form.userID) < PRIV_ADMIN)) {
+			return false, "You are not logged in, or you do not have permission to create a course."
+		}
+	*/
+
+	err := createCourse(form.courseName, form.courseDisplayName, form.courseDescription, form.instructor, form.startDate, form.endDate, form.si1, form.si2, form.siGradeFlag, form.siTestCaseFlag)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	return true, "?.html"
+}
+
+func callImportCSV(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) || (getPrivLevel(form.userID) < PRIV_INSTRUCTOR)) {
+			return false, "You are not logged in, or you do not have permission to upload a csv."
+		}
+	*/
 
 	err := importCSV(form.fileName)
 
@@ -72,7 +125,14 @@ func (_ dbHelpers) callImportCSV(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callDeleteCourse(form Request) (bool, string) {
+func callDeleteCourse(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) || (getPrivLevel(form.userID) < PRIV_ADMIN)) {
+			return false, "You are not logged in, or you are not an admin user."
+		}
+	*/
+
 	err := deleteCourse(form.courseName)
 
 	if err != nil {
@@ -82,7 +142,14 @@ func (_ dbHelpers) callDeleteCourse(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callEditCourseDescription(form Request) (bool, string) {
+func callEditCourseDescription(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) || (getPrivLevel(form.userID) < PRIV_INSTRUCTOR)) {
+			return false, "You are not logged in, or you do not have permission for this operation."
+		}
+	*/
+
 	err := editCourseDescription(form.courseName, form.courseDescription)
 
 	if err != nil {
@@ -92,7 +159,13 @@ func (_ dbHelpers) callEditCourseDescription(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callEditStartEndCourse(form Request) (bool, string) {
+func callEditStartEndCourse(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) || (getPrivLevel(form.userID) < PRIV_ADMIN)) {
+			return false, "You are not logged in, or you do not have permission for this operation."
+		}
+	*/
 
 	err := editStartEndCourse(form.courseName, form.startDate, form.endDate)
 
@@ -103,7 +176,13 @@ func (_ dbHelpers) callEditStartEndCourse(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callEditUser(form Request) (bool, string) {
+func callEditUser(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) || (getPrivLevel(form.userID) < PRIV_INSTRUCTOR)) {
+			return false, "You are not logged in, or you do not have permission for this operation."
+		}
+	*/
 
 	err := editUser(form.userID, form.firstName, form.MI, form.lastName, form.privLevel)
 
@@ -114,7 +193,13 @@ func (_ dbHelpers) callEditUser(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callEditStartEndAssignment(form Request) (bool, string) {
+func callEditStartEndAssignment(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) || !(isInstructor(form.userID, form.courseName))) {
+			return false, "You are not logged in, or you do not have permission for this operation."
+		}
+	*/
 
 	err := editStartEndAssignment(form.courseName, form.assignmentName, form.startDate, form.endDate)
 
@@ -125,7 +210,13 @@ func (_ dbHelpers) callEditStartEndAssignment(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callEditSubmissionComments(form Request) (bool, string) {
+func callEditSubmissionComments(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) || !(isInstructor(form.userID, form.courseName))) {
+			return false, "You are not logged in, or you do not have permission for this operation."
+		}
+	*/
 
 	err := editSubmissionComments(form.userID, form.assignmentName, form.comments)
 
@@ -136,7 +227,13 @@ func (_ dbHelpers) callEditSubmissionComments(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callDeleteUser(form Request) (bool, string) {
+func callDeleteUser(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) || (getPrivLevel(form.userID) < PRIV_ADMIN)) {
+			return false, "You are not logged in, or you do not have permission for this operation."
+		}
+	*/
 
 	err := deleteUser(form.userID)
 
@@ -147,7 +244,13 @@ func (_ dbHelpers) callDeleteUser(form Request) (bool, string) {
 	return true, "?.html"
 }
 
-func (_ dbHelpers) callDeleteAssignment(form Request) (bool, string) {
+func callDeleteAssignment(form Request) (bool, string) {
+
+	/*
+		if (!(isLoggedIn(form.userID)) ||  !(isInstructor(form.userID, form.courseName))) {
+			return false, "You are not logged in, or you do not have permission for this operation."
+		}
+	*/
 
 	err := deleteAssignment(form.courseName, form.assignmentName)
 

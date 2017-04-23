@@ -1,13 +1,11 @@
-package pest
+package main
 
 import (
 	"math/rand"
 	"net/smtp"
 )
 
-type EmailFunctions struct{}
-
-func (_ EmailFunctions) sendRandomPassword(form Request) (bool, string) {
+func sendRandomPassword(form Request) (bool, string) {
 
 	// verify user exists first..
 	// select * from Users where UserName=form.userName
