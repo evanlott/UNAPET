@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.0.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+   $(function(){
+      $("#header").load("/Instructor/header.html");
+      $("#footer").load("/Instructor/footer.html");
+   });
+</script>
+
+</head>
+
+<body>
+    <div id="header"></div>
+	<h2 style="text-align: center; font-weight: bold; margin-top: 75px;">Export Users</h2>
+	
+	<div class="container">
+	    
+	    <p>Please select a course in the dropdown menu that contains the desired students to be exported. The downloaded file will be 
+	    a CSV file containg the students' information associated with the selected course. Press "Download" to complete exporting.</p>
+	    
+    	<form>
+    		<div class="form-group">
+                <label for="importCourse">Select Course:</label>
+                <select class="form-control formFieldsStyle" id="importCourse">
+                    <option value="" disabled selected>Select Course</option>
+                    <option value="JerkinsCS15501SP17">JerkinsCS15501SP17</option>
+                    <option value="RodenCS15502SP17">RodenCS15502SP17</option>
+                </select>
+            </div>
+
+    		<div style="text-align: center; margin-top: 50px;">
+    			<button type="submit" class="btn btn-default" id="createUserBtn" style="text-align: center">Download</button>
+    		</div>
+    		
+    	</form>
+    	
+	</div>
+<div id="footer"></div>
+</body>
+
+</html>

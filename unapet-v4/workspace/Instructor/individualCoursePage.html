@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-us">
+   
+<head>
+   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.0.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+   $(function(){
+      $("#header").load("/Instructor/header.html");
+      $("#footer").load("/Instructor/footer.html");
+      $("#assignments").load("/Instructor/assignments.html");
+   });
+</script>
+
+</head>
+
+
+
+<body>
+   <div id="header"></div>
+   <div class="row" style="text-align: center;">
+      <a href="individualCoursePage.html" style="text-decoration: none;"><h3 class="courseTitle" style="text-align: center;">CS-155-01</h3></a>
+      <a class = "btn coursePageButtons" href = "assignments.html" role = "button"><h3 class="color">Assignments</h3></a>
+      <a class = "btn coursePageButtons" href = "grades.html" role = "button"><h3 class="color">Grades</h3></a>
+      <a class = "btn coursePageButtons" href = "submissions.html" role = "button"><h3 class="color">Submissions</h3></a>
+   </div>
+
+   <div class="container" style="text-align: center;">
+      
+      <div id="descriptionArea" contenteditable="true">In this course we will learn how to print "Hello World" in several different ways!</div>
+    
+   </div>
+   <div id="footer"></div>
+</body>
+
+</html>

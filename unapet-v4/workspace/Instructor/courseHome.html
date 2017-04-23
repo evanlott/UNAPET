@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.0.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+   $(function(){
+      $("#header").load("/Instructor/header.html");
+      $("#footer").load("/Instructor/footer.html");
+   });
+    $( function() {
+        $('.datepicker').datepicker();
+    } );
+</script>
+
+</head>
+
+<body>
+<div id="header"></div>
+
+<div class="container">
+    <div class = "row">
+        <div class = "col-md-4">
+            <a id = "card_click" href="individualCoursePage.html">
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">CS-155-01</h4>
+                        <p class="card-text">Computer-Science 1</p>
+                        <h3 class="card-text">FALL 2017</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div> 
+
+<!-- Modal HTML -->
+    <div id="editButton" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Edit Course</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="editTitle">Edit Title:</label>
+                    <input type="text" class="form-control" placeholder="CS-155">
+                    <br>
+                    <label for="startDate">Start Date:</label>
+                    <input type="text" class="form-control datepicker">
+                    <label for="endDate">End Date:</label>
+                    <input type="text" class="form-control datepicker">
+                    <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="footer"></div>
+</body>
+
+</html>
