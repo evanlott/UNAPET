@@ -92,7 +92,7 @@ func isInstructor(userID int, courseName string) (bool, error) {
 	rows.Scan(&firstName)
 
 	if firstName != nameSubstr {
-		retVal = true
+		retVal = false
 	} else {
 		retVal = true
 	}
