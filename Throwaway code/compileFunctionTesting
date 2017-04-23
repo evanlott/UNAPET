@@ -1,5 +1,7 @@
 // Eileen Drass
+// compileFunctionTesting
 // This is throw-away code which was used to test the compile function. 
+
 package main
 
 import (
