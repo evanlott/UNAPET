@@ -43,6 +43,7 @@ type Request struct {
 	si2                   int
 	siGradeFlag           bool
 	siTestCaseFlag        bool
+	fromPage              string
 }
 
 func errorResponse(msg string) {
@@ -55,7 +56,7 @@ func errorResponse(msg string) {
 
 func redirectTo(page string) {
 	fmt.Printf("HTTP/1.1 303 See other\r\n")
-	fmt.Printf("Location: /%s \r\n", page)
+	fmt.Printf("Location: %s \r\n", page)
 	fmt.Printf("\r\n")
 }
 
@@ -90,6 +91,7 @@ func processForm(req *http.Request) Request {
 	form.instructor, _ = strconv.Atoi(req.FormValue("instructor"))
 	form.si1, _ = strconv.Atoi(req.FormValue("si1"))
 	form.si2, _ = strconv.Atoi(req.FormValue("si2"))
+	form.fromPage = req.Referer()
 
 	temp, _ := strconv.Atoi(req.FormValue("siGradeFlag"))
 	if temp == 1 {

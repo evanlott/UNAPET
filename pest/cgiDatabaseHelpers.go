@@ -69,7 +69,7 @@ func callGradeSubmission(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callEvaluate(form Request) (bool, string) {
@@ -88,7 +88,7 @@ func callEvaluate(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callCreateCourse(form Request) (bool, string) {
@@ -105,7 +105,7 @@ func callCreateCourse(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callImportCSV(form Request) (bool, string) {
@@ -122,7 +122,7 @@ func callImportCSV(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callDeleteCourse(form Request) (bool, string) {
@@ -139,7 +139,7 @@ func callDeleteCourse(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callEditCourseDescription(form Request) (bool, string) {
@@ -156,7 +156,7 @@ func callEditCourseDescription(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callEditStartEndCourse(form Request) (bool, string) {
@@ -173,7 +173,7 @@ func callEditStartEndCourse(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callEditUser(form Request) (bool, string) {
@@ -190,7 +190,7 @@ func callEditUser(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callEditStartEndAssignment(form Request) (bool, string) {
@@ -207,7 +207,7 @@ func callEditStartEndAssignment(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callEditSubmissionComments(form Request) (bool, string) {
@@ -224,7 +224,7 @@ func callEditSubmissionComments(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callDeleteUser(form Request) (bool, string) {
@@ -241,7 +241,7 @@ func callDeleteUser(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 func callDeleteAssignment(form Request) (bool, string) {
@@ -258,5 +258,5 @@ func callDeleteAssignment(form Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
