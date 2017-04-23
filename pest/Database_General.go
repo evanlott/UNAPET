@@ -17,11 +17,54 @@ const PRIV_SI = 5
 const PRIV_INSTRUCTOR = 10
 const PRIV_ADMIN = 15
 
+// returns true or false if user is enrolled in class or not
+func isEnrolled(userID int, courseName string) (bool, error) {
+	
+	enabled := 1
+	queriedCourseName := ""
+	
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	
+	if err != nil {
+		return false, errors.New("No connection")
+	}
+	
+	defer db.Close()
+	
+	rowsAffected, err := db.Query("SELECT Enabled FROM Users WHERE UserID =?", userID)
+	
+	if err != nil {
+		return false, errors.New("Error retrieving enrollment status.")
+	}
+	
+	if rowsAffected.Next() == false {
+		return false, errors.New("Query didn't match any users.")
+	}
+	
+	rowsAffected.Scan(&enabled)
+	
+	// if they are not enabled, they are not enrolled
+	if enabled == 0 {
+		return false, nil
+	}
+	
+	rowsAffected, err := db.Query("SELECT CourseName FROM StudentCourses where UserID =?", userID)
+	
+	// user is not in any course
+	if rowsAffected.Next() == false {
+		return false, errors.New("Query didn't match any users.")
+	}
+	
+	rowsAffected.scan(&queriedCourseName)
+	
+	if queriedCourseName != courseName {
+		return false, nil
+	}
+	
+	return true, nil
+}
+
 /*
-
-// returns T or F if user if enrolled in class or not
-func isEnrolled(userID int, courseName string) (bool, error) {}
-
 // returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
 func assignmentOpen(courseName string, assignmentName string) (bool, error) {}
 
