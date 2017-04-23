@@ -12,7 +12,7 @@ import (
 //---------------------------------------------------------------------------
 //Inputs: user ID number, user's first name, user's middle initial, 
 //	user's last name, user's priv level 
-//Outputs: None
+//Outputs: returns errors if the user could not be updated 
 //Written By: Hannah Hopkins and Nathan Huckaba 
 //Purpose: This function will be used by the instructor or administrator to
 //	edit a user's information. It will update the user in the 
@@ -42,7 +42,7 @@ func editUser(userID int, firstName string, MI string, lastName string, privLeve
 
 //---------------------------------------------------------------------------
 //Inputs: user ID number 
-//Outputs: None
+//Outputs: returns errors if the user could not be deleted
 //Written By: Hannah Hopkins
 //Purpose: This function will be used by the instructor or administrator to
 //	delete a user. It will remove the user from the Users table in 
@@ -72,7 +72,7 @@ func deleteUser(userID int) error {
 
 //---------------------------------------------------------------------------
 //Inputs: the CSV file name 
-//Outputs: None
+//Outputs: returns errors if the csv could not be imported 
 //Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
 //	Evan Lott 
 //Purpose: This function will be used by the administrator or instructor to
