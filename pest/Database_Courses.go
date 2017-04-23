@@ -13,7 +13,7 @@ import (
 //	start date for course, end date for course, supplemental 
 //	instructor 1, supplemental instructor 2, grade flag for 
 //	supplemental instructors, test flag for supplemental instructors
-//Outputs: None
+//Outputs: returns errors if the course could not be created 
 //Written By: Evan Lott 
 //Purpose: This function will be used by the administrator to create a 
 //	course. It will add the course to the CourseDescription table in
@@ -46,7 +46,7 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 // TODO : delete course's folder from disk
 //---------------------------------------------------------------------------
 //Inputs: course name
-//Outputs: None
+//Outputs: returns errors if the course fails to delete 
 //Written By: Hannah Hopkins
 //Purpose: This function will be used by the administrator to delete a 
 //	course. It will remove the course from the CourseDescription
@@ -76,7 +76,7 @@ func deleteCourse(courseName string) error {
 
 //---------------------------------------------------------------------------
 //Inputs: course name, course description 
-//Outputs: None
+//Outputs: returns errors if the course description could not be updated
 //Written By: Eileen Drass and Evan Lott 
 //Purpose: This function will be used by the instructor to edit the course
 //	description for a course. It will update the course in the 
@@ -100,7 +100,8 @@ func editCourseDescription(courseName string, courseDescription string) error {
 
 //---------------------------------------------------------------------------
 //Inputs: course name, start date for course, end date for course
-//Outputs: None
+//Outputs: returns errors if the start and end date for the course could not
+//	be updated
 //Written By: Hannah Hopkins and Nathan Huckaba 
 //Purpose: This function will be used by the administrator to edit the start 
 //	and end dates for a course. It will update the course in the 
