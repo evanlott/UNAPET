@@ -9,14 +9,14 @@ import (
 
 // TODO: test this
 //---------------------------------------------------------------------------
-//Inputs: course name, assignment display name, assignment name, runtime, 
+//Inputs: course name, assignment display name, assignment name, runtime,
 //	number of test cases, compiler options, start date of assignment
-//	end date of assignment 
+//	end date of assignment
 //Outputs: returns errors if it failed to create an assignment
-//Written By: Evan Lott 
-//Purpose: This function will be used by the instructors to create an 
-//	assignment for their class. It will add an assignment to the 
-//	Assignments table in the database. 
+//Written By: Evan Lott
+//Purpose: This function will be used by the instructors to create an
+//	assignment for their class. It will add an assignment to the
+//	Assignments table in the database.
 //---------------------------------------------------------------------------
 func createAssignment(courseName string, assignmentDisplayName string, assignmentName string, runtime int, numTestCases int, compilerOptions string, startDate string, endDate string) error {
 
@@ -36,10 +36,10 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 	if rowsAffected != 1 {
 		return errors.New("Could not create assignment.")
 	}
-	
+
 	// TODO : verify query on server, figure out how to pull test cases from UI and upload to server
-	res, err := db.Exec("ALTER TABLE GradeReport ADD " + assignmentName + " tinyint")
-	
+	res, err = db.Exec("ALTER TABLE GradeReport ADD " + assignmentName + " tinyint")
+
 	if err != nil {
 		panic("Error adding assignment to GradeReport")
 	}
@@ -52,10 +52,10 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 //---------------------------------------------------------------------------
 //Inputs: course name, assignment name
 //Outputs: returns errors if the assignment failed to delete
-//Written By: Hannah Hopkins  
-//Purpose: This function will be used by the instructors to delete an 
+//Written By: Hannah Hopkins
+//Purpose: This function will be used by the instructors to delete an
 //	assignment for their class. It will remove an assignment from
-//	the Assignments table in the database. 
+//	the Assignments table in the database.
 //---------------------------------------------------------------------------
 func deleteAssignment(courseName string, assignmentName string) error {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
@@ -80,13 +80,13 @@ func deleteAssignment(courseName string, assignmentName string) error {
 }
 
 //---------------------------------------------------------------------------
-//Inputs: course name, assignment name, start date for the assignment, 
-//	end date for an assignment 
+//Inputs: course name, assignment name, start date for the assignment,
+//	end date for an assignment
 //Outputs: returns errors if the start and end dates could not be updated
-//Written By: Hannah Hopkins and Nathan Huckaba 
-//Purpose: This function will be used by the instructors to edit the 
-//	start and end date for an assignment. It will update the 
-//	Assignments table in the database. 
+//Written By: Hannah Hopkins and Nathan Huckaba
+//Purpose: This function will be used by the instructors to edit the
+//	start and end date for an assignment. It will update the
+//	Assignments table in the database.
 //---------------------------------------------------------------------------
 func editStartEndAssignment(courseName string, assignmentName string, startDate string, endDate string) error {
 

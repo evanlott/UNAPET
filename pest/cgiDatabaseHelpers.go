@@ -23,8 +23,8 @@ func callDbHelper(name string, form Request) (bool, string) {
 		return callEditUser(form)
 	case "callEditStartEndAssignment":
 		return callEditStartEndAssignment(form)
-	case "callEditSubmissionComments":
-		return callEditSubmissionComments(form)
+	case "callMakeSubmissionComment":
+		return callMakeSubmissionComment(form)
 	case "callDeleteUser":
 		return callDeleteUser(form)
 	case "callDeleteAssignment":
@@ -210,7 +210,7 @@ func callEditStartEndAssignment(form Request) (bool, string) {
 	return true, form.fromPage
 }
 
-func callEditSubmissionComments(form Request) (bool, string) {
+func callMakeSubmissionComment(form Request) (bool, string) {
 
 	/*
 		if (!(isLoggedIn(form.userID)) || !(isInstructor(form.userID, form.courseName))) {
@@ -218,7 +218,7 @@ func callEditSubmissionComments(form Request) (bool, string) {
 		}
 	*/
 
-	err := editSubmissionComments(form.userID, form.assignmentName, form.comments)
+	err := makeSubmissionComment(form.userID, form.assignmentName, form.comments)
 
 	if err != nil {
 		return false, err.Error()

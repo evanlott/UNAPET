@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -19,55 +20,54 @@ const PRIV_ADMIN = 15
 
 // returns true or false if user is enrolled in class or not
 func isEnrolled(userID int, courseName string) (bool, error) {
-	
+
 	enabled := 1
 	queriedCourseName := ""
-	
+
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
-	
+
 	if err != nil {
 		return false, errors.New("No connection")
 	}
-	
+
 	defer db.Close()
-	
-	rowsAffected, err := db.Query("SELECT Enabled FROM Users WHERE UserID =?", userID)
-	
+
+	rows, err := db.Query("SELECT Enabled FROM Users WHERE UserID =?", userID)
+
 	if err != nil {
 		return false, errors.New("Error retrieving enrollment status.")
 	}
-	
-	if rowsAffected.Next() == false {
+
+	if rows.Next() == false {
 		return false, errors.New("Query didn't match any users.")
 	}
-	
-	rowsAffected.Scan(&enabled)
-	
+
+	rows.Scan(&enabled)
+
 	// if they are not enabled, they are not enrolled
 	if enabled == 0 {
 		return false, nil
 	}
-	
-	rowsAffected, err := db.Query("SELECT CourseName FROM StudentCourses where UserID =?", userID)
-	
+
+	rows, err = db.Query("SELECT CourseName FROM StudentCourses where UserID =?", userID)
+
 	// user is not in any course
-	if rowsAffected.Next() == false {
+	if rows.Next() == false {
 		return false, errors.New("Query didn't match any users.")
 	}
-	
-	rowsAffected.scan(&queriedCourseName)
-	
+
+	rows.Scan(&queriedCourseName)
+
 	if queriedCourseName != courseName {
 		return false, nil
 	}
-	
+
 	return true, nil
 }
 
-
 // returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
 func assignmentOpen(courseName string, assignmentName string) (bool, error) {
-	
+
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME+"?parseTime=true")
 
 	if err != nil {
@@ -77,24 +77,24 @@ func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 	defer db.Close()
 
 	rowsAffected, err := db.Query("SELECT StartDate, EndDate FROM Assignments WHERE AssignmentName =?", assignmentName)
-	
+
 	if err != nil {
 		return false, errors.New("Error retrieving start/end date.")
 	}
-	
+
 	if rowsAffected.Next() == false {
 		return false, errors.New("No assignments matched with query.")
 	}
-	
+
 	var startDate, endDate time.Time
-	
+	currentTime := time.Now()
+
 	rowsAffected.Scan(&startDate, endDate)
-	
-	
+
 	if startDate.Format("01/02/2006 15:04:05") <= currentTime.Format("01/02/2006 15:04:05") && endDate.Format("01/02/2006 15:04:05") >= currentTime.Format("01/02/2006 15:04:05") {
 		return true, nil
 	}
-	
+
 	return false, nil
 }
 
@@ -102,16 +102,22 @@ func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 // returns T or F if course is open or not
 func courseOpen(courseName string) (bool, error) {}
 
-func changePassword(userID int, newPassword string) error {}
-
-func getLastAssignmentname(courseName string) (string, string) {}
-
-func getLastSubmissionName(courseName string, assignmentName, student int) (string, string) {}
 
 func zipAssignment(courseName string, assignmentName) {}
 
 // may or may not need this
 func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
+*/
+
+/*
+
+Nathan currently working on these:
+
+func changePassword(userID int, newPassword string) error {}
+
+func getLastAssignmentname(courseName string) (string, string) {}
+
+func getLastSubmissionName(courseName string, assignmentName, student int) (string, string) {}
 */
 
 // return a users priv level
