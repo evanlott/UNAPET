@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+    <h1>CGI Post Request Testing Page</h1>
+	
+    <form action="/cgi-bin/handleRequests" method="post">
+		
+		<br>
+		
+		Action type <input type="text" name="actionType"> <br>
+		Action <input type="text" name="action"> <br>
+		
+		<br>
+		
+        UserID <input type="text" name="userID"> <br>
+		userName <input type="text" name="userName"> <br> 		
+		firstName <input type="text" name="firstName"> <br>             
+		MI <input type="text" name="MI"> <br>                  
+		lastName <input type="text" name="lastName"> <br>              
+		privLevel <input type="text" name="privLevel"> <br>  	
+
+		<br>
+		
+        Course name <input type="text" name="courseName"> <br>
+        Assignment name <input type="text" name="assignmentName"> <br>
+		Submission number <input type="text" name="submissionNum"> <br>
+        Grade <input type="text" name="grade"> <br>
+		Comments <input type="text" name="comments"> <br>
+
+		<br>
+
+		Instructor (user ID) <input type="text" name="instructor"> <br>		
+		SI 1 (user ID) <input type="text" name="si1"> <br>                
+		SI 2 (user ID) <input type="text" name="si2"> <br>                   
+		SI Grade Flag (0 or 1) <input type="text" name="siGradeFlag"> <br>           
+		SI Test Case Flag (0 or 1) <input type="text" name="siTestCaseFlag"> <br>  		
+  
+		<br>  
+          
+		Course Display Name <input type="text" name="courseDisplayName"> <br>		       
+		Assignment Display Name <input type="text" name="assignmentDisplayName"> <br>		                  
+		Course Description <input type="text" name="courseDescription"> <br>		   
+		Start Date (YYYY/MM/DD) <input type="text" name="startDate"> <br>		             
+		End Date (YYYY/MM/DD) <input type="text" name="endDate"> <br>		              
+		Compiler Options <input type="text" name="compilerOptions"> <br>		      
+		Num Test Cases <input type="text" name="numTestCases"> <br>		          
+		Max Runtime (ms) <input type="text" name="runtime"> <br>		                
+ 
+		<br>
+ 
+        <input type="submit" value="Submit">
+    </form>
+	
+	<br>
+	<br>
+	
+	<h1>File Upload Testing Page</h1>
+	
+	<br>
+	
+	<form enctype="multipart/form-data" action="/cgi-bin/handleRequests" method="post">
+		<input type="hidden" name="token" value="{{.}}">
+		<input type="hidden" name="" value="{{.}}">
+		
+		Action type <input type="text" name="actionType"> <br>
+		Action <input type="text" name="action"> <br>
+		
+		<br>
+		
+		<b>Source Programs (.cpp files)</b><br><br>
+	
+		UserID <input type="text" name="userID"> <br>
+		Course name <input type="text" name="courseName"> <br>
+        Assignment name <input type="text" name="assignmentName"> <br>
+		Submission number <input type="text" name="submissionNum"> <br>
+		File <input type="file" name="sourceFile"> <br>
+		
+		<br>
+		<br>
+		
+		<b>Create Assignment</b> <br><br>
+		
+		Assignment Display Name <input type="text" name="assignmentDisplayName"> <br>
+		Start Date (YYYY/MM/DD) <input type="text" name="startDate"> <br>		             
+		End Date (YYYY/MM/DD) <input type="text" name="endDate"> <br>	
+		Compiler Options <input type="text" name="compilerOptions"> <br>		      
+		Num Test Cases <input type="text" name="numTestCases"> <br>		          
+		Max Runtime (ms) <input type="text" name="runtime"> <br>	
+
+		<br>
+		Test Cases (.txt files) <br>
+		<br>
+		
+		Test Case 0 <input type="file" name="testCase0"> <br>
+		Desired Output 0 <input type="file" name="desiredOutput0"> <br>
+		
+		<br>
+		
+		Test Case 1 <input type="file" name="testCase1"> <br>
+		Desired Output 1 <input type="file" name="desiredOutput1"> <br>
+
+		<br>
+		
+		<input type="submit" value="Submit">
+		
+	</form>
+	
+</body>
+</html>
