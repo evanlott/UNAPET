@@ -39,6 +39,12 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 	if rowsAffected != 1 {
 		return errors.New("Query didn't match any assignments.")
 	}
+	
+	res, err := db.Exec("create table GradeReport " + courseName + "(Student int NOT NULL, CourseName varchar(42) NOT NULL, FOREIGN KEY (Student) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (CourseName) REFERENCES CourseDescription(CourseName) ON UPDATE CASCADE ON DELETE CASCADE)")
+	
+	if rowsAffected != 1 {
+		return errors.New("Grade report for course could not be created.")
+	}
 
 	return nil
 }
