@@ -135,6 +135,9 @@ func importCSV(name string) error {
 	if err != nil {
 		return errors.New("Import failed.")
 	}
+	
+	//need to add students to studentcourses table and gradereport table--do this by saying if it is a user and it's priv level
+	//is 1 and it is not already in studentcourses, then put in the associated course name--need to add coursename parameter
 
 	return nil
 }
