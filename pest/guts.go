@@ -18,6 +18,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+/*
+
+
+ */
+
 type Submission struct {
 	courseName      string
 	assignmentName  string
@@ -33,6 +38,11 @@ type Submission struct {
 }
 
 const SHELL_NAME string = "ksh"
+
+/*
+
+
+ */
 
 func printResults(results Submission) {
 	fmt.Println()
@@ -56,16 +66,11 @@ func printResults(results Submission) {
 	fmt.Println()
 }
 
-//---------------------------------------------------------------------------
-//Inputs: course name, assignment name, username
-//Outputs: Errors will be returned if necessary 
-//Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
-//Purpose: This function will be called when the student uploads their source
-//	code. It will call the other functions that will compile, execute,
-//	compare test case output to student's output, and store the 
-//	results in the database.  
-//---------------------------------------------------------------------------
+/*
+
+
+ */
+
 func evaluate(courseName string, assignmentName string, userName string) error {
 
 	// build a results struct
@@ -143,15 +148,12 @@ func evaluate(courseName string, assignmentName string, userName string) error {
 	return compile(results)
 }
 
-//---------------------------------------------------------------------------
-//Inputs: the Submission struct
-//Outputs: If the program does not compile, then an error message is returned
-//Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
-//Purpose: This function will be used to compile the source code that the 
-//	student uploads. If it does not compile, it will return an error.
-//	If it does compile, the Submission struct will be updated. 
-//---------------------------------------------------------------------------
+/*
+
+
+ */
+
+// compile stuff
 func compile(results Submission) error {
 
 	// working directory is still the assignmentRoot
@@ -193,18 +195,11 @@ func compile(results Submission) error {
 	}
 }
 
-//---------------------------------------------------------------------------
-//Inputs: the Submission struct 
-//Outputs: It returns a function call to the store results function so that
-//	the results will be stored in the database. 
-//Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
-//Purpose: This function runs the program and calls the compare output 
-//	function to determine if the output from the student's program
-//	is equivalent to the desired output from each test case. It also
-//	determines if the runtime constraint was met. Last, it calls
-//	the store results function to store the results in the database.  
-//---------------------------------------------------------------------------
+/*
+
+
+ */
+
 func execute(results Submission) error {
 	// here, program is compiled and sitting on disk
 	// working directory is still the assignmentRoot
@@ -305,17 +300,11 @@ func execute(results Submission) error {
 	return storeResults(results)
 }
 
-//---------------------------------------------------------------------------
-//Inputs: the Submission struct, the test case number that is being compared
-//Outputs: returns true if student's output is equivalent to the desired
-//	output for that test case and returns false if the output is
-//	not equivalent 
-//Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
-//Purpose: This function compares the output of the student's program to the
-//	the desired output from the test case and determines if they are
-//	equivalent.   
-//---------------------------------------------------------------------------
+/*
+
+
+ */
+
 func compareOutput(results Submission, testCaseNum int) bool {
 
 	programName := results.sourceName + "Out"
@@ -337,15 +326,11 @@ func compareOutput(results Submission, testCaseNum int) bool {
 	return rvalue
 }
 
-//---------------------------------------------------------------------------
-//Inputs: the Submission struct
-//Outputs: returns an error if there is no connection, if it failed to 
-//	prepare, or if the update failed
-//Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
-//Purpose: This function will store the data in the Submission struct into
-//	the database.   
-//---------------------------------------------------------------------------
+/*
+
+
+ */
+
 func storeResults(results Submission) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)

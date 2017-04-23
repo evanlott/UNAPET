@@ -16,6 +16,20 @@ import (
 
 func sourceCodeUpload(req *http.Request) (bool, string) {
 
+	/*
+
+		File, err := os.OpenFile("../../tmp/h.txt", os.O_CREATE, os.FileMode(0666))
+
+		if err != nil {
+			return false, err.Error()
+		}
+
+		defer File.Close()
+
+		return false, "Good"
+
+	*/
+
 	// set max memory to hold uploaded file to.. what should this be?
 	req.ParseMultipartForm(32 << 20)
 
@@ -32,7 +46,7 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 	// check if it is a .cpp file
 	ext := filepath.Ext(fileName)
 
-	if ext != "cpp" {
+	if ext != ".cpp" {
 		return false, "You may only upload .cpp files."
 	}
 
@@ -55,7 +69,7 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 	//
 
 	// build the save path depending on the class, assignment, student name, and sub number -_-
-	savePath := "data/" + form.courseName + "/" + form.assignmentName + "/" + strconv.Itoa(thisSubmissionName)
+	savePath := "data/" + form.courseName + "/" + form.assignmentName + "/" + "jdoe" + strconv.Itoa(thisSubmissionName) + ".cpp"
 
 	err = saveFile(savePath, uploadedFile)
 
@@ -63,7 +77,7 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 /*
@@ -118,7 +132,7 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 		ext1 := filepath.Ext(testCaseFileName)
 		ext2 := filepath.Ext(outputFileName)
 
-		if ext1 != "txt" || ext2 != "txt" {
+		if ext1 != ".txt" || ext2 != ".txt" {
 			os.RemoveAll(assignmentFolder)
 			return false, "You may only upload .txt files for test cases and desired outputs."
 		}
@@ -136,7 +150,7 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 		}
 	}
 
-	return true, "?.html"
+	return true, form.fromPage
 }
 
 /*
@@ -146,10 +160,10 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 
 func saveFile(savePath string, inputFile io.Reader) error {
 
-	saveFile, err := os.OpenFile(savePath, os.O_WRONLY|os.O_CREATE, 0666)
+	saveFile, err := os.OpenFile(savePath, os.O_RDWR|os.O_CREATE, 0755)
 
 	if err != nil {
-		return errors.New("Error. Couldn't save file to server. Disk full or access denied.")
+		return errors.New("Error. Couldn't save file to server. Disk full or access denied. " + savePath + " " + err.Error())
 	}
 
 	defer saveFile.Close()
