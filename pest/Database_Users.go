@@ -7,7 +7,31 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
-// TODO func createUser( -some stuff- ) {}
+//---------------------------------------------------------------------------
+//Inputs: user's first name, user's middle initial, user's last name, 
+//	username, password, user's priv level 
+//Outputs: returns errors if the user cannot be created
+//Written By: Hannah Hopkins and Brad Lanford  
+//Purpose: This function will be used by the instructor or administrator to
+//	create a user. It will insert the user in the Users table in the 
+//	database.  
+//---------------------------------------------------------------------------
+func createUser(firstName string, MI string, lastName string, username string, password string, privLevel int) error {
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+	
+	if err != nil {
+		return errors.New("No connection")
+	} 
+	
+	res, err := db.Exec("INSERT INTO Users(FirstName, MiddleInitial, LastName, Username, Password, PrivLevel) VALUES(?, ?, ?, ?, ?, ?)", firstName, MI, lastName, username, hashedPassword, privLevel)
+
+	if err != nil {
+		return errors.New("User creation failed.")
+	}
+
+	return nil
+}
 
 //---------------------------------------------------------------------------
 //Inputs: user ID number, user's first name, user's middle initial, 
