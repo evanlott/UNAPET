@@ -100,11 +100,10 @@ func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 	return false, nil
 }
 
-
 // returns T or F if course is open or not
 // Evan, Eileen
-func courseOpen(courseName string) (error, bool) {
-	
+func courseOpen(courseName string) (bool, error) {
+
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME+"?parseTime=true")
 
 	if err != nil {
@@ -114,35 +113,29 @@ func courseOpen(courseName string) (error, bool) {
 	defer db.Close()
 
 	rowsAffected, err := db.Query("SELECT StartDate, EndDate FROM CourseDescription WHERE CourseName =?", courseName)
-	
+
 	if err != nil {
 		return false, errors.New("Error retrieving start/end date.")
 	}
-	
+
 	if rowsAffected.Next() == false {
 		return false, errors.New("No courses matched with query.")
 	}
-	
+
 	var startDate, endDate time.Time
-	
+	currentTime := time.Now()
+
 	rowsAffected.Scan(&startDate, endDate)
-	
+
 	if startDate.Format("01/02/2006 15:04:05") <= currentTime.Format("01/02/2006 15:04:05") && endDate.Format("01/02/2006 15:04:05") >= currentTime.Format("01/02/2006 15:04:05") {
 		return true, nil
 	}
-	
+
 	return false, nil
 }
 
-<<<<<<< HEAD
-=======
 /*
 func changePassword(userID int, newPassword string) error {}
-
-func getLastAssignmentname(courseName string) (string, string) {}
-
-func getLastSubmissionName(courseName string, assignmentName, student int) (string, string) {}
->>>>>>> origin/master
 
 func zipAssignment(courseName string, assignmentName) {}
 
@@ -150,16 +143,66 @@ func zipAssignment(courseName string, assignmentName) {}
 func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
 */
 
-/*
+// Nathan
+func getLastAssignmentname(courseName string) (string, error) {
 
-Nathan currently working on these:
+	var name string
 
-func changePassword(userID int, newPassword string) error {}
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 
-func getLastAssignmentname(courseName string) (string, string) {}
+	if err != nil {
+		return name, errors.New("No connection")
+	}
 
-func getLastSubmissionName(courseName string, assignmentName, student int) (string, string) {}
-*/
+	defer db.Close()
+
+	rows, err := db.Query("select AssignmentName from Assignments where CourseName=? order by AssignmentName DESC limit 1", courseName)
+
+	if err != nil {
+		return name, errors.New("DB error")
+	}
+
+	defer rows.Close()
+
+	if rows.Next() == false {
+		return name, errors.New("No submission for user.")
+	}
+
+	rows.Scan(&name)
+
+	return name, nil
+
+}
+
+// Nathan
+func getLastSubmissionNum(courseName string, assignmentName string, student int) (int, error) {
+
+	var lastSubNum int
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return lastSubNum, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select SubmissionNumber from Submissions where Student=? and CourseName=? and AssignmentName=? order by SubmissionNumber DESC limit 1", student, courseName, assignmentName)
+
+	if err != nil {
+		return lastSubNum, errors.New("DB error")
+	}
+
+	defer rows.Close()
+
+	if rows.Next() == false {
+		return lastSubNum, errors.New("No submission for user.")
+	}
+
+	rows.Scan(&lastSubNum)
+
+	return lastSubNum, nil
+}
 
 // return a users priv level
 // Evan

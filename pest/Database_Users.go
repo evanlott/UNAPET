@@ -17,13 +17,14 @@ import (
 //	create a user. It will insert the user in the Users table in the
 //	database.
 //---------------------------------------------------------------------------
-func createUser(firstName string, MI string, lastName string, username string, password string, privLevel int) error {
+func createUser(firstName string, MI string, lastName string, username string, password string, privLevel int, courseName string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 
 	if err != nil {
 		return errors.New("No connection")
 	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 
 	if err != nil {
@@ -35,15 +36,15 @@ func createUser(firstName string, MI string, lastName string, username string, p
 	if err != nil {
 		return errors.New("User creation failed.")
 	}
-	
-	res, err := db.Exec("INSERT INTO StudentCourses(Student, CourseName) VALUES((select UserID from Users where Username=" + username + "), ?)", courseName)
-	
+
+	_, err = db.Exec("INSERT INTO StudentCourses(Student, CourseName) VALUES((select UserID from Users where Username="+username+"), ?)", courseName)
+
 	if err != nil {
 		return errors.New("User unable to be added to student courses.")
 	}
-	
-	res, err := db.Exec("INSERT INTO GradeReport" + courseName + "(Student) VALUES(select UserID from users where Username=" + username + ")")
-	
+
+	_, err = db.Exec("INSERT INTO GradeReport" + courseName + "(Student) VALUES(select UserID from users where Username=" + username + ")")
+
 	if err != nil {
 		return errors.New("User unable to be added to GradeReport table.")
 	}
@@ -138,6 +139,38 @@ func importCSV(name string) error {
 	
 	//need to add students to studentcourses table and gradereport table--do this by saying if it is a user and it's priv level
 	//is 1 and it is not already in studentcourses, then put in the associated course name--need to add coursename parameter
+
+	return nil
+}
+
+// Nathan
+func changePassword(userID int, newPassword string) error {
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return errors.New("No connection to DB")
+	}
+
+	defer db.Close()
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+
+	if err != nil {
+		return errors.New("Error encrypting password")
+	}
+
+	res, err := db.Exec("update Users set Password=? where UserID=?", hashedPassword, userID)
+
+	if err != nil {
+		return errors.New("DB error")
+	}
+
+	rowsChanged, err := res.RowsAffected()
+
+	if (err != nil) || (rowsChanged != 1) {
+		return errors.New("Could not change password. User not found.")
+	}
 
 	return nil
 }

@@ -58,13 +58,13 @@ func printResults(results Submission) {
 
 //---------------------------------------------------------------------------
 //Inputs: course name, assignment name, username
-//Outputs: Errors will be returned if necessary 
+//Outputs: Errors will be returned if necessary
 //Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
+//	Evan Lott
 //Purpose: This function will be called when the student uploads their source
 //	code. It will call the other functions that will compile, execute,
-//	compare test case output to student's output, and store the 
-//	results in the database.  
+//	compare test case output to student's output, and store the
+//	results in the database.
 //---------------------------------------------------------------------------
 func evaluate(courseName string, assignmentName string, userName string) error {
 
@@ -103,15 +103,10 @@ func evaluate(courseName string, assignmentName string, userName string) error {
 		rows.Scan(&results.numTestCases, &results.maxRuntime, &results.compilerOptions)
 	}
 
-	rows, err = db.Query("select SubmissionNumber from Submissions where Student=? and AssignmentName=? order by SubmissionNumber DESC limit 1", results.userID, assignmentName)
-	if err != nil {
-		return errors.New("DB error")
-	}
+	results.submissionNum, err = getLastSubmissionNum(courseName, assignmentName, results.userID)
 
-	if rows.Next() == false {
-		return errors.New("No submission for user.")
-	} else {
-		rows.Scan(&results.submissionNum)
+	if err != nil {
+		return err
 	}
 
 	results.courseName = courseName
@@ -147,10 +142,10 @@ func evaluate(courseName string, assignmentName string, userName string) error {
 //Inputs: the Submission struct
 //Outputs: If the program does not compile, then an error message is returned
 //Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
-//Purpose: This function will be used to compile the source code that the 
+//	Evan Lott
+//Purpose: This function will be used to compile the source code that the
 //	student uploads. If it does not compile, it will return an error.
-//	If it does compile, the Submission struct will be updated. 
+//	If it does compile, the Submission struct will be updated.
 //---------------------------------------------------------------------------
 func compile(results Submission) error {
 
@@ -194,16 +189,16 @@ func compile(results Submission) error {
 }
 
 //---------------------------------------------------------------------------
-//Inputs: the Submission struct 
+//Inputs: the Submission struct
 //Outputs: It returns a function call to the store results function so that
-//	the results will be stored in the database. 
+//	the results will be stored in the database.
 //Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
-//Purpose: This function runs the program and calls the compare output 
+//	Evan Lott
+//Purpose: This function runs the program and calls the compare output
 //	function to determine if the output from the student's program
 //	is equivalent to the desired output from each test case. It also
 //	determines if the runtime constraint was met. Last, it calls
-//	the store results function to store the results in the database.  
+//	the store results function to store the results in the database.
 //---------------------------------------------------------------------------
 func execute(results Submission) error {
 	// here, program is compiled and sitting on disk
@@ -309,12 +304,12 @@ func execute(results Submission) error {
 //Inputs: the Submission struct, the test case number that is being compared
 //Outputs: returns true if student's output is equivalent to the desired
 //	output for that test case and returns false if the output is
-//	not equivalent 
+//	not equivalent
 //Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
+//	Evan Lott
 //Purpose: This function compares the output of the student's program to the
 //	the desired output from the test case and determines if they are
-//	equivalent.   
+//	equivalent.
 //---------------------------------------------------------------------------
 func compareOutput(results Submission, testCaseNum int) bool {
 
@@ -339,12 +334,12 @@ func compareOutput(results Submission, testCaseNum int) bool {
 
 //---------------------------------------------------------------------------
 //Inputs: the Submission struct
-//Outputs: returns an error if there is no connection, if it failed to 
+//Outputs: returns an error if there is no connection, if it failed to
 //	prepare, or if the update failed
 //Written By: Tyler Delano, Eileen Drass, Hannah Hopkins, Nathan Huckaba
-//	Evan Lott 
+//	Evan Lott
 //Purpose: This function will store the data in the Submission struct into
-//	the database.   
+//	the database.
 //---------------------------------------------------------------------------
 func storeResults(results Submission) error {
 
