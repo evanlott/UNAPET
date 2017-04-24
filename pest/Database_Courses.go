@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -49,7 +50,6 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 	return nil
 }
 
-// TODO : delete course's folder from disk
 //---------------------------------------------------------------------------
 //Inputs: course name
 //Outputs: returns errors if the course fails to delete
@@ -70,13 +70,24 @@ func deleteCourse(courseName string) error {
 	res, err := db.Exec("delete from CourseDescription where CourseName =?", courseName)
 
 	if err != nil {
-		return errors.New("Course failed to delete.")
+		return errors.New("Course failed to delete from the database.")
 	}
 
 	rowsAffected, err := res.RowsAffected()
 
 	if rowsAffected != 1 {
 		return errors.New("Query didn't match any courses.")
+	}
+
+	courseFolder := "/var/www/data/" + courseName
+
+	os.Remove(courseFolder)
+
+	_, err = os.Stat(courseFolder)
+
+	// err will be nil if the folder still exists
+	if err == nil {
+		return errors.New("Course deleted from the database, but course directory not removed from the disk. This folder should be manually removed.")
 	}
 
 	return nil

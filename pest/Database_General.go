@@ -148,8 +148,65 @@ func zipAssignment(courseName string, assignmentName) {}
 func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
 */
 
+func insertSubmission(student int, courseName string, assignmentName string, subNum int) error {
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	res, err := db.Exec("INSERT INTO `Submissions` (`CourseName`, `AssignmentName`, `Student`, `Grade`, `comment`, `Compile`, `Results`, `SubmissionNumber`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", courseName, assignmentName, student, nil, nil, nil, nil, subNum)
+
+	if err != nil {
+		return errors.New("Could not insert submission into database.")
+	}
+
+	rowsAffected, _ := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		return errors.New("DB insert failure")
+	}
+
+	return nil
+
+}
+
 // Nathan
-func getLastAssignmentname(courseName string) (string, error) {
+func getUserName(userID int) (string, error) {
+
+	var userName string
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return userName, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select UserName from Users where UserID=?", userID)
+
+	if err != nil {
+		return userName, errors.New("DB error")
+	}
+
+	defer rows.Close()
+
+	if rows.Next() == false {
+		return userName, errors.New("No user with this ID found.")
+	}
+
+	rows.Scan(&userName)
+
+	return userName, nil
+
+}
+
+// Nathan
+func getLastAssignmentName(courseName string) (string, error) {
 
 	var name string
 
@@ -182,7 +239,7 @@ func getLastAssignmentname(courseName string) (string, error) {
 // Nathan
 func getLastSubmissionNum(courseName string, assignmentName string, student int) (int, error) {
 
-	var lastSubNum int
+	lastSubNum := -1
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 

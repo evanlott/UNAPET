@@ -5,6 +5,7 @@ import (
 	"net/smtp"
 )
 
+// Nathan
 func sendRandomPassword(form Request) (bool, string) {
 
 	// verify user exists first..

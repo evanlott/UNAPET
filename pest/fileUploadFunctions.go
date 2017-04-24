@@ -14,11 +14,11 @@ import (
 
  */
 
+// Nathan
 func sourceCodeUpload(req *http.Request) (bool, string) {
 
 	/*
-
-		File, err := os.OpenFile("../../tmp/h.txt", os.O_CREATE, os.FileMode(0666))
+		File, err := os.OpenFile("/var/www/data/01.cpp", os.O_CREATE|os.O_WRONLY, os.FileMode(0755))
 
 		if err != nil {
 			return false, err.Error()
@@ -27,7 +27,6 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 		defer File.Close()
 
 		return false, "Good"
-
 	*/
 
 	// set max memory to hold uploaded file to.. what should this be?
@@ -52,18 +51,26 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 
 	form := processForm(req)
 
-	lastSubNum, err := getLastSubmissionNum(form.courseName, form.assignmentName, form.userID)
+	lastSubNum, _ := getLastSubmissionNum(form.courseName, form.assignmentName, form.userID)
+
+	thisSubmissionNum := lastSubNum + 1
+
+	userName, err := getUserName(form.userID)
 
 	if err != nil {
 		return false, err.Error()
 	}
 
-	thisSubmissionNum := lastSubNum + 1
-
 	// build the save path depending on the class, assignment, student name, and sub number -_-
-	savePath := "/var/www/data/" + form.courseName + "/" + form.assignmentName + "/" + form.userName + strconv.Itoa(thisSubmissionNum) + ".cpp"
+	savePath := "/var/www/data/" + form.courseName + "/" + form.assignmentName + "/" + userName + strconv.Itoa(thisSubmissionNum) + ".cpp"
 
 	err = saveFile(savePath, uploadedFile)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	err = insertSubmission(form.userID, form.courseName, form.assignmentName, thisSubmissionNum)
 
 	if err != nil {
 		return false, err.Error()
@@ -77,6 +84,7 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 
  */
 
+// Nathan
 // must incorporate naming convention into this
 // pull last assignment name, increment it
 func callCreateAssignment(req *http.Request) (bool, string) {
@@ -151,9 +159,10 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 
  */
 
+// Nathan
 func saveFile(savePath string, inputFile io.Reader) error {
 
-	saveFile, err := os.OpenFile(savePath, os.O_RDWR|os.O_CREATE, 0755)
+	saveFile, err := os.OpenFile(savePath, os.O_CREATE|os.O_WRONLY, os.FileMode(0755))
 
 	if err != nil {
 		return errors.New("Error. Couldn't save file to server. Disk full or access denied. " + savePath + " " + err.Error())

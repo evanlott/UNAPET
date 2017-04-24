@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -75,13 +76,24 @@ func deleteAssignment(courseName string, assignmentName string) error {
 	res, err := db.Exec("delete from Assignments where (AssignmentName =? and CourseName =?)", assignmentName, courseName)
 
 	if err != nil {
-		return errors.New("Assignment failed to delete.")
+		return errors.New("Assignment failed to delete from the database.")
 	}
 
 	rowsAffected, err := res.RowsAffected()
 
 	if rowsAffected != 1 {
 		return errors.New("Query didn't match any assignments or courses.")
+	}
+
+	assignmentFolder := "/var/www/data/" + courseName + "/" + assignmentName
+
+	os.Remove(assignmentFolder)
+
+	_, err = os.Stat(assignmentFolder)
+
+	// err will be nil if the folder still exists
+	if err == nil {
+		return errors.New("Assignment deleted from the database, but assignment directory not removed from the disk. This folder should be manually removed before another assignment is created.")
 	}
 
 	return nil
