@@ -52,24 +52,16 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 
 	form := processForm(req)
 
-	// change this!!!
-	thisSubmissionName := 0
+	lastSubNum, err := getLastSubmissionNum(form.courseName, form.assignmentName, form.userID)
 
-	// call function that doesn't exist
-	//
-	// lastSubName, err := lastSubmissionName(courseName string, student int)
-	//
-	// if  err != nil {
-	// 		return false, err.Error()
-	// }
-	//
-	// thisSubmissionName, _ := strconv.Atoi(lastSubName)
-	//
-	// thisSubmissionName++
-	//
+	if err != nil {
+		return false, err.Error()
+	}
+
+	thisSubmissionNum := lastSubNum + 1
 
 	// build the save path depending on the class, assignment, student name, and sub number -_-
-	savePath := "data/" + form.courseName + "/" + form.assignmentName + "/" + "jdoe" + strconv.Itoa(thisSubmissionName) + ".cpp"
+	savePath := "/var/www/data/" + form.courseName + "/" + form.assignmentName + "/" + form.userName + strconv.Itoa(thisSubmissionNum) + ".cpp"
 
 	err = saveFile(savePath, uploadedFile)
 
@@ -97,7 +89,8 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	assignmentFolder := "data/" + form.assignmentName
+	assignmentFolder := "/var/www/data/" + form.assignmentName
+
 	// create a folder for this assignment on disk
 	err = os.Mkdir(assignmentFolder, 0755)
 

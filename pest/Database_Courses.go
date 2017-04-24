@@ -65,6 +65,8 @@ func deleteCourse(courseName string) error {
 		return errors.New("No connection")
 	}
 
+	defer db.Close()
+
 	res, err := db.Exec("delete from CourseDescription where CourseName =?", courseName)
 
 	if err != nil {
@@ -90,9 +92,12 @@ func deleteCourse(courseName string) error {
 //---------------------------------------------------------------------------
 func editCourseDescription(courseName string, courseDescription string) error {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
 	if err != nil {
 		return errors.New("No connection")
 	}
+
+	defer db.Close()
 
 	_, err = db.Exec("UPDATE CourseDescription SET CourseDescription.CourseDescription=? WHERE CourseDescription.CourseName=? ", courseDescription, courseName)
 
@@ -116,9 +121,12 @@ func editCourseDescription(courseName string, courseDescription string) error {
 func editStartEndCourse(courseName string, startDate string, endDate string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
 	if err != nil {
 		return errors.New("No connection")
 	}
+
+	defer db.Close()
 
 	res, err := db.Exec("update CourseDescription set StartDate=?, EndDate=? where CourseName=?", startDate+" 23:59:59", endDate+" 23:59:59", courseName)
 

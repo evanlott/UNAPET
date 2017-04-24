@@ -21,9 +21,12 @@ import (
 func createAssignment(courseName string, assignmentDisplayName string, assignmentName string, runtime int, numTestCases int, compilerOptions string, startDate string, endDate string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
 	if err != nil {
 		return errors.New("No connection")
 	}
+
+	defer db.Close()
 
 	res, err := db.Exec("INSERT INTO `Assignments` (`CourseName`, `AssignmentDisplayName`, `AssignmentName`, `StartDate`, `EndDate`, `MaxRuntime`, `CompilerOptions`, `NumTestCases`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", courseName, assignmentDisplayName, assignmentName, startDate+" 23:59:59", endDate+" 23:59:59", runtime, compilerOptions, numTestCases)
 
@@ -44,6 +47,8 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 		panic("Error adding assignment to GradeReport")
 	}
 
+	// need rows affected check
+
 	return nil
 
 }
@@ -58,11 +63,14 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 //	the Assignments table in the database.
 //---------------------------------------------------------------------------
 func deleteAssignment(courseName string, assignmentName string) error {
+
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 
 	if err != nil {
 		return errors.New("No connection")
 	}
+
+	defer db.Close()
 
 	res, err := db.Exec("delete from Assignments where (AssignmentName =? and CourseName =?)", assignmentName, courseName)
 
@@ -91,9 +99,12 @@ func deleteAssignment(courseName string, assignmentName string) error {
 func editStartEndAssignment(courseName string, assignmentName string, startDate string, endDate string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
 	if err != nil {
 		return errors.New("No connection")
 	}
+
+	db.Close()
 
 	res, err := db.Exec("update Assignments set StartDate=?, EndDate=? where CourseName=? and AssignmentName=?", startDate+" 23:59:59", endDate+" 23:59:59", courseName, assignmentName)
 

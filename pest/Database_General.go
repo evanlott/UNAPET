@@ -39,6 +39,8 @@ func isEnrolled(userID int, courseName string) (bool, error) {
 		return false, errors.New("Error retrieving enrollment status.")
 	}
 
+	defer rows.Close()
+
 	if rows.Next() == false {
 		return false, errors.New("Query didn't match any users.")
 	}
@@ -78,20 +80,22 @@ func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 
 	defer db.Close()
 
-	rowsAffected, err := db.Query("SELECT StartDate, EndDate FROM Assignments WHERE AssignmentName =?", assignmentName)
+	rows, err := db.Query("SELECT StartDate, EndDate FROM Assignments WHERE AssignmentName =?", assignmentName)
 
 	if err != nil {
 		return false, errors.New("Error retrieving start/end date.")
 	}
 
-	if rowsAffected.Next() == false {
+	defer rows.Close()
+
+	if rows.Next() == false {
 		return false, errors.New("No assignments matched with query.")
 	}
 
 	var startDate, endDate time.Time
 	currentTime := time.Now()
 
-	rowsAffected.Scan(&startDate, endDate)
+	rows.Scan(&startDate, endDate)
 
 	if startDate.Format("01/02/2006 15:04:05") <= currentTime.Format("01/02/2006 15:04:05") && endDate.Format("01/02/2006 15:04:05") >= currentTime.Format("01/02/2006 15:04:05") {
 		return true, nil
@@ -112,20 +116,22 @@ func courseOpen(courseName string) (bool, error) {
 
 	defer db.Close()
 
-	rowsAffected, err := db.Query("SELECT StartDate, EndDate FROM CourseDescription WHERE CourseName =?", courseName)
+	rows, err := db.Query("SELECT StartDate, EndDate FROM CourseDescription WHERE CourseName =?", courseName)
 
 	if err != nil {
 		return false, errors.New("Error retrieving start/end date.")
 	}
 
-	if rowsAffected.Next() == false {
+	defer rows.Close()
+
+	if rows.Next() == false {
 		return false, errors.New("No courses matched with query.")
 	}
 
 	var startDate, endDate time.Time
 	currentTime := time.Now()
 
-	rowsAffected.Scan(&startDate, endDate)
+	rows.Scan(&startDate, endDate)
 
 	if startDate.Format("01/02/2006 15:04:05") <= currentTime.Format("01/02/2006 15:04:05") && endDate.Format("01/02/2006 15:04:05") >= currentTime.Format("01/02/2006 15:04:05") {
 		return true, nil
@@ -135,7 +141,6 @@ func courseOpen(courseName string) (bool, error) {
 }
 
 /*
-func changePassword(userID int, newPassword string) error {}
 
 func zipAssignment(courseName string, assignmentName) {}
 
@@ -223,6 +228,8 @@ func getPrivLevel(userID int) (int, error) {
 		return privLevel, errors.New("Error retrieving privelege level.")
 	}
 
+	defer rows.Close()
+
 	if rows.Next() == false {
 		return privLevel, errors.New("Query didn't match any users.")
 	}
@@ -251,6 +258,8 @@ func isInstructor(userID int, courseName string) (bool, error) {
 	if err != nil {
 		return retVal, errors.New("Error retrieving instructor name.")
 	}
+
+	defer rows.Close()
 
 	if rows.Next() == false {
 		return retVal, errors.New("Query didn't match any users.")

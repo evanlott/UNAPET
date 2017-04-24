@@ -81,9 +81,12 @@ func evaluate(courseName string, assignmentName string, userName string) error {
 
 	// get userID from database
 	rows, err := db.Query("select UserID from Users where Username=?", userName)
+
 	if err != nil {
 		return errors.New("DB error")
 	}
+
+	defer rows.Close()
 
 	if rows.Next() == false {
 		return errors.New("Invalid user.")
@@ -101,6 +104,7 @@ func evaluate(courseName string, assignmentName string, userName string) error {
 		return errors.New("Invalid assignment.")
 	} else {
 		rows.Scan(&results.numTestCases, &results.maxRuntime, &results.compilerOptions)
+		rows.Close()
 	}
 
 	results.submissionNum, err = getLastSubmissionNum(courseName, assignmentName, results.userID)
@@ -344,9 +348,12 @@ func compareOutput(results Submission, testCaseNum int) bool {
 func storeResults(results Submission) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
 	if err != nil {
 		return errors.New("No connection")
 	}
+
+	defer db.Close()
 
 	printResults(results)
 
@@ -356,12 +363,16 @@ func storeResults(results Submission) error {
 		return errors.New("Failed to prepare.")
 	}
 
-	_, err = updateStatement.Exec(results.compiled, results.results, 10004, results.submissionNum)
+	res, err := updateStatement.Exec(results.compiled, results.results, 10004, results.submissionNum)
 
 	if err != nil {
 		return errors.New("Update failed.")
-	} else {
-		fmt.Println("Stored the results. \n")
+	}
+
+	rowsAffected, _ := res.RowsAffected()
+
+	if rowsAffected != 1 {
+		return errors.New("Could not store results into database. Please try again.")
 	}
 
 	return nil
