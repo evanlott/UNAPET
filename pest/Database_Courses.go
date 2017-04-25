@@ -21,6 +21,15 @@ import (
 //	the database.
 //---------------------------------------------------------------------------
 func createCourse(courseName string, courseDisplayName string, courseDescription string, instructor int, startDate string, endDate string, si1 int, si2 int, siGradeFlag bool, siTestCaseFlag bool) error {
+
+	courseFolder := "/var/www/data/" + courseName
+
+	err := os.Mkdir(courseFolder, 0777)
+
+	if err != nil {
+		return errors.New("Error creating a directory for this course on the server.")
+	}
+
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 
 	if err != nil {
@@ -29,7 +38,7 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 
 	defer db.Close()
 
-	res, err := db.Exec("INSERT INTO CourseDescription VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", courseName, courseDisplayName, courseDescription, instructor, startDate, endDate, si1, si2, siGradeFlag, siTestCaseFlag)
+	res, err := db.Exec("INSERT INTO CourseDescription VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", courseName, courseDisplayName, courseDescription, instructor, startDate+" 23:59:59", endDate+" 23:59:59", si1, si2, siGradeFlag, siTestCaseFlag)
 
 	if err != nil {
 		return errors.New("Error inserting course.")
@@ -38,14 +47,16 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 	rowsAffected, err := res.RowsAffected()
 
 	if rowsAffected != 1 {
-		return errors.New("Query didn't match any assignments.")
+		return errors.New("Query didn't work.")
 	}
 
-	res, err = db.Exec("create table GradeReport " + courseName + "(Student int NOT NULL, FOREIGN KEY (Student) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE)")
+	/*
+		res, err = db.Exec("create table GradeReport " + courseName + "(Student int NOT NULL, FOREIGN KEY (Student) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE)")
 
-	if rowsAffected != 1 {
-		return errors.New("Grade report for course could not be created.")
-	}
+		if rowsAffected != 1 {
+			return errors.New("Grade report for course could not be created.")
+		}
+	*/
 
 	return nil
 }

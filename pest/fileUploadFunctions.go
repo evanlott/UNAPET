@@ -15,7 +15,7 @@ import (
 
 */
 
-// Nathan
+// Nathan and Evan
 func sourceCodeUpload(req *http.Request) (bool, string) {
 
 	// check if student is actually in this class
@@ -77,26 +77,33 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 
  */
 
-// Nathan
+// Nathan and Evan
 // must incorporate naming convention into this
 // pull last assignment name, increment it
 func callCreateAssignment(req *http.Request) (bool, string) {
 
 	form := processForm(req)
 
-	err := createAssignment(form.courseName, form.assignmentDisplayName, form.assignmentName, form.runtime, form.numTestCases, form.compilerOptions, form.startDate, form.endDate)
+	// pull last assignment name, increment
+	lastAssignmentName, _ := getLastAssignmentName(form.courseName)
+
+	assignmentNum, _ := strconv.Atoi(lastAssignmentName)
+
+	assignmentNum++
+
+	assignmentFolder := "/var/www/data/" + form.courseName + "/" + strconv.Itoa(assignmentNum)
+
+	err := createAssignment(form.courseName, form.assignmentDisplayName, strconv.Itoa(assignmentNum), form.runtime, form.numTestCases, form.compilerOptions, form.startDate, form.endDate)
 
 	if err != nil {
 		return false, err.Error()
 	}
 
-	assignmentFolder := "/var/www/data/" + form.assignmentName
-
 	// create a folder for this assignment on disk
-	err = os.Mkdir(assignmentFolder, 0755)
+	err = os.Mkdir(assignmentFolder, 0777)
 
 	if err != nil {
-		return false, "Error creating a directory for this assignment on the server."
+		return false, "Error creating a directory for this assignment on the server." + assignmentFolder
 	}
 
 	// set max memory to hold uploaded file to.. what should this be?
@@ -108,11 +115,13 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 		testCase, testCaseHandler, err0 := req.FormFile("testCase" + strconv.Itoa(i))
 		desiredOutput, outputHandler, err1 := req.FormFile("desiredOutput" + strconv.Itoa(i))
 
+		//return false, testCaseHandler.Filename + " " + outputHandler.Filename
+
 		// check if last test case, output pair
 		// force them to upload at least 1 pair
-		if (err0 != nil || err1 != nil) && i > 1 {
+		if (err0 != nil || err1 != nil) && i > 0 {
 			break
-		} else {
+		} else if (err0 != nil || err1 != nil) && i == 0 {
 			os.RemoveAll(assignmentFolder)
 			return false, "Upload failed. File could not be received. You must upload at least one (test case, output) pair."
 		}
@@ -132,8 +141,8 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 		}
 
 		// build the save path
-		testCaseSavePath := "/var/www/data/" + form.courseName + "/" + form.assignmentName + "/" + "test" + strconv.Itoa(i) + ".txt"
-		outputSavePath := "/var/www/data/" + form.courseName + "/" + form.assignmentName + "/" + "test" + strconv.Itoa(i) + "DesiredOutput" + ".txt"
+		testCaseSavePath := "/var/www/data/" + form.courseName + "/" + strconv.Itoa(assignmentNum) + "/" + "test" + strconv.Itoa(i) + ".txt"
+		outputSavePath := "/var/www/data/" + form.courseName + "/" + strconv.Itoa(assignmentNum) + "/" + "test" + strconv.Itoa(i) + "DesiredOutput" + ".txt"
 
 		err0 = saveFile(testCaseSavePath, testCase)
 		err1 = saveFile(outputSavePath, desiredOutput)
@@ -155,7 +164,7 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 // Nathan
 func saveFile(savePath string, inputFile io.Reader) error {
 
-	saveFile, err := os.OpenFile(savePath, os.O_CREATE|os.O_WRONLY, os.FileMode(0755))
+	saveFile, err := os.OpenFile(savePath, os.O_CREATE|os.O_WRONLY, os.FileMode(0777))
 
 	if err != nil {
 		return errors.New("Error. Couldn't save file to server. Disk full or access denied. " + savePath + " " + err.Error())

@@ -47,10 +47,11 @@ func sendRandomPassword(form Request) (bool, string) {
 
 	// change user's password to the new one
 	// call function that doesn't exist yet
-	// err, _ := changePassword(userName, newPassword)
-	// if err != nil {
-	//		return false, "Database error. Old password could not be changed. You should ignore the new password sent to you by email and try again."
-	// }
+	//err, _ = changePassword(form.userName, form.newPassword)
+
+	//if err != nil {
+	//	return false, "Database error. Old password could not be changed. You should ignore the new password sent to you by email and try again."
+	//}
 
 	return true, form.fromPage
 

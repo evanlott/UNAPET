@@ -166,8 +166,9 @@
 	
 
 	insert into CourseDescription values ("TerwilligerCS15501SP17", "Computer Science I", "This is CS 1.", (select UserID from Users where username="mterwilliger"), NOW(), NOW(), NULL, NULL, false, false);
-	insert into CourseDescription values ("JerkinsCS15502SP17", "Computer Science I", "This is Dr. Jerkins' CS 1.", (select UserID from Users where username="jajerkins"), NOW(), NOW(), NULL, NULL, false, false);
-
+	insert into CourseDescription values ("JerkinsCS15502SP17", "Computer Science I", "This is Dr. Jerkin's CS 1.", (select UserID from Users where username="jajerkins"), NOW(), NOW(), NULL, NULL, false, false);
+	insert into CourseDescription values ("CrabtreeCS15503SP17", "Computer Science I", "This is Dr. Crabtree's CS 1.", (select UserID from Users where username="jajerkins"), NOW(), NOW(), NULL, NULL, false, false);
+	
 	insert into StudentCourses values ((select UserID from Users where username="jdoe"), "TerwilligerCS15501SP17");
 	insert into StudentCourses values ((select UserID from Users where username = "nmartin2"), "TerwilligerCS15501SP17");
 	insert into StudentCourses values ((select UserID from Users where username = "bmiller1"), "JerkinsCS15502SP17");

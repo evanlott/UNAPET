@@ -209,7 +209,7 @@ func getUserName(userID int) (string, error) {
 // Nathan
 func getLastAssignmentName(courseName string) (string, error) {
 
-	var name string
+	name := "-1"
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 
