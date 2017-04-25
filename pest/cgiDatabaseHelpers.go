@@ -13,8 +13,6 @@ func callDbHelper(name string, form Request) (bool, string) {
 		return callGradeSubmission(form)
 	case "callEvaluate":
 		return callEvaluate(form)
-	case "callImportCSV":
-		return callImportCSV(form)
 	case "callDeleteCourse":
 		return callDeleteCourse(form)
 	case "callEditCourseDescription":
@@ -33,6 +31,10 @@ func callDbHelper(name string, form Request) (bool, string) {
 		return callDeleteAssignment(form)
 	case "callCreateCourse":
 		return callCreateCourse(form)
+	case "callCreateUser":
+		return callCreateUser(form)
+	case "callChangePassword":
+		return callChangePassword(form)
 	}
 
 	return false, "Requested action is not implemented, or you have made an invalid request."
@@ -46,6 +48,8 @@ func callUpload(name string, req *http.Request) (bool, string) {
 		return callCreateAssignment(req)
 	case "sourceCodeUpload":
 		return sourceCodeUpload(req)
+	case "uploadCSV":
+		return uploadCSV(req)
 	}
 
 	return false, "Requested action is not implemented, or you have made an invalid request."
@@ -110,13 +114,14 @@ func callCreateCourse(form Request) (bool, string) {
 	return true, form.fromPage
 }
 
+/*
 func callImportCSV(form Request) (bool, string) {
 
-	/*
+
 		if (!(isLoggedIn(form.userID)) || (getPrivLevel(form.userID) < PRIV_INSTRUCTOR)) {
 			return false, "You are not logged in, or you do not have permission to upload a csv."
 		}
-	*/
+
 
 	err := importCSV(form.fileName)
 
@@ -126,6 +131,7 @@ func callImportCSV(form Request) (bool, string) {
 
 	return true, form.fromPage
 }
+*/
 
 func callDeleteCourse(form Request) (bool, string) {
 
@@ -255,6 +261,29 @@ func callDeleteAssignment(form Request) (bool, string) {
 	*/
 
 	err := deleteAssignment(form.courseName, form.assignmentName)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	return true, form.fromPage
+}
+
+func callCreateUser(form Request) (bool, string) {
+
+	err := createUser(form.firstName, form.MI, form.lastName, form.userName, form.password, form.privLevel, form.courseName)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	return true, form.fromPage
+
+}
+
+func callChangePassword(form Request) (bool, string) {
+
+	err := changePassword(form.userID, form.password)
 
 	if err != nil {
 		return false, err.Error()

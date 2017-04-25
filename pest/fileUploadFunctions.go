@@ -156,6 +156,51 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 	return true, form.fromPage
 }
 
+// Nathan
+func uploadCSV(req *http.Request) (bool, string) {
+
+	// set max memory to hold uploaded file to.. what should this be?
+	req.ParseMultipartForm(32 << 20)
+
+	uploadedFile, handler, err := req.FormFile("csv")
+
+	if err != nil {
+		return false, "Upload failed. File could not be received. Max file size is: ?????"
+	}
+
+	defer uploadedFile.Close()
+
+	fileName := handler.Filename
+
+	// check if it is a .csv file
+	ext := filepath.Ext(fileName)
+
+	if ext != ".csv" {
+		return false, "You may only upload .csv files."
+	}
+
+	// build the save path depending on the class, assignment, student name, and sub number -_-
+	savePath := "/var/www/data/csv.csv"
+
+	err = saveFile(savePath, uploadedFile)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	err = importCSV("/var/www/data/csv.csv")
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	os.Remove("/var/www/data/csv.csv")
+
+	form := processForm(req)
+
+	return true, form.fromPage
+}
+
 /*
 
 

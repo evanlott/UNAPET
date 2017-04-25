@@ -3,6 +3,7 @@ package main
 import (
 	"math/rand"
 	"net/smtp"
+	"time"
 )
 
 // Nathan
@@ -16,6 +17,8 @@ func sendRandomPassword(form Request) (bool, string) {
 
 	newPasswordLen := 12
 
+	rand.Seed(time.Now().UTC().UnixNano())
+
 	byteSlice := make([]byte, newPasswordLen)
 	for i := range byteSlice {
 		byteSlice[i] = chars[rand.Intn(len(chars))]
@@ -23,15 +26,16 @@ func sendRandomPassword(form Request) (bool, string) {
 
 	newPassword := string(byteSlice)
 
-	emailUserName := "??"
-	emailPassword := "??"
-	emailServerAddr := "smtp.??"
+	// constants from the config file
+	emailUserName := "univnorthalabamapet@gmail.com"
+	emailPassword := "W33kahell0"
+	emailServerAddr := "smtp.gmail.com"
 	emailServerPort := "587"
 
 	login := smtp.PlainAuth("", emailUserName, emailPassword, emailServerAddr)
 
 	toEmail := form.userName + "@una.edu"
-	fromEmail := "DoNotReply@??.com"
+	fromEmail := "univnorthalabamapet@gmail.com"
 
 	content := []byte("Your new password is " + newPassword + ".\n\n" +
 		"If you did not request a new password please contact system admin.\n\n" +
@@ -47,11 +51,11 @@ func sendRandomPassword(form Request) (bool, string) {
 
 	// change user's password to the new one
 	// call function that doesn't exist yet
-	//err, _ = changePassword(form.userName, form.newPassword)
+	err = changePassword(form.userID, newPassword)
 
-	//if err != nil {
-	//	return false, "Database error. Old password could not be changed. You should ignore the new password sent to you by email and try again."
-	//}
+	if err != nil {
+		return false, "Database error. Old password could not be changed. You should ignore the new password sent to you by email and try again."
+	}
 
 	return true, form.fromPage
 

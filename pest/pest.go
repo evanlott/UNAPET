@@ -46,6 +46,7 @@ type Request struct {
 	siGradeFlag           bool
 	siTestCaseFlag        bool
 	fromPage              string
+	password              string
 }
 
 func errorResponse(msg string) {
@@ -94,6 +95,7 @@ func processForm(req *http.Request) Request {
 	form.si1, _ = strconv.Atoi(req.FormValue("si1"))
 	form.si2, _ = strconv.Atoi(req.FormValue("si2"))
 	form.fromPage = req.Referer()
+	form.password = req.FormValue("password")
 
 	temp, _ := strconv.Atoi(req.FormValue("siGradeFlag"))
 	if temp == 1 {
@@ -106,7 +108,7 @@ func processForm(req *http.Request) Request {
 	if temp == 1 {
 		form.siTestCaseFlag = true
 	} else {
-		form.siGradeFlag = false
+		form.siTestCaseFlag = false
 	}
 
 	return form
