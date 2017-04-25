@@ -355,7 +355,13 @@ func storeResults(results Submission) error {
 
 	defer db.Close()
 
-	printResults(results)
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
+
+	//printResults(results)
 
 	updateStatement, err := db.Prepare("update Submissions set Compile=(?), Results=(?) where Student=(?) and SubmissionNumber=(?) and AssignmentName=(?)")
 
