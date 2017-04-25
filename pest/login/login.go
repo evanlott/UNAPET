@@ -82,19 +82,19 @@ func main() {
 
 func dummy() {
 
-	fmt.Printf("Status: 500 Bad\r\n")
-	fmt.Printf("Content-Type: text/plain\r\n")
-	fmt.Printf("\r\n")
-	fmt.Printf("If problem persisthtrhehts, please contact system admin.\r\n")
-	return
+	//fmt.Printf("Status: 500 Bad\r\n")
+	//fmt.Printf("Content-Type: text/plain\r\n")
+	//fmt.Printf("\r\n")
+	//fmt.Printf("If problem persisthtrhehts, please contact system admin.\r\n")
+	//return
 
 	if err := cgi.Serve(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		header := res.Header()
 		header.Set("Content-Type", "text/html; charset=utf-8")
 		//res.Header().Add("Content-Type", "text/html\r\n")
-		//res.Write([]byte("yes"))
+		res.Write([]byte("yes"))
 
-		http.Redirect(res, req, "/login.html", 301)
+		//http.Redirect(res, req, "/login.html", 301)
 
 		return
 

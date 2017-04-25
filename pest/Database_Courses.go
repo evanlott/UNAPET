@@ -50,8 +50,8 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 		return errors.New("Query didn't work.")
 	}
 
-	res, err = db.Exec("create table ? (? int NOT NULL, FOREIGN KEY (?) REFERENCES Users(?) ON UPDATE CASCADE ON DELETE CASCADE)", "GradeReport" + courseName, Student, Student, UserID)
-	
+	res, err = db.Exec("create table ? (Student int NOT NULL, FOREIGN KEY (Student) REFERENCES Users(UserID) ON UPDATE CASCADE ON DELETE CASCADE)", "GradeReport"+courseName)
+
 	if rowsAffected != 1 {
 		return errors.New("Grade report for course could not be created.")
 	}
