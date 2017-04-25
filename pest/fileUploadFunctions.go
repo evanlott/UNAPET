@@ -11,8 +11,9 @@ import (
 
 /*
 
+// TODO : change the paths in this file to reference a constant instead of hard coding
 
- */
+*/
 
 // Nathan
 func sourceCodeUpload(req *http.Request) (bool, string) {
@@ -131,8 +132,8 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 		}
 
 		// build the save path
-		testCaseSavePath := "some path"
-		outputSavePath := "some path"
+		testCaseSavePath := "/var/www/data/" + form.courseName + "/" + form.assignmentName + "/" + "test" + strconv.Itoa(i) + ".txt"
+		outputSavePath := "/var/www/data/" + form.courseName + "/" + form.assignmentName + "/" + "test" + strconv.Itoa(i) + "DesiredOutput" + ".txt"
 
 		err0 = saveFile(testCaseSavePath, testCase)
 		err1 = saveFile(outputSavePath, desiredOutput)
