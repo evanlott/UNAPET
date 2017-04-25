@@ -92,7 +92,7 @@ func deleteCourse(courseName string) error {
 
 	courseFolder := "/var/www/data/" + courseName
 
-	os.Remove(courseFolder)
+	os.RemoveAll(courseFolder)
 
 	_, err = os.Stat(courseFolder)
 
