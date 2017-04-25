@@ -37,7 +37,7 @@ func createUser(firstName string, MI string, lastName string, username string, p
 		return errors.New("User creation failed.")
 	}
 
-	_, err = db.Exec("INSERT INTO StudentCourses(Student, CourseName) VALUES((select UserID from Users where Username="+username+"), ?)", courseName)
+	_, err = db.Exec("INSERT INTO StudentCourses(Student, CourseName) VALUES((select UserID from Users where Username=?), ?)", username, courseName)
 
 	if err != nil {
 		return errors.New("User unable to be added to student courses.")
@@ -136,7 +136,7 @@ func importCSV(name string) error {
 	if err != nil {
 		return errors.New("Import failed.")
 	}
-	
+
 	//need to add students to studentcourses table and gradereport table--do this by saying if it is a user and it's priv level
 	//is 1 and it is not already in studentcourses, then put in the associated course name--need to add coursename parameter
 

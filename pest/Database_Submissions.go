@@ -47,19 +47,18 @@ func gradeSubmission(userID int, courseName string, assignmentName string, submi
 //	on a student's submission. It will update the comment in the
 //	Submissions table in the database.
 //---------------------------------------------------------------------------
-func makeSubmissionComment(studentId int, assignmentName string, comments string) error {
+func makeSubmissionComment(studentId int, assignmentName string, submissionNumber int, comments string) error {
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
 		return errors.New("No connection")
 	}
-	
+
 	defer db.Close()
-	
+
 	t := time.Now()
 	currentTime := t.Format("2006-01-02 15:04:05")
 
-	//TODO should not be hardcoded
-	rows, err := db.Query("SELECT Submissions.comment FROM Submissions WHERE Submissions.student=? AND AssignmentName =?", studentId, assignmentName)
+	rows, err := db.Query("SELECT Submissions.comment FROM Submissions WHERE Submissions.student=? AND AssignmentName =? and SubmissionNumber=?", studentId, assignmentName, submissionNumber)
 
 	if err != nil {
 		return errors.New("DB error")
@@ -70,7 +69,7 @@ func makeSubmissionComment(studentId int, assignmentName string, comments string
 	var currentComments string
 
 	if rows.Next() == false {
-		return errors.New("Invalid comments.")
+		return errors.New("No submission to comment on.")
 	} else {
 		rows.Scan(&currentComments)
 	}
@@ -83,7 +82,7 @@ func makeSubmissionComment(studentId int, assignmentName string, comments string
 		return errors.New("Update failed.")
 	}
 
-	editStatement, err := editStatement.RowsAffected()
+	rowsAffected, err := editStatement.RowsAffected()
 
 	if rowsAffected != 1 {
 		return errors.New("Query didn't match any users.")

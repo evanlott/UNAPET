@@ -226,7 +226,7 @@ func callMakeSubmissionComment(form Request) (bool, string) {
 		}
 	*/
 
-	err := makeSubmissionComment(form.userID, form.assignmentName, form.comments)
+	err := makeSubmissionComment(form.userID, form.assignmentName, form.subNum, form.comments)
 
 	if err != nil {
 		return false, err.Error()
