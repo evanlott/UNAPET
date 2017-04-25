@@ -117,7 +117,7 @@ func logout(userName string) error {
 
 	defer db.Close()
 
-	res, err := db.Exec("delete from ActiveSessions where UserName=?", userName)
+	_, err = db.Exec("delete from ActiveSessions where UserName=?", userName)
 
 	if err != nil {
 		return errors.New("Course failed to delete from the database.")
@@ -163,10 +163,13 @@ func main() {
 		if req.FormValue("action") == "login" {
 			err = login(username, password, res, req)
 		} else {
-			err = isLoggedIn(username, id)
-			if err != nil {
+			auth, _, _ := isLoggedIn(id)
+			if auth == true {
 				res.Write([]byte("is logged in"))
+			} else {
+				res.Write([]byte("not logged in"))
 			}
+
 		}
 
 		if err != nil {
