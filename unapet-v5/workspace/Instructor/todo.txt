@@ -1,0 +1,21 @@
+GENERAL ISSUES
+1. Make a better course description area (maybe edit button).
+2. Make checks to make sure the user isn't entering characters when they should only be entering numbers.
+3. Add a confirmation alert when password has been successfully changed.
+
+SI ISSUES
+1. Grade set to view instead of alter
+2. click the analyze button will be attached to view grades flag
+3. View source code from students flag
+
+STEPS TO ALTER PAGES FOR CGI
+Header and footer inside body
+Every page has html and header tags
+Script and other crap inside head tag
+add https: infront of code.jquery.com
+
+SCHEDULE:
+Move header and footer into each file
+Push to github
+Make a doc of all queries needed on each page
+Add form tags and restyle all form-like fields that will send data to db.

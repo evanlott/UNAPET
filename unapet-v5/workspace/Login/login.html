@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+        $(function(){
+          $("#header").load("/Login/header.html");
+          $("#footer").load("/Login/footer.html");
+        });
+    </script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="container">
+        <div class="wrapper">
+            <form class="form-signin" action="/GO/login.go" method="post">
+                <h3 class="form-signin-heading">UNA PET Login</h3>
+                <input type="text" class="form-control" name="username" placeholder="Username" required="" autofocus=""/>
+                <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
+                
+                <button class="btn btn-lg btn-primary btn-block" name="submit" value="Login" type="submit">Login</button>
+                
+                <br><br><a href="#" style="text-align: center; text-decoration:none; color: white;">Request New Password</a>
+            </form>
+        </div>
+    </div>
+    <div id="footer"></div>
+</body>
+
+</html>

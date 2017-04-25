@@ -1,0 +1,334 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body{
+    background-color: white;
+    font-family: 'Nunito', sans-serif !important;
+    margin-bottom: 60px;
+}
+
+#topBar{
+    background: #46166B;
+    color: #DB9F11;
+    border-bottom: 5px #DB9F11 solid;
+    margin-bottom: px;
+}
+
+#a_logo{
+    margin-top: -15px;
+    text-decoration: none;
+    color: #DB9F11;
+}
+
+.container{
+    margin-top: 10vh;
+}
+
+#card_click{
+    text-decoration: none;
+    
+}
+
+.card{
+    background-color:#46166B ;
+    border: 4px #46166B solid;    /*#5F6062*/
+    height: 300px;
+    width: 300px;
+    border-radius: 15px;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+.card-block{
+    border-radius: 10px;
+    padding-top: 10px;
+    text-align: center;
+    background-color: white;
+    color: #46166B;
+}
+.card-block:hover{
+    color: #DB9F11;
+}
+
+.glyStyle{
+    font-size: 25px;
+    color: #DB9F11;
+}
+
+
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 45px;
+  background-color: #46166B;
+}
+.text-muted{
+    text-align:center;
+    color:white;
+    font-size: 20px;
+    padding-top:9px;
+}
+
+.dropdown-menu{
+    height: 150px;
+    background-color: #46166B;
+    text-decoration: none;
+    width: 280px;
+    
+    /*opacity: .9;*/
+}
+
+.color{
+    color: #DB9F11;
+    font-style: bold;
+    border-bottom: 2px #DB9F11 solid;
+}
+
+.nav{
+    margin-left: 100px;
+}
+
+.button {
+    margin-top: 40px;
+    height: 300px;
+    width: 300px;
+    background-image: url(add.jpg);
+    border: none;
+}
+
+.button:hover{
+    opacity: 0.7;
+}
+
+.dropup{
+    margin-left: 240px;
+    border: none;
+}
+
+.editButton{
+    background: #46166B;
+    width: 290px;
+    height: 67px;
+    text-align: center;
+    color: #DB9F11;
+    font-style: bold;
+    border-bottom: 2px #DB9F11 solid;
+}
+
+.editButton:hover{
+    background-color: white;
+}
+
+.userDropDown{
+    margin-top: 15px;    
+    height: 220px;
+    background-color: #46166B;
+    text-decoration: none;
+    width: 280px;
+    border-radius: 5px;
+}
+
+
+#btns{
+    border: none;
+    background: white;
+}
+
+ul{
+    list-style-type: none;
+}
+
+.editButtonDropDown{
+    height: 215px;
+    width: 300px;
+    border: 5px #DB9F11 solid;
+}
+
+.userButtons{
+    background: #46166B;
+    width: 278px;
+    height: 67px;
+    color: #DB9F11;
+    text-align: left;
+    font-style: bold;
+}
+
+.userButtons:hover{
+    background-color: white;
+    border-radius: 0px;
+}
+
+#createUserBtn{
+    color: white;
+    background: #46166B;
+    border: 3px black solid;
+    width: 100px;
+    margin-right: 15vw;
+}
+
+#createUserBtn:hover{
+    background: #DB9F11;
+}
+
+.formFieldsStyle{
+    width: 570px;
+}
+
+form{
+    margin-left: 15vw;
+}
+
+.editUserBtn{
+    color: white;
+    background: #46166B;
+    border: 3px black solid;
+    width: 30px;
+    height: 35px;
+    text-align: center;
+}
+
+.editUserBtn:hover{
+    background: #DB9F11;
+}
+
+.deleteUserBtn{
+    color: white;
+    background: red;
+    border: 3px black solid;
+    width: 30px;
+    height: 35px;
+    text-align: center;
+}
+
+.headerStudent{
+    background-color: #46166B;
+    color: white;
+}
+
+.rowStudent{
+    border-bottom: 2px #DB9F11 solid;
+    margin-bottom: 5px;
+}
+
+.editMdl{
+    margin: 0 auto;
+}
+
+.newPSWMdl{
+    margin: 0 auto;
+}
+
+
+.newAssMdl{
+    margin: 0 auto;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.coursePageButtons{
+    margin-top: 15px;
+    background-color: #46166B;
+    text-decoration: none;
+    width: 280px;
+    border-radius: 5px;
+    border: 2px solid #DB9F11;
+}
+
+.coursePageButtons:hover{
+    background-color: white;
+}
+
+
+#descriptionArea {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font: medium -moz-fixed;
+    font: -webkit-small-control;
+    overflow: auto;
+    margin-left: 150px;
+    margin-right: 150px;
+    height: 300px;
+}
+
+.courseTitle{
+    color: #46166B;
+    font-style: bold;
+}
+
+.courseTitle:hover{
+    color: #DB9F11;
+    font-style: bold;
+}
+
+.addButton {
+    margin-top: 40px;
+    height: 150px;
+    width: 150px;
+    background-image: url(add.jpg);
+    border: none;
+}
+
+.row{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+
