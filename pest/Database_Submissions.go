@@ -52,11 +52,14 @@ func makeSubmissionComment(studentId int, assignmentName string, comments string
 	if err != nil {
 		return errors.New("No connection")
 	}
+	
+	defer db.Close()
+	
 	t := time.Now()
 	currentTime := t.Format("2006-01-02 15:04:05")
 
 	//TODO should not be hardcoded
-	rows, err := db.Query("SELECT Submissions.comment FROM Submissions WHERE Submissions.student=10034 AND AssignmentName = \"Assignment 0\"")
+	rows, err := db.Query("SELECT Submissions.comment FROM Submissions WHERE Submissions.student=? AND AssignmentName =?", studentId, assignmentName)
 
 	if err != nil {
 		return errors.New("DB error")
@@ -80,7 +83,7 @@ func makeSubmissionComment(studentId int, assignmentName string, comments string
 		return errors.New("Update failed.")
 	}
 
-	rowsAffected, err := editStatement.RowsAffected()
+	editStatement, err := editStatement.RowsAffected()
 
 	if rowsAffected != 1 {
 		return errors.New("Query didn't match any users.")
