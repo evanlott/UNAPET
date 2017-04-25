@@ -17,17 +17,7 @@ import (
 // Nathan
 func sourceCodeUpload(req *http.Request) (bool, string) {
 
-	/*
-		File, err := os.OpenFile("/var/www/data/01.cpp", os.O_CREATE|os.O_WRONLY, os.FileMode(0755))
-
-		if err != nil {
-			return false, err.Error()
-		}
-
-		defer File.Close()
-
-		return false, "Good"
-	*/
+	// check if student is actually in this class
 
 	// set max memory to hold uploaded file to.. what should this be?
 	req.ParseMultipartForm(32 << 20)
@@ -75,6 +65,8 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 	if err != nil {
 		return false, err.Error()
 	}
+
+	// call evaluate??
 
 	return true, form.fromPage
 }

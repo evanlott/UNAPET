@@ -148,6 +148,7 @@ func zipAssignment(courseName string, assignmentName) {}
 func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
 */
 
+// Nathan
 func insertSubmission(student int, courseName string, assignmentName string, subNum int) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
