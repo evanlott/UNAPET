@@ -18,10 +18,35 @@ const DB_USER_NAME string = "dbadmin"
 const DB_PASSWORD string = "EX0evNtl"
 const DB_NAME string = "pest"
 
-func isLoggedIn() {
+// Nathan
+func isLoggedIn(sessionID string) (bool, string, error) {
 
+	var name string
+	var id string
+	var expires string
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return false, id, err
+	}
+
+	err = db.QueryRow("SELECT UserName, SessionID, Expires FROM ActiveSessions WHERE SessionID=?", sessionID).Scan(&name, &id, &expires)
+
+	if err != nil {
+		return false, id, errors.New("You are not currently logged in.")
+	}
+
+	if sessionID != id {
+		return false, id, errors.New("Session token mismatch.")
+	}
+
+	// compare time.NOW() with session expire date time
+
+	return true, name, nil
 }
 
+// Nathan, Abdullah, Brad
 func login(userName string, password string, res http.ResponseWriter, req *http.Request) error {
 
 	// check if num login attempts > max attempts alloed
@@ -48,7 +73,7 @@ func login(userName string, password string, res http.ResponseWriter, req *http.
 		return errors.New("The password entered is incorrect.")
 	}
 
-	minutes := 1
+	minutes := 5
 
 	expiration := time.Now().Local().Add(time.Duration(minutes) * time.Second)
 
@@ -62,15 +87,43 @@ func login(userName string, password string, res http.ResponseWriter, req *http.
 		return err
 	}
 
-	loginCookie := http.Cookie{Name: "sessionID", Value: string(sessionID[:]), Expires: expiration}
+	loginCookie := http.Cookie{Name: "sessionID", Value: string(sessionID[:])} //, Expires: expiration}
 
 	http.SetCookie(res, &loginCookie)
+
+	result, err := db.Exec("INSERT INTO ActiveSessions VALUES (?, ?, ?)", sessionID, userName, expiration)
+
+	if err != nil {
+		return errors.New("Error starting session.")
+	}
+
+	rowsAffected, err := result.RowsAffected()
+
+	if rowsAffected != 1 {
+		return errors.New("Sessions start failed.")
+	}
 
 	return nil
 }
 
-func logout() {
+// Nathan
+func logout(userName string) error {
 
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	res, err := db.Exec("delete from ActiveSessions where UserName=?", userName)
+
+	if err != nil {
+		return errors.New("Course failed to delete from the database.")
+	}
+
+	return nil
 }
 
 func errorResponse(msg string) {
@@ -81,6 +134,7 @@ func errorResponse(msg string) {
 	fmt.Printf("If problem persists, please contact system admin.\r\n")
 }
 
+// Nathan
 func main() {
 
 	if err := cgi.Serve(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -89,19 +143,37 @@ func main() {
 		header.Set("Content-Type", "text/html; charset=utf-8")
 
 		if req.Method != "POST" {
-			http.Redirect(res, req, "/login.html", 301)
+			http.Redirect(res, req, "/Nathan/login.html", 301)
 			return
 		}
 
 		username := req.FormValue("username")
 		password := req.FormValue("password")
 
-		err := login(username, password, res, req)
+		cookie, err := req.Cookie("sessionID")
+
+		if err != nil {
+			res.Write([]byte(err.Error()))
+		}
+
+		id := cookie.Value
+
+		//fmt.Fprint(w, cookie)
+
+		if req.FormValue("action") == "login" {
+			err = login(username, password, res, req)
+		} else {
+			err = isLoggedIn(username, id)
+			if err != nil {
+				res.Write([]byte("is logged in"))
+			}
+		}
 
 		if err != nil {
 			res.Write([]byte(err.Error()))
 		} else {
 			res.Write([]byte("yes"))
+			//http.Redirect(res, req, "/Nathan/login.html", 301)
 		}
 
 	})); err != nil {
