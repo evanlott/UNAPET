@@ -357,13 +357,13 @@ func storeResults(results Submission) error {
 
 	printResults(results)
 
-	updateStatement, err := db.Prepare("update Submissions set Compile=(?), Results=(?) where Student=(?) and SubmissionNumber=(?)")
+	updateStatement, err := db.Prepare("update Submissions set Compile=(?), Results=(?) where Student=(?) and SubmissionNumber=(?) and AssignmentName=(?)")
 
 	if err != nil {
 		return errors.New("Failed to prepare.")
 	}
 
-	res, err := updateStatement.Exec(results.compiled, results.results, 10004, results.submissionNum)
+	res, err := updateStatement.Exec(results.compiled, results.results, results.userID, results.submissionNum, results.assignmentName)
 
 	if err != nil {
 		return errors.New("Update failed.")
