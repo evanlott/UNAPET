@@ -57,6 +57,8 @@ func sendRandomPassword(form Request) (bool, string) {
 		return false, "Database error. Old password could not be changed. You should ignore the new password sent to you by email and try again."
 	}
 
+	// set this user's change password flag
+
 	return true, form.fromPage
 
 }

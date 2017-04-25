@@ -24,6 +24,9 @@ func isLoggedIn() {
 
 func login(userName string, password string, res http.ResponseWriter, req *http.Request) error {
 
+	// check if num login attempts > max attempts alloed
+	// if it is, send a random password
+
 	var databasePassword string
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
@@ -41,7 +44,8 @@ func login(userName string, password string, res http.ResponseWriter, req *http.
 	err = bcrypt.CompareHashAndPassword([]byte(databasePassword), []byte(password))
 
 	if err != nil {
-		return errors.New("Wrong password.")
+		// increment num login attempts
+		return errors.New("The password entered is incorrect.")
 	}
 
 	minutes := 1
@@ -69,34 +73,20 @@ func logout() {
 
 }
 
-func main() {
-	dummy()
-	return
-
+func errorResponse(msg string) {
 	fmt.Printf("Status: 500 Bad\r\n")
 	fmt.Printf("Content-Type: text/plain\r\n")
 	fmt.Printf("\r\n")
+	fmt.Printf("%s\r\n", msg)
 	fmt.Printf("If problem persists, please contact system admin.\r\n")
-	return
 }
 
-func dummy() {
-
-	//fmt.Printf("Status: 500 Bad\r\n")
-	//fmt.Printf("Content-Type: text/plain\r\n")
-	//fmt.Printf("\r\n")
-	//fmt.Printf("If problem persisthtrhehts, please contact system admin.\r\n")
-	//return
+func main() {
 
 	if err := cgi.Serve(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+
 		header := res.Header()
 		header.Set("Content-Type", "text/html; charset=utf-8")
-		//res.Header().Add("Content-Type", "text/html\r\n")
-		res.Write([]byte("yes"))
-
-		//http.Redirect(res, req, "/login.html", 301)
-
-		return
 
 		if req.Method != "POST" {
 			http.Redirect(res, req, "/login.html", 301)
@@ -115,7 +105,7 @@ func dummy() {
 		}
 
 	})); err != nil {
-		fmt.Println("not yes")
+		errorResponse("Server error occurred.")
 	}
 
 }
