@@ -458,7 +458,7 @@ func loadStudentsInCourse(courseName string) ([]UserInfo, error) {
 
 	defer db.Close()
 
-	rows, err := db.Query("SELECT UserID, FirstName, MiddleInitial, LastName, PrivLevel, LastLogin, PwdChangeFlag, NumLoginAttempts, Enabled from Users where UserID IN (SELECT Student from StudentCourses where CourseName = ?)", courseName)
+	rows, err := db.Query("SELECT Username from Users where UserID IN (SELECT Student from StudentCourses where CourseName = ?)", courseName)
 
 	if err != nil {
 		return users, errors.New("Query error.")
