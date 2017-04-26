@@ -406,8 +406,43 @@ func loadAssignments(courseName string) ([]AssignmentInfo, error) {
 
 }
 
-// loads -last- submission info for a student in a course
-// func loadSubmissions(student int, courseName string) (SubmissionInfo, error) {}
+//Hannah
+//returns the last submission for a particular student in a certain course for a certain assignment
+func loadSubmission(student int, courseName string, assignmentName string) (SubmissionInfo, error){
+	
+	var submission SubmissionInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return submission, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	//I know this seems unecessarily long, but it is what I have to do to survive 
+	rows, err := db.Query("select * from Submissions where student=? and courseName=? and assignmentName=? and SubmissionNumber=(Select Max(SubmissionNumber)from Submissions where student=? and courseName=? and assignmentName=?)", student, courseName, assignmentName, student, courseName, assignmentName)
+
+	if err != nil {
+		return submission, errors.New("Query error.")
+	}
+
+	if rows.Next() == false {
+		return submission, errors.New("Student is not enrolled in a course.")
+	}
+
+	//should just be able to call buildSubmissionStruct function, but not sure
+	//how to do this with specific submission number 
+	if rows.Next() == false {
+		return submission, errors.New("Invalid submission.")
+	} else {
+		rows.Scan(&submission.courseName, &submission.assignmentName, 
+		&submission.studentUserID, &submission.grade, &submission.comments, 
+		&submission.compiled, &submission.results, &submission.submissionNum)
+	}
+
+	return submission, nil
+}
 
 // returns a slice of UserInfo structs representing all students in a course
 // func loadStudentsInCourse(courseName string) ([]UserInfo, error) {}
