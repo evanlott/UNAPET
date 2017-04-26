@@ -146,6 +146,7 @@ func importCSV(name string, courseName string) error {
 	}
 
 	for i := 0; ; i++ {
+
 		var userID int
 
 		if rows.Next() == false {
