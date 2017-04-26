@@ -1,0 +1,29 @@
+GENERAL ISSUES
+1. Make a better course description area (maybe edit button).
+2. Make checks to make sure the user isn't entering characters when they should only be entering numbers.
+3. Add a confirmation alert when password has been successfully changed.
+
+SI ISSUES
+1. Grade set to view instead of alter
+2. click the analyze button will be attached to view grades flag
+3. View source code from students flag
+
+STEPS TO ALTER PAGES FOR CGI
+Header and footer inside body
+Every page has html and header tags
+Script and other crap inside head tag
+add https: infront of code.jquery.com
+
+SCHEDULE:
+Move headers and footers back
+Push to github
+make an alert for successful new password request
+Make all form fields required
+Make a note on edit assignments screen that new testcases will override all the others previously uploaded. Do the same for SI.
+Add form tags and restyle all form-like fields that will send data to db.
+    <!--Should be all about done; submit butons on editUser.html for
+        Admin and Instructor is a little different-->
+Add edit button for instructor for course display name and description
+Make a view average button for viewing a selected student's average
+make sure users new password are within bounds
+look at implementing html in course description

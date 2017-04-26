@@ -1,0 +1,97 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.0.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(function()
+        {
+            $("#header").load("/Instructor/header.html");
+            $("#footer").load("/Instructor/footer.html");
+        });
+    $( function() 
+        {
+            $('.datepicker').datepicker();
+        } );
+</script>
+<script type="text/javascript">
+	function checkSISelect(privSelect)
+	{
+	    if(privSelect){
+	        siOptionValue = document.getElementById("sSI").value;
+	        if(siOptionValue == privSelect.value){
+	            document.getElementById("selectSI").style.display = "block";
+	        }
+	        else{
+	            document.getElementById("selectSI").style.display = "none";
+	        }
+	    }
+	    else{
+	        document.getElementById("selectSI").style.display = "none";
+	    }
+	}
+</script>
+
+<div id="header"></div>
+
+<body>
+	<h2 style="text-align: center; font-weight: bold; margin-top: 75px;">Create a user</h2>
+	<div class="container">
+	<form>
+		<div class="form-group">
+			<label for="FirstName">First Name:</label>
+			<input type="text" maxlength="30" class="form-control formFieldsStyle" id="FirstName" placeholder="Enter First Name">
+		</div>
+		<div class="form-group">
+			<label for="MiddleInitial ">Middle Initial:</label>
+			<input type="text" maxlength="1" class="form-control formFieldsStyle" id="MiddleInitial" placeholder="Enter Middle Initial">
+		</div>
+		<div class="form-group">
+			<label for="LastName ">Last Name:</label>
+			<input type="text" maxlength="30" class="form-control formFieldsStyle" id="LastName" placeholder="Enter Last Name">
+		</div>
+		<div class="form-group">
+			<label for="Email">Email address:</label>
+			<input type="email" maxlength="35" class="form-control formFieldsStyle" id="Email" placeholder="Enter @una.edu">
+		</div>
+		<div class="form-group">
+            <label for="course">Select Course:</label>
+            <select class="form-control formFieldsStyle" id="course">
+                <option value="" disabled selected>Select Course</option>
+                <option value="JerkinsCS15501SP17">JerkinsCS15501SP17</option>
+                <option value="RodenCS15502SP17">RodenCS15502SP17</option>
+            </select>
+        </div>
+		<div class="form-group">
+			<label for="PrivLevel">Privilege Level:</label>
+			<select class="form-control formFieldsStyle" id="PrivLevel" onchange="checkSISelect(this);">
+				<option value="" disabled selected>Select your option</option>
+				<option value="10" id="sSI">Supplemental Instructor</option>
+				<option value="5">Student</option>
+			</select>
+		</div>
+		<div id="selectSI" style="display: none">
+			<div class="form-group">
+				<p>Grade Alteration Permission: </p>
+				<label class="switch" id="SIOpts">
+					<input type="checkbox">
+					<div class="slider round"></div>
+				</label>
+				<p>Test Case Alteration Permission: </p>
+				<label class="switch" id="SIOpts">
+					<input type="checkbox">
+					<div class="slider round"></div>
+				</label>
+			</div>
+		</div>
+		<div style="text-align: center; margin-top: 50px;">
+			<button type="submit" class="btn btn-default" id="createUserBtn" style="text-align: center">Submit</button>
+		</div>
+	</form>
+	</div>
+</body>
+<div class="footer">
+    <p class="text-muted">&#x24B8 University of North Alabama 
+      | OPET Technologies, Inc.
+    </p>
+</div>
+</html>
