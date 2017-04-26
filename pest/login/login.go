@@ -161,7 +161,7 @@ func errorResponse(msg string) {
 	fmt.Printf("If problem persists, please contact system admin.\r\n")
 }
 
-// Nathan
+// Nathan, Abdullah, Brad
 func main() {
 
 	if err := cgi.Serve(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -196,6 +196,8 @@ func main() {
 		} else {
 			res.Write([]byte("Logged you in."))
 		}
+
+		// check priv level and redirect them
 
 	})); err != nil {
 		errorResponse("Server error occurred.")
