@@ -97,6 +97,35 @@ func buildCourseStruct(courseName string) (CourseInfo, error) {
 
 }
 
+func buildUserStruct(username string) (UserInfo, error) {
+	user := UserInfo{}
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return user, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select UserID, FirstName, MiddleInitial, LastName, PrivLevel, LastLogin, PwdChangeFlag, NumLoginAttempts, Enabled from Users where Username = ?", username)
+
+	if err != nil {
+		return user, errors.New("DB error")
+	}
+
+	if rows.Next() == false {
+		return user, errors.New("Invalid Course.")
+	} else {
+		rows.Scan(&user.userID, &user.firstName, &user.middleInitial,
+			&user.lastName, &user.privLevel, &user.lastLogin, &user.pwdChangeFlag,
+			&user.numLoginAttempts, &user.enabled)
+	}
+
+	return user, nil
+
+}
+
 func main() {
 	course, err := buildCourseStruct("JerkinsCS15502SP17")
 
