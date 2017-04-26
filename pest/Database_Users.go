@@ -43,11 +43,11 @@ func createUser(firstName string, MI string, lastName string, username string, p
 		return errors.New("User unable to be added to student courses.")
 	}
 
-	_, err = db.Exec("INSERT INTO GradeReport" + courseName + "(Student) VALUES(select UserID from users where Username=" + username + ")")
+	/*_, err = db.Exec("INSERT INTO GradeReport" + courseName + "(Student) VALUES(select UserID from users where Username=" + username + ")")
 
 	if err != nil {
 		return errors.New("User unable to be added to GradeReport table.")
-	}
+	}*/
 
 	return nil
 }
