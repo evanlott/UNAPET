@@ -26,6 +26,18 @@ type CourseInfo struct {
 	siTestFlag         int
 }
 
+type UserInfo struct {
+	userID			int
+	firstName		string
+	middleInitial		string
+	lastName		string
+	privLevel		int
+	lastLogin		string
+	pwdChangeFlag		string
+	numLoginAttempts	int 
+	enabled			int
+}
+
 const DB_USER_NAME string = "dbadmin"
 const DB_PASSWORD string = "EX0evNtl"
 const DB_NAME string = "pest"
