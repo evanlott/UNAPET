@@ -69,6 +69,7 @@ func login(userName string, password string, res http.ResponseWriter, req *http.
 		return errors.New("The password entered is incorrect.")
 	}
 
+	// load this from config file
 	minutes := 5
 
 	expiration := time.Now().Local().Add(time.Duration(minutes) * time.Second)
@@ -87,6 +88,8 @@ func login(userName string, password string, res http.ResponseWriter, req *http.
 	loginCookie := http.Cookie{Name: "sessionID", Value: string(sessionID[:]), Expires: expiration}
 
 	http.SetCookie(res, &loginCookie)
+
+	logout(userName)
 
 	result, err := db.Exec("INSERT INTO ActiveSessions VALUES (?, ?, ?)", sessionID, userName, expiration)
 
