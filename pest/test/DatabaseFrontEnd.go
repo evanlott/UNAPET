@@ -191,6 +191,7 @@ func buildAssignmentStruct(assignmentName string, courseName string) (Assignment
 	return assignment, nil
 }
 
+// Nathan and Hannah
 func loadAdminCards() ([]CourseInfo, error) {
 
 	var courses []CourseInfo
@@ -210,7 +211,6 @@ func loadAdminCards() ([]CourseInfo, error) {
 	}
 
 	for i := 0; ; i++ {
-		fmt.Println("Got one")
 		var courseName string
 
 		if rows.Next() == false {
@@ -229,6 +229,82 @@ func loadAdminCards() ([]CourseInfo, error) {
 	}
 
 	return courses, nil
+}
+
+// Nathan
+func loadInstructorCards(userID int) ([]CourseInfo, error) {
+
+	var courses []CourseInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return courses, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select CourseName from CourseDescription where Instructor=?", userID)
+
+	if err != nil {
+		return courses, errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		var courseName string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&courseName)
+
+		courseStruct, err := buildCourseStruct(courseName)
+
+		if err != nil {
+			return courses, err
+		}
+
+		courses = append(courses, courseStruct)
+	}
+
+	return courses, nil
+}
+
+// Nathan
+func loadStudentCourse(userID int) (CourseInfo, error) {
+
+	var course CourseInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return course, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select CourseName from StudentCourses where Student=?", userID)
+
+	if err != nil {
+		return course, errors.New("Query error.")
+	}
+
+	if rows.Next() == false {
+		return course, errors.New("Student is not enrolled in a course.")
+	}
+
+	var courseName string
+
+	rows.Scan(&courseName)
+
+	course, err = buildCourseStruct(courseName)
+
+	if err != nil {
+		return course, err
+	}
+
+	return course, nil
 }
 
 func main() {
