@@ -19,9 +19,7 @@ type CourseInfo struct {
 	instructorUserID   int
 	instructorUsername string
 	si1UserID          int
-	si1Username        string
 	si2UserID          int
-	si2Username        string
 	siGradeFlag        int
 	siTestFlag         int
 }
@@ -91,30 +89,31 @@ func buildCourseStruct(courseName string) (CourseInfo, error) {
 	} else {
 		rows.Scan(&course.instructorUsername)
 	}
+	/*
+		rows, err = db.Query("select Username from Users where UserID = ?", course.si1UserID)
 
-	rows, err = db.Query("select Username from Users where UserID = ?", course.si1UserID)
+		if err != nil {
+			return course, errors.New("DB error")
+		}
 
-	if err != nil {
-		return course, errors.New("DB error")
-	}
+		if rows.Next() == false {
+			return course, errors.New("Invalid SI1 UserID")
+		} else {
+			rows.Scan(&course.si1Username)
+		}
 
-	if rows.Next() == false {
-		return course, errors.New("Invalid SI1 UserID")
-	} else {
-		rows.Scan(&course.si1Username)
-	}
+		rows, err = db.Query("select Username from Users where UserID = ?", course.si2UserID)
 
-	rows, err = db.Query("select Username from Users where UserID = ?", course.si2UserID)
+		if err != nil {
+			return course, errors.New("DB error")
+		}
 
-	if err != nil {
-		return course, errors.New("DB error")
-	}
-
-	if rows.Next() == false {
-		return course, errors.New("Invalid SI2 UserID")
-	} else {
-		rows.Scan(&course.si2Username)
-	}
+		if rows.Next() == false {
+			return course, errors.New("Invalid SI2 UserID")
+		} else {
+			rows.Scan(&course.si2Username)
+		}
+	*/
 
 	return course, nil
 
@@ -179,14 +178,65 @@ func buildAssignmentStruct(assignmentName string, courseName string) (Assignment
 	return assignment, nil
 }
 
+func loadAdminCards() ([]CourseInfo, error) {
+
+	var courses []CourseInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return courses, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select CourseName from CourseDescription")
+
+	if err != nil {
+		return courses, errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		fmt.Println("Got one")
+		var courseName string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&courseName)
+
+		courseStruct, err := buildCourseStruct(courseName)
+
+		if err != nil {
+			return courses, err
+		}
+
+		courses = append(courses, courseStruct)
+	}
+
+	return courses, nil
+}
+
 func main() {
-	course, err := buildAssignmentStruct("0", "TerwilligerCS15501SP17")
+
+	/*
+		course, err := buildAssignmentStruct("0", "TerwilligerCS15501SP17")
+
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+
+		fmt.Printf("%+v\n", course)
+	*/
+
+	x, err := loadAdminCards()
 
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
-	fmt.Printf("%+v\n", course)
+	fmt.Printf("%v+\n", x)
 
 	return
 
