@@ -370,6 +370,12 @@ type SubmissionInfo struct {
 // returns a slice of UserInfo structs representing all students in a course
 // func loadStudentsInCourse(courseName string) ([]UserInfo, error) {}
 
+// returns all users in the system for admin use
+// func loadAllUsers() ([]UserInfo, error) {}
+
+// returns some kind of grades for a user, does this nees a struct?
+// func loadGrades(student int, courseName string) (??, error) {}
+
 func main() {
 
 	/*
