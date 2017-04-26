@@ -373,8 +373,14 @@ type SubmissionInfo struct {
 // returns all users in the system for admin use
 // func loadAllUsers() ([]UserInfo, error) {}
 
-// returns some kind of grades for a user, does this nees a struct?
+// returns some kind of grades for a user, does this need a struct?
 // func loadGrades(student int, courseName string) (??, error) {}
+
+/*
+
+
+
+ */
 
 func main() {
 
