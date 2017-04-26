@@ -49,6 +49,18 @@ type AssignmentInfo struct {
 	numTestCases          int
 }
 
+type SubmissionInfo struct {
+	courseName		string
+	assignmentName		string
+	studentUserID		int
+	studentUsername		string
+	grade			int
+	comments		string
+	compiled		int
+	results			string
+	submissionNum		int
+}
+
 const DB_USER_NAME string = "dbadmin"
 const DB_PASSWORD string = "EX0evNtl"
 const DB_NAME string = "pest"
@@ -186,6 +198,48 @@ func buildAssignmentStruct(assignmentName string, courseName string) (Assignment
 		rows.Scan(&assignment.courseName, &assignment.assignmentDisplayName, &assignment.assignmentName,
 			&assignment.startDate, &assignment.endDate, &assignment.runtime, &assignment.compilerOptions,
 			&assignment.numTestCases)
+	}
+
+	return assignment, nil
+}
+
+//Hannah
+func buildSubmissionStruct(assignmentName string, courseName string) (SubmissionInfo, error) {
+	
+	submission := SubmissionInfo{}
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return submission, errors.New("No connection")
+	}
+
+	defer db.Close()
+	
+	rows, err := db.Query("select * from Submissions where CourseName = ? and AssignmentName = ?", courseName, assignmentName)
+
+	if err != nil {
+		return submission, errors.New("DB error")
+	}
+
+	if rows.Next() == false {
+		return submission, errors.New("Invalid submission.")
+	} else {
+		rows.Scan(&submission.courseName, &submission.assignmentName, 
+		&submission.studentUserID, &submission.grade, &submission.comments, 
+		&submission.compiled, &submission.results, &submission.submissionNum)
+	}
+	
+	rows, err := db.Query("select Username from Users where UserID = ?", submission.studentUserID)
+
+	if err != nil {
+		return submission, errors.New("DB error")
+	}
+	
+	if rows.Next() == false {
+		return submission, errors.New("Cannot get username.")
+	} else {
+		rows.Scan(&submission.studentUsername)
 	}
 
 	return assignment, nil
