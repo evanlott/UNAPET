@@ -22,8 +22,8 @@ type CourseInfo struct {
 	si2UserID          int
 	siGradeFlag        int
 	siTestFlag         int
-	semester	   string
-	year		   string
+	semester           string
+	year               string
 }
 
 type UserInfo struct {
@@ -110,31 +110,23 @@ func buildCourseStruct(courseName string) (CourseInfo, error) {
 			return course, errors.New("DB error")
 		}
 
-<<<<<<< HEAD
 		if rows.Next() == false {
 			return course, errors.New("Invalid SI2 UserID")
 		} else {
 			rows.Scan(&course.si2Username)
 		}
 	*/
-=======
-	if rows.Next() == false {
-		return course, errors.New("Invalid SI2 UserID")
-	} else {
-		rows.Scan(&course.si2Username)
-	}
-	
-	course.semester := (string)course.courseName[len(course.courseName)-4:len(course.courseName)-3]
-	course.year := "20" + (string)course.courseName[len(course.courseName)-2:len(course.courseName)-1]
-	
-	if(course.semester == "FA"){
+
+	course.semester = string(course.courseName[(len(course.courseName) - 4):(len(course.courseName) - 2)])
+	course.year = "20" + string(course.courseName[(len(course.courseName)-2):len(course.courseName)])
+
+	if course.semester == "FA" {
 		course.semester = "FALL"
-	} else if(course.semester == "SP"){
+	} else if course.semester == "SP" {
 		course.semester = "SPRING"
 	} else {
 		course.semester = "SUMMER"
 	}
->>>>>>> origin/master
 
 	return course, nil
 
