@@ -192,6 +192,7 @@ func buildAssignmentStruct(assignmentName string, courseName string) (Assignment
 }
 
 // Nathan and Hannah
+// Returns a slice of course structs representing all the courses in the DB, active or not
 func loadAdminCards() ([]CourseInfo, error) {
 
 	var courses []CourseInfo
@@ -232,6 +233,7 @@ func loadAdminCards() ([]CourseInfo, error) {
 }
 
 // Nathan
+// Returns a slice of course structs describing all the courses an instructor has, active or not
 func loadInstructorCards(userID int) ([]CourseInfo, error) {
 
 	var courses []CourseInfo
@@ -272,6 +274,7 @@ func loadInstructorCards(userID int) ([]CourseInfo, error) {
 }
 
 // Nathan
+// Returns a course struct describing the course a student is enrolled in, active or not
 func loadStudentCourse(userID int) (CourseInfo, error) {
 
 	var course CourseInfo
@@ -305,6 +308,48 @@ func loadStudentCourse(userID int) (CourseInfo, error) {
 	}
 
 	return course, nil
+}
+
+// Nathan
+// Returns all the assignments for a course as a slice
+func loadAssignments(courseName string) ([]AssignmentInfo, error) {
+
+	var assignments []AssignmentInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return assignments, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select AssignmentName from Assignments where CourseName=?", courseName)
+
+	if err != nil {
+		return assignments, errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		var assignmentName string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&assignmentName)
+
+		assignmentStruct, err := buildAssignmentStruct(assignmentName, courseName)
+
+		if err != nil {
+			return assignments, err
+		}
+
+		assignments = append(assignments, assignmentStruct)
+	}
+
+	return assignments, nil
+
 }
 
 func main() {
