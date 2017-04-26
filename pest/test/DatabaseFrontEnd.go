@@ -38,6 +38,17 @@ type UserInfo struct {
 	enabled			int
 }
 
+type AssignmentInfo struct {
+	assignmentName		int
+	courseName		string
+	assignmentDisplayName	string
+	startDate		string
+	endDate			string
+	runtime			int
+	compilerOptions		string
+	numTestCases		int
+}
+
 const DB_USER_NAME string = "dbadmin"
 const DB_PASSWORD string = "EX0evNtl"
 const DB_NAME string = "pest"
@@ -127,7 +138,7 @@ func buildUserStruct(username string) (UserInfo, error) {
 	}
 
 	if rows.Next() == false {
-		return user, errors.New("Invalid Course.")
+		return user, errors.New("Invalid User.")
 	} else {
 		rows.Scan(&user.userID, &user.firstName, &user.middleInitial,
 			&user.lastName, &user.privLevel, &user.lastLogin, &user.pwdChangeFlag,
@@ -136,6 +147,34 @@ func buildUserStruct(username string) (UserInfo, error) {
 
 	return user, nil
 
+}
+
+func buildAssignmentStruct(assignmentName string, courseName string) (AssignmentInfo, error) {
+	assignment := AssignmentInfo{}
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return user, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select * from Assignments where CourseName = ? and AssignmentName = ?", courseName, assignmentName)
+
+	if err != nil {
+		return user, errors.New("DB error")
+	}
+
+	if rows.Next() == false {
+		return user, errors.New("Invalid Assignment.")
+	} else {
+		rows.Scan(&assignment.courseName, &assignment.assignmentDisplayName, &assignment.assignmentName,
+			&assignment.startDate, &assignment.endDate, &assignment.runtime, &assignment.compilerOptions, 
+			&assignment.numTestCases)
+	}
+
+	return assignment, nil
 }
 
 func main() {
