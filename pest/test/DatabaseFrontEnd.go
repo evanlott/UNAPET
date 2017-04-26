@@ -406,18 +406,6 @@ func loadAssignments(courseName string) ([]AssignmentInfo, error) {
 
 }
 
-/*
-
-
-
- */
-
-type SubmissionInfo struct {
-
-	// Some stuff
-
-}
-
 // loads -last- submission info for a student in a course
 // func loadSubmissions(student int, courseName string) (SubmissionInfo, error) {}
 
