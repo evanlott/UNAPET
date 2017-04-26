@@ -1,0 +1,111 @@
+// DatabaseFrontEnd
+package main
+
+import (
+	"database/sql"
+	"errors"
+	"fmt"
+	//"time"
+
+	_ "github.com/go-sql-driver/mysql"
+)
+
+type CourseInfo struct {
+	courseName         string
+	displayName        string
+	startDate          string
+	endDate            string
+	courseDescription  string
+	instructorUserID   int
+	instructorUsername string
+	si1UserID          int
+	si1Username        string
+	si2UserID          int
+	si2Username        string
+	siGradeFlag        int
+	siTestFlag         int
+}
+
+const DB_USER_NAME string = "dbadmin"
+const DB_PASSWORD string = "EX0evNtl"
+const DB_NAME string = "pest"
+
+// Hannah
+func buildCourseStruct(courseName string) (CourseInfo, error) {
+
+	course := CourseInfo{}
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return course, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select * from CourseDescription where CourseName = ?", courseName)
+
+	if err != nil {
+		return course, errors.New("DB error")
+	}
+
+	if rows.Next() == false {
+		return course, errors.New("Invalid Course.")
+	} else {
+		rows.Scan(&course.courseName, &course.displayName, &course.courseDescription,
+			&course.instructorUserID, &course.startDate, &course.endDate, &course.si1UserID,
+			&course.si2UserID, &course.siGradeFlag, &course.siTestFlag)
+	}
+
+	rows, err = db.Query("select Username from Users where UserID = ?", course.instructorUserID)
+
+	if err != nil {
+		return course, errors.New("DB error")
+	}
+
+	if rows.Next() == false {
+		return course, errors.New("Invalid Instructor UserID")
+	} else {
+		rows.Scan(&course.instructorUsername)
+	}
+
+	rows, err = db.Query("select Username from Users where UserID = ?", course.si1UserID)
+
+	if err != nil {
+		return course, errors.New("DB error")
+	}
+
+	if rows.Next() == false {
+		return course, errors.New("Invalid SI1 UserID")
+	} else {
+		rows.Scan(&course.si1Username)
+	}
+
+	rows, err = db.Query("select Username from Users where UserID = ?", course.si2UserID)
+
+	if err != nil {
+		return course, errors.New("DB error")
+	}
+
+	if rows.Next() == false {
+		return course, errors.New("Invalid SI2 UserID")
+	} else {
+		rows.Scan(&course.si2Username)
+	}
+
+	return course, nil
+
+}
+
+func main() {
+	course, err := buildCourseStruct("JerkinsCS15502SP17")
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	fmt.Printf("%+v\n", course)
+
+	return
+
+}
