@@ -37,7 +37,7 @@ func createUser(firstName string, MI string, lastName string, username string, p
 		return errors.New("User creation failed.")
 	}
 
-	_, err = db.Exec("INSERT INTO StudentCourses(Student, CourseName) VALUES((select UserID from Users where Username=?), ?)", username, courseName)
+	_, err = db.Exec("INSERT INTO StudentCourses(Student, CourseName) VALUES ((select UserID from Users where Username=?), ?)", username, courseName)
 
 	if err != nil {
 		return errors.New("User unable to be added to student courses.")
@@ -121,7 +121,7 @@ func deleteUser(userID int) error {
 //Purpose: This function will be used by the administrator or instructor to
 //	import a CSV file of students.
 //---------------------------------------------------------------------------
-func importCSV(name string) error {
+func importCSV(name string, courseName string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 	if err != nil {
@@ -131,14 +131,38 @@ func importCSV(name string) error {
 	mysql.RegisterLocalFile(name)
 
 	// TODO : Solve password @dummy issue, also CSV quotation issue, trailing comma issue
-	_, err = db.Exec("LOAD DATA LOCAL INFILE '" + name + "' INTO TABLE Users FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\n' IGNORE 1 LINES (@dummy, FirstName, MiddleInitial, LastName, UserName, Password, @dummy, @dummy, @dummy, @dummy, @dummy)")
+	res, err := db.Exec("LOAD DATA LOCAL INFILE '" + name + "' INTO TABLE Users FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\n' IGNORE 1 LINES (@dummy, FirstName, MiddleInitial, LastName, UserName, Password, @dummy, @dummy, @dummy, @dummy, @dummy)")
 
 	if err != nil {
 		return errors.New("Import failed.")
 	}
 
-	//need to add students to studentcourses table and gradereport table--do this by saying if it is a user and it's priv level
-	//is 1 and it is not already in studentcourses, then put in the associated course name--need to add coursename parameter
+	rowsAffected, err := res.RowsAffected()
+
+	rows, err := db.Query("select UserID from Users order by UserID DESC Limit ?", rowsAffected)
+
+	if err != nil {
+		return errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		var userID int
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&userID)
+
+		_, err = db.Exec("INSERT INTO StudentCourses(Student, CourseName) VALUES (?, ?)", userID, courseName)
+
+		if err != nil {
+			return errors.New("User unable to be added to student courses.")
+		}
+
+		//need to add students to studentcourses table and gradereport table--do this by saying if it is a user and it's priv level
+		//is 1 and it is not already in studentcourses, then put in the associated course name--need to add coursename parameter
+	}
 
 	return nil
 }

@@ -159,6 +159,8 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 // Nathan
 func uploadCSV(req *http.Request) (bool, string) {
 
+	form := processForm(req)
+
 	// set max memory to hold uploaded file to.. what should this be?
 	req.ParseMultipartForm(32 << 20)
 
@@ -188,15 +190,13 @@ func uploadCSV(req *http.Request) (bool, string) {
 		return false, err.Error()
 	}
 
-	err = importCSV("/var/www/data/csv.csv")
+	err = importCSV("/var/www/data/csv.csv", form.courseName)
 
 	if err != nil {
 		return false, err.Error()
 	}
 
 	os.Remove("/var/www/data/csv.csv")
-
-	form := processForm(req)
 
 	return true, form.fromPage
 }
