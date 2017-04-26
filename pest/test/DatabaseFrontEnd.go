@@ -27,15 +27,15 @@ type CourseInfo struct {
 }
 
 type UserInfo struct {
-	userID			int
-	firstName		string
-	middleInitial		string
-	lastName		string
-	privLevel		int
-	lastLogin		string
-	pwdChangeFlag		string
-	numLoginAttempts	int 
-	enabled			int
+	userID           int
+	firstName        string
+	middleInitial    string
+	lastName         string
+	privLevel        int
+	lastLogin        string
+	pwdChangeFlag    string
+	numLoginAttempts int
+	enabled          int
 }
 
 type AssignmentInfo struct {
@@ -178,7 +178,7 @@ func buildAssignmentStruct(assignmentName string, courseName string) (Assignment
 }
 
 func main() {
-	course, err := buildCourseStruct("JerkinsCS15502SP17")
+	course, err := buildUserStruct("jdoe")
 
 	if err != nil {
 		fmt.Println(err.Error())
