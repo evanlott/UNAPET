@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UNA PET</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+        crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" 
+        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script 
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+    </script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+    </script>
+    <script 
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+    </script>
+    <script 
+        src="https://code.jquery.com/jquery-3.2.0.js">
+    </script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script 
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript">
+    	function loadPage(){
+    		window.open("/cgi-bin/loadAssignment", "_self");
+    		return false;
+    	}
+    	
+    	function logout(){
+    		window.open("/cgi-bin/logout", "_self");
+    		return false;
+    	}
+    </script>
+
+    <nav class="navbar navbar-default" id="topBar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h2 class="userName" class="dropdown-toggle" 
+                    data-toggle="dropdown" style="cursor: pointer">
+                    <span class="glyphicon glyphicon-list glyStyle">
+                    </span> Instructor
+                </h2>
+                <ul class="dropdown-menu">
+                  <li>
+                    <button type="submit" 
+                        class="btn btn-lg userButtons" 
+                        data-target="#changePSW" data-toggle="modal">
+                        <h3 class="color">
+                        <span class="glyphicon glyphicon-lock glyStyle">
+                        </span>  Change Password</h3>
+                    </button></li>
+                  <li>
+                    <a href="#" class="userButtons" onclick="logout();">
+                        <h3 class="color">
+                        <span class="glyphicon 
+                            glyphicon-log-out glyStyle">
+                        </span>  Logout</h3>
+                    </a>
+                  </li>
+                  <li>
+                    <button type="submit" 
+                        class="btn btn-lg userButtons" 
+                        data-target="#downloadCourse" 
+                        data-toggle="modal">
+                        <h3 class="color">
+                        <span class="glyphicon 
+                            glyphicon-download-alt glyStyle">
+                        </span>  Download Courses</h3>
+                    </button></li>
+                </ul>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" style="margin-right: 35vw">
+                    <button class="dropdown-toggle" id="userOpts" 
+                        data-toggle="dropdown" 
+                        style="background-color: #46166B; border: none">
+                        <h2><span 
+                        class="glyphicon glyphicon-collapse-down 
+                        glyStyle"></span>
+                        User Options</h2>
+                    </button>
+                    
+                    <ul class="dropdown-menu userDropDown" 
+                        aria-labelledby="userOpts" 
+                        style="margin-top: 15px;">
+
+                        <li><a href="createUser.html"><h3 class="color">
+                            <span 
+                                class="glyphicon 
+                                glyphicon-plus glyStyle">
+                            </span> 
+                            Create User</h3></a>
+                        </li>
+                        <li><a href="editUser.html"><h3 class="color">
+                            <span 
+                                class="glyphicon 
+                                glyphicon-cog glyStyle">
+                            </span>  
+                            Edit User</h3></a>
+                        </li>
+                        <li><a href="importUsers.html">
+                            <h3 class="color">
+                            <span 
+                                class="glyphicon 
+                                glyphicon-import glyStyle">
+                            </span> Import Users</h3></a>
+                        </li>
+                        <li><a href="exportUsers.html">
+                            <h3 class="color">
+                            <span 
+                                class="glyphicon 
+                                glyphicon-export glyStyle">
+                            </span> Export Users</h3></a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a id="a_logo" href="courseHome.html">
+                            <h2>UNA PET</h2>
+                    </a>
+                </li>
+        </div>
+
+    </nav>
+    
+    <!-- Pasword Modal -->
+    <div id="changePSW" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Password</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        User passwords must be 8-12 characters and
+                        contain at least one (1) digit, at least 
+                        one (1) special character, and must be mixed
+                        case. Special characters that may be included
+                        in user passwords are
+                        <i>, . ! ?</i>
+                    </p>
+                        <form class="newPSWMdl">
+                            <div class="form-group">
+                                <label for="curPSW">
+                                    Enter Password:</label>
+                                <input type="password" maxlength="12" 
+                                    class="form-control formFieldsStyle"
+                                    id="curPSW" 
+                                    placeholder="Enter Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPSW">
+                                    Enter New Password:</label>
+                                <input type="password" maxlength="12"
+                                    class="form-control formFieldsStyle"
+                                    id="newPSW" 
+                                    placeholder="New Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPSW">
+                                    Confirm New Password:</label>
+                                <input type="password" maxlength="12"
+                                    class="form-control formFieldsStyle"
+                                    id="confirmPSW" 
+                                    placeholder="Confirm Password">
+                            </div>
+                             <div class="modal-footer">
+                                <button type="button" class="btn btn-danger"
+                                    data-dismiss="modal">Cancel
+                                </button>
+                                <button type="submit" 
+                                    class="btn btn-primary">Submit
+                                </button>
+                            </div>
+                        </form>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <!-- End Pasword Modal -->
+    
+    <!-- Course Download Modal -->
+    <div id="downloadCourse" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Download Archived Course
+                    </h4>
+                </div>
+                <div class="modal-body">
+                        <form class="newPSWMdl">
+                            <div class="form-group">
+                                <label for="course">
+                                    Select Course:
+                                </label>
+                                <select 
+                                    class="form-control formFieldsStyle"
+                                    id="oldCourse">
+                                    <option value="" 
+                                        disabled selected>
+                                        Select Course
+                                    </option>
+                                    <option value="JerkinsCS15501SP05">
+                                        JerkinsCS15501SP05
+                                    </option>
+                                    <option value="RodenCS15502SP10">
+                                        RodenCS15502SP10
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger"
+                                    data-dismiss="modal">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    Download
+                                </button>
+                            </div>
+                        </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- End Course Download Modal -->
+</head>

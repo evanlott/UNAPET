@@ -78,6 +78,12 @@ func evaluate(courseName string, assignmentName string, userName string) error {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	// get userID from database
 	rows, err := db.Query("select UserID from Users where Username=?", userName)

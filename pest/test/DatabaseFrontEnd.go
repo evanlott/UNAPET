@@ -49,6 +49,18 @@ type AssignmentInfo struct {
 	numTestCases          int
 }
 
+type SubmissionInfo struct {
+	courseName		string
+	assignmentName		string
+	studentUserID		int
+	studentUsername		string
+	grade			int
+	comments		string
+	compiled		int
+	results			string
+	submissionNum		int
+}
+
 const DB_USER_NAME string = "dbadmin"
 const DB_PASSWORD string = "EX0evNtl"
 const DB_NAME string = "pest"
@@ -186,6 +198,48 @@ func buildAssignmentStruct(assignmentName string, courseName string) (Assignment
 		rows.Scan(&assignment.courseName, &assignment.assignmentDisplayName, &assignment.assignmentName,
 			&assignment.startDate, &assignment.endDate, &assignment.runtime, &assignment.compilerOptions,
 			&assignment.numTestCases)
+	}
+
+	return assignment, nil
+}
+
+//Hannah
+func buildSubmissionStruct(assignmentName string, courseName string) (SubmissionInfo, error) {
+	
+	submission := SubmissionInfo{}
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return submission, errors.New("No connection")
+	}
+
+	defer db.Close()
+	
+	rows, err := db.Query("select * from Submissions where CourseName = ? and AssignmentName = ?", courseName, assignmentName)
+
+	if err != nil {
+		return submission, errors.New("DB error")
+	}
+
+	if rows.Next() == false {
+		return submission, errors.New("Invalid submission.")
+	} else {
+		rows.Scan(&submission.courseName, &submission.assignmentName, 
+		&submission.studentUserID, &submission.grade, &submission.comments, 
+		&submission.compiled, &submission.results, &submission.submissionNum)
+	}
+	
+	rows, err := db.Query("select Username from Users where UserID = ?", submission.studentUserID)
+
+	if err != nil {
+		return submission, errors.New("DB error")
+	}
+	
+	if rows.Next() == false {
+		return submission, errors.New("Cannot get username.")
+	} else {
+		rows.Scan(&submission.studentUsername)
 	}
 
 	return assignment, nil
@@ -352,37 +406,133 @@ func loadAssignments(courseName string) ([]AssignmentInfo, error) {
 
 }
 
-/*
+//Hannah
+//returns the last submission for a particular student in a certain course for a certain assignment
+func loadSubmission(student int, courseName string, assignmentName string) (SubmissionInfo, error){
+	
+	var submission SubmissionInfo
 
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return submission, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	//I know this seems unecessarily long, but it is what I have to do to survive 
+	rows, err := db.Query("select * from Submissions where student=? and courseName=? and assignmentName=? and SubmissionNumber=(Select Max(SubmissionNumber)from Submissions where student=? and courseName=? and assignmentName=?)", student, courseName, assignmentName, student, courseName, assignmentName)
+
+	if err != nil {
+		return submission, errors.New("Query error.")
+	}
+
+	if rows.Next() == false {
+		return submission, errors.New("Student is not enrolled in a course.")
+	}
+
+	//should just be able to call buildSubmissionStruct function, but not sure
+	//how to do this with specific submission number 
+	if rows.Next() == false {
+		return submission, errors.New("Invalid submission.")
+	} else {
+		rows.Scan(&submission.courseName, &submission.assignmentName, 
+		&submission.studentUserID, &submission.grade, &submission.comments, 
+		&submission.compiled, &submission.results, &submission.submissionNum)
+	}
+
+	return submission, nil
+}
+
+//Hannah
+func loadStudentsInCourse(courseName string) ([]UserInfo, error) {
+
+	var users []UserInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return users, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("SELECT Username from Users where UserID IN (SELECT Student from StudentCourses where CourseName = ?)", courseName)
+
+	if err != nil {
+		return users, errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		var user string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&user)
+
+		userStruct, err := buildUserStruct(user) 
+
+		if err != nil {
+			return users, err
+		}
+
+		users = append(users, userStruct)
+	}
+
+	return users, nil
+}
+
+//returns all users in the system for admin use 
+//Hannah
+func loadAllUsers() ([]UserInfo, error) {} {
+
+	var users []UserInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return users, errors.New("No connection")
+	}
+
+<<<<<<< HEAD
 
 
  */
+=======
+	defer db.Close()
 
-type SubmissionInfo struct {
+	rows, err := db.Query("SELECT Username from Users")
 
-	// Some stuff
+	if err != nil {
+		return users, errors.New("Query error.")
+	}
 
+	for i := 0; ; i++ {
+		var user string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&user)
+
+		userStruct, err := buildUserStruct(user)
+
+		if err != nil {
+			return users, err
+		}
+
+		users = append(users, userStruct)
+	}
+
+	return users, nil
 }
-
-// loads -last- submission info for a student in a course
-// func loadSubmissions(student int, courseName string) (SubmissionInfo, error) {}
-
-// returns a slice of UserInfo structs representing all students in a course
-// func loadStudentsInCourse(courseName string) ([]UserInfo, error) {}
-
-// returns all users in the system for admin use
-// func loadAllUsers() ([]UserInfo, error) {}
 
 // returns some kind of grades for a user, does this need a struct?
 // func loadGrades(student int, courseName string) (??, error) {}
-
-/*
-
-
-
-
-
- */
+>>>>>>> origin/master
 
 func main() {
 
