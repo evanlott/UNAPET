@@ -10,6 +10,14 @@
 	drop table if exists GradeReport;
 	drop table if exists CourseDescription;
 	drop table if exists Users;
+	
+	
+	create table ActiveSessions
+	(
+		SessionID varchar (60),
+		UserName varchar (35),
+		Expiration datetime
+	);
 
 
 	create table Users

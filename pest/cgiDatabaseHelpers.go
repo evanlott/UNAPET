@@ -60,11 +60,24 @@ func callEmailFunction(name string, form Request) (bool, string) {
 
 	switch name {
 	case "sendRandomPassword":
-		return sendRandomPassword(form)
+		return callSendRandomPassword(form)
 	}
 
 	return false, "Requested action is not implemented, or you have made an invalid request."
 
+}
+
+func callSendRandomPassword(form Request) (bool, string) {
+
+	userName := form.userName
+
+	err := sendRandomPassword(userName)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	return true, form.fromPage
 }
 
 func callGradeSubmission(form Request) (bool, string) {
@@ -283,7 +296,7 @@ func callCreateUser(form Request) (bool, string) {
 
 func callChangePassword(form Request) (bool, string) {
 
-	err := changePassword(form.userID, form.password)
+	err := changePassword(form.userName, form.password)
 
 	if err != nil {
 		return false, err.Error()

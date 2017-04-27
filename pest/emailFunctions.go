@@ -1,13 +1,14 @@
 package main
 
 import (
+	"errors"
 	"math/rand"
 	"net/smtp"
 	"time"
 )
 
 // Nathan
-func sendRandomPassword(form Request) (bool, string) {
+func sendRandomPassword(userName string) error {
 
 	// verify user exists first..
 	// select * from Users where UserName=form.userName
@@ -34,7 +35,7 @@ func sendRandomPassword(form Request) (bool, string) {
 
 	login := smtp.PlainAuth("", emailUserName, emailPassword, emailServerAddr)
 
-	toEmail := form.userName + "@una.edu"
+	toEmail := userName + "@una.edu"
 	fromEmail := "univnorthalabamapet@gmail.com"
 
 	content := []byte("Your new password is " + newPassword + ".\n\n" +
@@ -46,19 +47,19 @@ func sendRandomPassword(form Request) (bool, string) {
 	err := smtp.SendMail(emailServerAddr+":"+emailServerPort, login, fromEmail, []string{toEmail}, content)
 
 	if err != nil {
-		return false, "Error. Email failed to send. Your password was not changed. Please try again."
+		return errors.New("Error. Email failed to send. Your password was not changed. Please try again.")
 	}
 
 	// change user's password to the new one
 	// call function that doesn't exist yet
-	err = changePassword(form.userID, newPassword)
+	err = changePassword(userName, newPassword)
 
 	if err != nil {
-		return false, "Database error. Old password could not be changed. You should ignore the new password sent to you by email and try again."
+		return errors.New("Database error. Old password could not be changed. You should ignore the new password sent to you by email and try again.")
 	}
 
 	// set this user's change password flag
 
-	return true, form.fromPage
+	return nil
 
 }

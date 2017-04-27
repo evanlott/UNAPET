@@ -37,6 +37,8 @@ func createUser(firstName string, MI string, lastName string, username string, p
 		return errors.New("User creation failed.")
 	}
 
+	sendRandomPassword(username)
+
 	_, err = db.Exec("INSERT INTO StudentCourses(Student, CourseName) VALUES ((select UserID from Users where Username=?), ?)", username, courseName)
 
 	if err != nil {
@@ -161,15 +163,15 @@ func importCSV(name string, courseName string) error {
 			return errors.New("User unable to be added to student courses.")
 		}
 
-		//need to add students to studentcourses table and gradereport table--do this by saying if it is a user and it's priv level
-		//is 1 and it is not already in studentcourses, then put in the associated course name--need to add coursename parameter
+		userName, _ := getUserName(userID)
+		sendRandomPassword(userName)
 	}
 
 	return nil
 }
 
 // Nathan
-func changePassword(userID int, newPassword string) error {
+func changePassword(userName string, newPassword string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 
@@ -185,7 +187,7 @@ func changePassword(userID int, newPassword string) error {
 		return errors.New("Error encrypting password")
 	}
 
-	res, err := db.Exec("update Users set Password=? where UserID=?", hashedPassword, userID)
+	res, err := db.Exec("update Users set Password=? where UserName=?", hashedPassword, userName)
 
 	if err != nil {
 		return errors.New("DB error")

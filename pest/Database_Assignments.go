@@ -31,6 +31,10 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 
 	res, err := db.Exec("INSERT INTO `Assignments` (`CourseName`, `AssignmentDisplayName`, `AssignmentName`, `StartDate`, `EndDate`, `MaxRuntime`, `CompilerOptions`, `NumTestCases`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", courseName, assignmentDisplayName, assignmentName, startDate+" 23:59:59", endDate+" 23:59:59", runtime, compilerOptions, numTestCases)
 
+	if compilerOptions == "" {
+		compilerOptions = "NULL"
+	}
+
 	if err != nil {
 		return errors.New("Create assignment failed. Please fill out alll fields." + courseName + assignmentDisplayName + assignmentName + compilerOptions + startDate + endDate)
 	}
@@ -58,7 +62,6 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 
 }
 
-// TODO : delete assignment's folder from disk
 //---------------------------------------------------------------------------
 //Inputs: course name, assignment name
 //Outputs: returns errors if the assignment failed to delete

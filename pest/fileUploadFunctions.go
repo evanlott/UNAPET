@@ -103,7 +103,7 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 	err = os.Mkdir(assignmentFolder, 0777)
 
 	if err != nil {
-		return false, "Error creating a directory for this assignment on the server." + assignmentFolder
+		return false, "Error creating a directory for this assignment on the server."
 	}
 
 	// set max memory to hold uploaded file to.. what should this be?

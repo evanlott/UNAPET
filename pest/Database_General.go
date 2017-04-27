@@ -18,6 +18,20 @@ const PRIV_SI = 5
 const PRIV_INSTRUCTOR = 10
 const PRIV_ADMIN = 15
 
+func mayBeNull(candidate int) sql.NullInt64 {
+
+	if candidate == 0 {
+		return sql.NullInt64{}
+	}
+
+	retVal := sql.NullInt64{
+		Int64: int64(candidate),
+		Valid: true,
+	}
+
+	return retVal
+}
+
 // returns true or false if user is enrolled in class or not
 // Evan
 func isEnrolled(userID int, courseName string) (bool, error) {

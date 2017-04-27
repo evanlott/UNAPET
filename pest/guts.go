@@ -166,6 +166,10 @@ func compile(results Submission) error {
 		return errors.New("Source file does not exist or permission eror: " + sourceName)
 	}
 
+	if results.compilerOptions == "NULL" {
+		results.compilerOptions = ""
+	}
+
 	// verified that source exists, try to compile it
 	compileCmd := exec.Command(SHELL_NAME, "-c", "g++ "+results.compilerOptions+" "+sourceName+" -o "+outputName)
 

@@ -33,20 +33,23 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
 
 	if err != nil {
+		os.RemoveAll(courseFolder)
 		return errors.New("No connection")
 	}
 
 	defer db.Close()
 
-	res, err := db.Exec("INSERT INTO CourseDescription VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", courseName, courseDisplayName, courseDescription, instructor, startDate+" 23:59:59", endDate+" 23:59:59", si1, si2, siGradeFlag, siTestCaseFlag)
+	res, err := db.Exec("INSERT INTO CourseDescription VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", courseName, courseDisplayName, courseDescription, instructor, startDate+" 23:59:59", endDate+" 23:59:59", mayBeNull(si1), mayBeNull(si2), siGradeFlag, siTestCaseFlag)
 
 	if err != nil {
+		os.RemoveAll(courseFolder)
 		return errors.New("Error inserting course.")
 	}
 
 	rowsAffected, err := res.RowsAffected()
 
 	if rowsAffected != 1 {
+		os.RemoveAll(courseFolder)
 		return errors.New("Query didn't work.")
 	}
 
@@ -90,7 +93,11 @@ func deleteCourse(courseName string) error {
 
 	courseFolder := "/var/www/data/" + courseName
 
-	os.RemoveAll(courseFolder)
+	err = os.RemoveAll(courseFolder)
+
+	if err != nil {
+		return err
+	}
 
 	_, err = os.Stat(courseFolder)
 
