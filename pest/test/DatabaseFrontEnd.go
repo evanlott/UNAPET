@@ -445,7 +445,6 @@ func loadSubmission(student int, courseName string, assignmentName string) (Subm
 }
 
 //Hannah
-//check comments in function for where this will likely fail-sorry about that
 func loadStudentsInCourse(courseName string) ([]UserInfo, error) {
 
 	var users []UserInfo
@@ -471,9 +470,9 @@ func loadStudentsInCourse(courseName string) ([]UserInfo, error) {
 			break
 		}
 
-		rows.Scan(&user) //this should scan for the username, but I don't know how
+		rows.Scan(&user)
 
-		userStruct, err := buildUserStruct(user) //this won't work bc it is expecting username and not UserID
+		userStruct, err := buildUserStruct(user) 
 
 		if err != nil {
 			return users, err
@@ -485,8 +484,46 @@ func loadStudentsInCourse(courseName string) ([]UserInfo, error) {
 	return users, nil
 }
 
-// returns all users in the system for admin use
-// func loadAllUsers() ([]UserInfo, error) {}
+//returns all users in the system for admin use 
+//Hannah
+func loadAllUsers() ([]UserInfo, error) {} {
+
+	var users []UserInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return users, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("SELECT Username from Users")
+
+	if err != nil {
+		return users, errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		var user string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&user)
+
+		userStruct, err := buildUserStruct(user)
+
+		if err != nil {
+			return users, err
+		}
+
+		users = append(users, userStruct)
+	}
+
+	return users, nil
+}
 
 // returns some kind of grades for a user, does this need a struct?
 // func loadGrades(student int, courseName string) (??, error) {}
