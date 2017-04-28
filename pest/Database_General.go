@@ -18,6 +18,13 @@ const PRIV_SI = 5
 const PRIV_INSTRUCTOR = 10
 const PRIV_ADMIN = 15
 
+//---------------------------------------------------------------------------
+//Inputs: candidate
+//Outputs: returns the nullable value
+//Written By: Nathan Huckaba
+//Purpose: This function handles nullable values so they are handled safely 
+//	in the database. 
+//---------------------------------------------------------------------------
 func mayBeNull(candidate int) sql.NullInt64 {
 
 	if candidate == 0 {
@@ -32,8 +39,16 @@ func mayBeNull(candidate int) sql.NullInt64 {
 	return retVal
 }
 
-// returns true or false if user is enrolled in class or not
-// Evan
+
+//---------------------------------------------------------------------------
+//Inputs: userID and courseName
+//Outputs: This function returns true if a user is enrolled in a class. It 
+//	returns false if a user is not enrolled in a class. It returns an
+// 	error if an error occurs. 
+//Written By: Evan Lott
+//Purpose: This function determines whether or not a user is enrolled in
+//	class. 
+//---------------------------------------------------------------------------
 func isEnrolled(userID int, courseName string) (bool, error) {
 
 	enabled := 1
@@ -81,9 +96,15 @@ func isEnrolled(userID int, courseName string) (bool, error) {
 
 	return true, nil
 }
-
-// returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
-// Evan, Eileen
+//---------------------------------------------------------------------------
+//Inputs: courseName and assignmentName
+//Outputs: This function returns true if an assignment is available. It 
+//	returns false if an assignment is not available. It returns an
+// 	error if an error occurs. 
+//Written By: Evan Lott and Eileen Drass
+//Purpose: This function determines whether an assignment is available or 
+// or not. 
+//---------------------------------------------------------------------------
 func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME+"?parseTime=true")
@@ -118,8 +139,13 @@ func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 	return false, nil
 }
 
-// returns T or F if course is open or not
-// Evan, Eileen
+//---------------------------------------------------------------------------
+//Inputs: courseName 
+//Outputs: This function returns true if a course is open. It returns
+//	false if a course is closed. It returns an error if an error occurs.
+//Written By: Evan Lott and Eileen Drass
+//Purpose: This function determines whether a course is open or not. 
+//---------------------------------------------------------------------------
 func courseOpen(courseName string) (bool, error) {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME+"?parseTime=true")
@@ -155,14 +181,17 @@ func courseOpen(courseName string) (bool, error) {
 }
 
 /*
-
 func zipAssignment(courseName string, assignmentName) {}
-
 // may or may not need this
 func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
 */
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: student, courseName, assignmentName, submission number
+//Outputs: This function returns an error if an error occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function inserts a submission into the Submissions table. 
+//---------------------------------------------------------------------------
 func insertSubmission(student int, courseName string, assignmentName string, subNum int) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
@@ -189,7 +218,12 @@ func insertSubmission(student int, courseName string, assignmentName string, sub
 
 }
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: userID
+//Outputs: This function returns an error if an error occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function selects a user from the Users table. 
+//---------------------------------------------------------------------------
 func getUserName(userID int) (string, error) {
 
 	var userName string
@@ -220,7 +254,12 @@ func getUserName(userID int) (string, error) {
 
 }
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: courseName
+//Outputs: This function returns an error if an error occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function selects the last assignment. 
+//---------------------------------------------------------------------------
 func getLastAssignmentName(courseName string) (string, error) {
 
 	name := "-1"
@@ -251,7 +290,13 @@ func getLastAssignmentName(courseName string) (string, error) {
 
 }
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: courseName, assignmentName, student
+//Outputs: This function returns the last submission number. It returns an
+//	error if an error occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function selects a student's most recent submission. 
+//---------------------------------------------------------------------------
 func getLastSubmissionNum(courseName string, assignmentName string, student int) (int, error) {
 
 	lastSubNum := -1
@@ -281,8 +326,13 @@ func getLastSubmissionNum(courseName string, assignmentName string, student int)
 	return lastSubNum, nil
 }
 
-// return a users priv level
-// Evan
+//---------------------------------------------------------------------------
+//Inputs: userID
+//Outputs: This function returns a user's privilege level. It returns an
+//	error if an error occurs. 
+//Written By: Evan Lott
+//Purpose: This function gets a  user's privilege level. 
+//---------------------------------------------------------------------------
 func getPrivLevel(userID int) (int, error) {
 
 	privLevel := -1
@@ -311,8 +361,14 @@ func getPrivLevel(userID int) (int, error) {
 	return privLevel, nil
 }
 
-// returns T or F if user is instructor for the course or not
-// Evan
+//---------------------------------------------------------------------------
+//Inputs: userID and courseName
+//Outputs: This function returns true if a user is an instructor. It returns
+//	false if a user is not an instructor. It returns an error if an error
+//	occurs. 
+//Written By: Evan Lott
+//Purpose: This function determines whether a user is an instructor or not. 
+//---------------------------------------------------------------------------
 func isInstructor(userID int, courseName string) (bool, error) {
 
 	retVal := false
