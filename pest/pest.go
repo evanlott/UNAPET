@@ -1,5 +1,3 @@
-// Nathan
-
 package main
 
 import (
