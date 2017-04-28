@@ -49,6 +49,12 @@ type Request struct {
 	password              string
 }
 
+//---------------------------------------------------------------------------
+//Inputs: message
+//Outputs: This function does not return anything. 
+//Written By: Nathan Huckaba
+//Purpose: This function prints out an error response. 
+//---------------------------------------------------------------------------
 func errorResponse(msg string) {
 	fmt.Printf("Status: 500 Bad\r\n")
 	fmt.Printf("Content-Type: text/plain\r\n")
@@ -57,13 +63,25 @@ func errorResponse(msg string) {
 	fmt.Printf("If problem persists, please contact system admin.\r\n")
 }
 
+//---------------------------------------------------------------------------
+//Inputs: page
+//Outputs: This function does not return anything. 
+//Written By: Nathan Huckaba
+//Purpose: This function prints out a oage to redirect to. 
+//---------------------------------------------------------------------------
 func redirectTo(page string) {
 	fmt.Printf("HTTP/1.1 303 See other\r\n")
 	fmt.Printf("Location: %s \r\n", page)
 	fmt.Printf("\r\n")
 }
 
-// returns a Request struct with all info from form put into variables
+//---------------------------------------------------------------------------
+//Inputs: http request
+//Outputs: This function returns a Request struct with all info from form 
+//	put into variables 
+//Written By: Nathan Huckaba
+//Purpose: This function is used to process a form. 
+//---------------------------------------------------------------------------
 func processForm(req *http.Request) Request {
 
 	var form Request
@@ -114,6 +132,7 @@ func processForm(req *http.Request) Request {
 	return form
 }
 
+//---------------------------------------------------------------------------
 func main() {
 	var req *http.Request
 
