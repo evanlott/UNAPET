@@ -13,7 +13,6 @@ import (
 //Written By: Nathan Huckaba
 //Purpose: This function sends a user an email with a new, random password.
 //---------------------------------------------------------------------------
-// Nathan
 func sendRandomPassword(userName string) error {
 
 	// verify user exists first..
