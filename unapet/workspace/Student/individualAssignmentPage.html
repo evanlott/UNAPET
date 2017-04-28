@@ -1,45 +1,144 @@
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script>
-   $(function(){
-      $("#header").load("/Student/header.html");
-      $("#footer").load("/Student/footer.html");
-   });
-</script>
-
-<div id="header"></div>
-
-<body>
-
+{{template "header" .}}
+<div class="container">
     
-    <div class="container">
-	    <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#submit">Submit</a></li>
-        <li><a data-toggle="tab" href="#analysis">Analysis</a></li>
-  	  </ul>
-
-  <div class="tab-content">
-    <div id="submit" class="tab-pane fade in active">
-      <h3>Submit Assignment</h3>
-            <div class="container">
-              <!-- Submit script -->
-              <div class="form-group">
+    <div class="row" style="text-align: center;">
+      		<h3 class="courseTitle" style="text-align: center;">Assignment Name</h3>
+      		<button data-target="#submitAssign" type="button" class="btn btn-default subBtn" data-toggle="modal">Submit Assignment</button>
+  	</div>
+  	
+	    <div class="row headerStudent">
+  			<div class="col-md-3">
+  				<h4>Assignment</h4>
+  			</div>
+  			<div class="col-md-3">
+  				<h4>Submitted .cpp</h4>
+  			</div>
+  			<div class="col-md-2">
+  				<h4>Submitted</h4>
+  			</div>
+  			<div class="col-md-2">
+				<h4 style="text-align: center;">Analyze</h4>
+  			</div>
+  			<div class="col-md-2">
+				<h4 style="text-align: center;">Resubmit</h4> <!--this would become view test cases after due date-->
+  			</div>
+  			<div class="col-md-2" style="display: none;">
+  			    <h4 style="text-align: center;">Test Cases</h4> <!--display: none  until due date-->
+  			</div>
+  		</div>
+  		<br>
+  		<div class="row rowStudent">
+    			<div class="col-md-3">
+    				<h4>BST</h4>
+    			</div>
+    			<div class="col-md-3">
+    				<h4>updikeBST.cpp</h4>
+    			</div>
+    			<div class="col-md-2">
+    				<h4>I am a time stamp</h4>
+    			</div>
+    			<div class="col-md-2">
+    				<button data-target="#analyze" type="button" class="btn btn-default studentAnalyzeBtn" data-toggle="modal"><span class="glyphicon glyphicon-search"></span></button>
+    			</div>
+    			<div class="col-md-2">
+    				<button data-target="#submitAssign" type="button" class="btn btn-default reSubBtn" data-toggle="modal"><span class="glyphicon glyphicon-repeat"></span></button>
+    			</div>
+    			<div class="col-md-2" style="display: none;">
+    				<button data-target="#testCases" type="button" class="btn btn-default viewTCBTN" data-toggle="modal"><span class="glyphicon glyphicon-list-alt"></span></button>
+    			</div>
+  		</div>
+		
+	</div>
+	
+<!-- submitAssign Modal -->
+    <div id="submitAssign" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload .cpp File</h4>
+                </div>
+                <p>Select a .cpp to upload and then press submit.</p>
+               <form style="margin-left: 0px;">
+               		<input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" required="">
                
-                <label align="center" for="exampleInputFile">Upload Assignment</label>
-                <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-                <p></p>
-                <input type="submit" value="Submit" />
-              </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                </form>
             </div>
+        </div>
     </div>
-    <div id="analysis" class="tab-pane fade">
-      <h3>Assignment Analysis</h3>
-            <div class="container">
-              <!-- Display -->
+<!-- End comment Modal -->
+
+<!-- analyze Modal -->
+    <div id="analyze" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Analysis Results</h4>
+                </div>
+                <div class="modal-body">
+                    	<p>
+                    		Test Case 1: Pass<br>
+                    		Test Case 2: Pass<br>
+                    		Test Case 3: Fail<br>
+                    		Test Case 4: Pass<br>
+                    		Test Case 5: Pass<br>
+                    		
+                    		Overall: 80% 
+                    	</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button data-target="#code" type="button" class="btn btn-primary" data-toggle="modal">View Submitted Code</button>
+                </div>
             </div>
+        </div>
     </div>
-  </div>
+<!-- End analyze Modal -->
 
-<div id="footer"></div>
-</body>
+<!-- code Modal -->
+    <div id="code" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Submitted Code</h4>
+                </div>
+                <div class="modal-body">
+	               <p>
+	               	HERE BE CODE, ARRRR!
+	               </p>
+               	</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- code grade Modal -->
 
-</html>
+<!-- code Modal -->
+    <div id="testCases" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Test cases</h4>
+                </div>
+                <div class="modal-body">
+	               <p>
+	               	Test Case 1: <br>
+	               	Make me a hard boiled egg<br>
+	               	Time Constraint: 50000ms<br><br>
+	               	:Failed!
+	               </p>
+               	</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- code grade Modal -->
+
+{{template "footer"}}

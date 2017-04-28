@@ -1,178 +1,8 @@
-
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script>
-   $(function(){
-      $("#header").load("/SI/header.html");
-      $("#footer").load("/SI/footer.html");
-      $("#individualCoursePage").load("/SI/individualCoursePage.html");
-      $("#assignments").load("/SI/assignments.html");
-   });
-</script>
-<style>
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body{
-    background-color: white;
-    font-family: 'Nunito', sans-serif !important;
-    margin-bottom: 60px;
-}
-
-
-#topBar{
-    background-color: #46166B;
-    color: #DB9F11;
-    border-bottom: 5px #DB9F11 solid;
-}
-
-.logo{
-    padding-right: 10px;
-    background-color: #46166B;
-    color: #DB9F11;
-    border-color: #46166B;
-}
-
-#a_logo{
-    text-decoration: none;
-    color: #DB9F11;
-}
-
-.container{
-    margin-top: 10vh;
-}
-
-#card_click{
-    text-decoration: none;
-    
-}
-
-.card{
-    background-color:#46166B ;
-    border: 4px #46166B solid;    /*#5F6062*/
-    height: 300px;
-    width: 300px;
-    border-radius: 15px;
-    box-shadow: 10px 10px 5px #888888;
-}
-
-.card-block{
-    border-radius: 10px;
-    padding-top: 10px;
-    text-align: center;
-    background-color: white;
-    color: #46166B;
-}
-.card-block:hover{
-    color: #DB9F11;
-}
-
-.glyStyle{
-    font-size: 25px;
-    color: #DB9F11;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 45px;
-  background-color: #46166B;
-  color: white;
-}
-.text-muted{
-    text-align:center;
-    color:white;
-    font-size: 20px;
-    padding-top:9px;
-}
-
-.dropdown-menu{
-    height: 150px;
-    background-color: #46166B;
-    text-decoration: none;
-    width: 280px;
-    
-    /*opacity: .9;*/
-}
-
-.color{
-    color: #DB9F11;
-    font-style: bold;
-    border-bottom: 2px #DB9F11 solid;
-}
-
-/*TG*/
-.btn{
-    background: #46166B;
-    color: #ffffff;
-    text-decoration: none;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-/*.tab-content{*/
-
-/*}*/
-.upload{
-    float:left;
-}
-
-.submitButton{
-    float:right;
-    padding-right: 100px;
-}
-
-table, td, th {
-    border: 1px solid black;
-}
-
-td, th {
-	border: 1px solid black;
-	text-align: left;
-	padding: 8px;
-}
-tr:nth-child(even) {
-	background-color: #dddddd;
-}
-
-li { 
-    cursor: pointer;
-    cursor: hand; 
-}
-
-.userDropDown{
-    height: 220px;
-    background-color: #46166B;
-    text-decoration: none;
-    width: 280px;
-}
-</style>
-<div id="header"></div>
-<body>
-
+{{template "header" .}}
 <div class="container">
     <div class = "row">
         <div class = "col-md-4">
-             <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" id="btns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-option-vertical glyStyle"></span>
-                </button>
-                    <ul class="dropdown-menu editButtonDropDown">
-                        <li>
-                            <button class="btn btn-lg editButton"><a href="assignments.html">Assignments</a></button>
-                        </li>
-                        <li>
-                            <button class="btn btn-lg editButton"><a href="grades.html">Grades</a></button>
-                        </li>
-                        <li>
-                            <button class="btn btn-lg editButton"><a href="submissions.html">Submissions</a></button>
-                        </li>
-                    </ul>
-            </div>
-            <a id = "card_click">
+            <a id = "card_click" href="assignments.html">
                 <div class="card">
                     <div class="card-block">
                         <h4 class="card-title">CS-155</h4>
@@ -183,23 +13,7 @@ li {
             </a>
         </div>
         <div class = "col-md-4">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" id="btns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-option-vertical glyStyle"></span>
-                </button>
-                    <ul class="dropdown-menu editButtonDropDown">
-                        <li>
-                            <button class="btn btn-lg editButton"><a href="assignments.html">Assignments</a></button>
-                        </li>
-                        <li>
-                            <button class="btn btn-lg editButton"><a href="grades.html">Grades</a></button>
-                        </li>
-                        <li>
-                            <button class="btn btn-lg editButton"><a href="submissions.html">Submissions</a></button>
-                        </li>
-                    </ul>
-            </div>
-            <a id = "card_click">
+            <a id = "card_click" href="assignments.html">
                 <div class="card">
                     <div class="card-block">
                         <h4 class="card-title">CS-155</h4>
@@ -212,7 +26,4 @@ li {
     </div>
 
 </div> 
-
-</body>
-<div id="footer"></div>
-
+{{template "footer"}}

@@ -1,11 +1,14 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"strings"
+	/* _ "github.com/go-sql-driver/mysql"*/
+	"pkg"
 )
 
 func sayhelloName(w http.ResponseWriter, r *http.Request) {

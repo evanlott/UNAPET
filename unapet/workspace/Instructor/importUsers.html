@@ -1,19 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="//code.jquery.com/jquery-3.2.0.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-<script>
-   $(function(){
-      $("#header").load("/Instructor/header.html");
-      $("#footer").load("/Instructor/footer.html");
-   });
-</script>
-
-<div id="header"></div>
-
-<body>
-    
+{{template "header" .}}
 	<h2 style="text-align: center; font-weight: bold; margin-top: 75px;">Import Users</h2>
 	
 	<div class="container">
@@ -26,13 +11,13 @@
     	    <div class="form-group">
          	    <div id="selectCSV" class="tab-pane fade in active">
                     <label align="center" for="browseCSV">Upload CSV</label>
-                    <input type="file" class="form-control-file" id="browseCSV" aria-describedby="fileHelp">
+                    <input type="file" class="form-control-file" id="browseCSV" aria-describedby="fileHelp" required="">
                   </div>
             </div>
             
     		<div class="form-group">
                 <label for="importCourse">Select Course:</label>
-                <select class="form-control formFieldsStyle" id="importCourse">
+                <select class="form-control formFieldsStyle" id="importCourse" required="">
                     <option value="" disabled selected>Select Course</option>
                     <option value="JerkinsCS15501SP17">JerkinsCS15501SP17</option>
                     <option value="RodenCS15502SP17">RodenCS15502SP17</option>
@@ -46,7 +31,4 @@
     	</form>
     	
 	</div>
-
-</body>
-
-<div id="footer"></div>
+{{template "footer"}}

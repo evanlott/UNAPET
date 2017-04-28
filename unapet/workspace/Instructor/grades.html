@@ -1,0 +1,123 @@
+{{template "header" .}}
+  <div class="row" style="text-align: center;">
+      <a onclick="loadIndividualCoursePage();" style="text-decoration: none;"><h3 class="courseTitle" style="text-align: center;">CS-155-01</h3></a>
+      <a class = "btn coursePageButtons" onclick="loadInstructorAssignments();"><h3 class="color">Assignments</h3></a>
+      <a class = "btn coursePageButtons" onclick="loadInstructorGrades();"><h3 class="color">Grades</h3></a>
+      <a class = "btn coursePageButtons" onclick="loadInstructorSubmissions();"><h3 class="color">Submissions</h3></a>
+   </div>
+   
+  <div class="container" style="margin-top: 3vh;">
+  	
+  	<div class="row" style="text-align: center; margin-bottom: 15px;">
+   	<button type="submit" class="btn btn-lg coursePageButtons"><h3 class="color">Export Grade Report</h3></button>
+   </div>
+  		
+    	<div class="row headerStudent">
+			<div class="col-md-3">
+				<h4>Student Last Name</h4>
+			</div>
+			<div class="col-md-2">
+				<h4>Student First Name</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>Assignment Name</h4>
+			</div>
+			<div class="col-md-1">
+				<h4>Grade</h4>
+			</div>
+			<div class="col-md-2">
+				<h4 style="margin-left:15px;">Avg / Edit / Delete</h4>
+			</div>
+		</div>
+		<br>
+		<div class="row rowStudent">
+			<div class="col-md-3">
+				<h4>Lannister</h4>
+			</div>
+			<div class="col-md-2">
+				<h4>Tyrion</h4>
+			</div>
+			<div class="col-md-3">
+				<h4>BST</h4>
+			</div>
+			<div class="col-md-1">
+				<h4 style="margin-left:7px;">100</h4>
+			</div>
+			<div class="col-md-3">
+			    <button data-target="#avgGrade" type="button" class="btn btn-default analyzeBtn" data-toggle="modal"><span class="glyphicon glyphicon-star"></span></button>
+				<button data-target="#editGrade" type="button" class="btn btn-default editAssignmentBtn" data-toggle="modal"><span class="glyphicon glyphicon-pencil"></span></button>
+				<button data-target="#deleteGrade" type="button" class="btn btn-default deleteAssignmentBtn" data-toggle="modal"><span class="glyphicon glyphicon-trash"></span></button>
+			</div>
+		</div>
+   
+  </div>
+<!-- Average Grade Modal -->
+<div id="avgGrade" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tyrion Course AVG</h4>
+                </div>
+                <div class="modal-body">
+                    	<p>
+                    		Average: 75
+                    	</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--End Average Grade Modal-->
+ <!-- Edit Modal -->
+
+    <div id="editGrade" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Grade</h4>
+                </div>
+                <div class="modal-body">
+                    	<form class="newAssMdl">
+							<div class="form-group">
+								<label for="newGrade">Grade:</label>
+								<input type="number" maxlength="4" step="0.1" class="form-control formFieldsStyle" id="newGrade" placeholder="0.0" required="">
+							</div>
+							<div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+						</form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- End Edit Modal -->
+
+<!-- Delete Modal -->
+    <div id="deleteGrade" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Delete</h4>
+                </div>
+                <div class="modal-body">
+                	<p>Are you sure you want to delete this grade entry?</p>
+                </div>
+                <form style="margin-left: 0px;">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- End Delete Modal -->
+{{template "footer"}}
+
+
+<script>
+//         history.replaceState('assignments.html', 'Title of the page', 'unapet.com');
+</script>

@@ -186,7 +186,7 @@ form{
     color: white;
     background: #46166B;
     border: 3px black solid;
-    width: 31px;
+    width: 30px;
     height: 35px;
     text-align: center;
 }
@@ -195,7 +195,7 @@ form{
     color: white;
     background: red;
     border: 3px black solid;
-    width: 31px;
+    width: 30px;
     height: 35px;
     text-align: center;
 }
@@ -223,6 +223,10 @@ form{
 }
 
 .newPSWMdl{
+    margin: 0 auto;
+}
+
+.newAssMdl{
     margin: 0 auto;
 }
 
@@ -315,4 +319,76 @@ input:checked + .slider:before {
 .courseTitle:hover{
     color: #DB9F11;
     font-style: bold;
+}
+
+.addButton {
+    margin-top: 40px;
+    height: 150px;
+    width: 150px;
+    background-image: url(add.jpg);
+    border: none;
+}
+
+.row{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.editAssignmentBtn{
+    color: white;
+    background: #46166B;
+    border: 3px black solid;
+    width: 78px;
+    height: 35px;
+    text-align: center;
+}
+
+.deleteAssignmentBtn{
+    color: white;
+    background: red;
+    border: 3px black solid;
+    width: 78px;
+    height: 35px;
+    text-align: center;
+}
+
+.analyzeBtn{
+    color: white;
+    background: #DB9F11;
+    border: 3px black solid;
+    width: 82px;
+    height: 35px;
+    text-align: center;
+}
+
+.commentBtn{
+    color: white;
+    background: #0bd318;
+    border: 3px black solid;
+    width: 82px;
+    height: 35px;
+    text-align: center;
+}
+
+.gradeBtn{
+    color: white;
+    background: #1d62f0;
+    border: 3px black solid;
+    width: 82px;
+    height: 35px;
+    text-align: center;
+}
+
+.comment{
+    width: 300px;
+    height: 150px;
+    text-align: center;
+    resize: none;
+    margin-left: -95px;
+    margin-top: 15px;
+}
+
+.editDisplayBTN{
+  background: #DB9F11;
+  color: #46166B;
 }

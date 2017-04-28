@@ -1,32 +1,64 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="//code.jquery.com/jquery-3.2.0.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-   $(function(){
-      $("#header").load("/Instructor/header.html");
-      $("#footer").load("/Instructor/footer.html");
-      $("#assignments").load("/Instructor/assignments.html");
-   });
-</script>
-
-<div id="header"></div>
-
-<body>
-
+{{template "header" .}}
+    <div class="row" style="text-align: center;">
+        <button data-target="#changeDisplay" type="button" class="btn btn-default editDisplayBTN" data-toggle="modal"><span class="glyphicon glyphicon-pencil"></span></button>
+        <a onclick="loadIndividualCoursePage();" style="text-decoration: none;"><h3 class="courseTitle">CS-155-01</h3></a>
+    </div>
+    
    <div class="row" style="text-align: center;">
-      <a href="individualCoursePage.html" style="text-decoration: none;"><h3 class="courseTitle" style="text-align: center;">CS-155-01</h3></a>
-      <a class = "btn coursePageButtons" href = "assignments.html" role = "button"><h3 class="color">Assignments</h3></a>
-      <a class = "btn coursePageButtons" href = "grades.html" role = "button"><h3 class="color">Grades</h3></a>
-      <a class = "btn coursePageButtons" href = "submissions.html" role = "button"><h3 class="color">Submissions</h3></a>
+      <a class = "btn coursePageButtons" onclick="loadInstructorAssignments();" role = "button"><h3 class="color">Assignments</h3></a>
+      <a class = "btn coursePageButtons" onclick="loadInstructorGrades();" role = "button"><h3 class="color">Grades</h3></a>
+      <a class = "btn coursePageButtons" onclick="loadInstructorSubmissions();" role = "button"><h3 class="color">Submissions</h3></a>
    </div>
 
    <div class="container" style="text-align: center;">
-      
+      <button data-target="#changeDescription" type="button" style="margin-bottom:5px;" class="btn btn-default editDisplayBTN" data-toggle="modal"><span class="glyphicon glyphicon-pencil"></span></button>
       <div id="descriptionArea" contenteditable="true">In this course we will learn how to print "Hello World" in several different ways!</div>
-    
+      
    </div>
+   
+<!-- Change Display Modal -->
+    <div id="changeDisplay" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Display Name</h4>
+                </div>
+               <form style="margin-left: 0px;">
+               		<div class="form-group">
+						<input type="text" style="margin-left:10px; margin-top:13px;"class="form-control formFieldsStyle" id="displayName" required="">
+		       		</div>
+		       		
+		       		<div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+               </form>
+                
+            </div>
+        </div>
+    </div>
+<!-- End Change Display Modal -->
 
-</body>
-
-<div id="footer"></div>
+<!-- Change Description Modal -->
+    <div id="changeDescription" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Course Description</h4>
+                </div>
+               <form style="margin-left: 0px;">
+               		<div class="form-group" style="text-align: center;">
+						<textarea class="descriptionTA" name="courseDescription" style="resize: none; height: 500px; width: 400px; margin-top:9px;"></textarea>
+		       		</div>
+		       		
+		       		<div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+               </form>
+                
+            </div>
+        </div>
+    </div>
+<!-- End Change Display Modal -->
+{{template "footer"}}

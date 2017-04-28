@@ -74,7 +74,7 @@ body{
 }
 
 .dropdown-menu{
-    height: 150px;
+    height: 220px;
     background-color: #46166B;
     text-decoration: none;
     width: 280px;
@@ -162,6 +162,19 @@ ul{
     border-radius: 0px;
 }
 
+.userButtonsA{
+    background: #46166B;
+    width: 278px;
+    color: #DB9F11;
+    text-align: left;
+    font-style: bold;
+}
+
+.userButtonsA:hover{
+    background-color: white;
+    border-radius: 0px;
+}
+
 #createUserBtn{
     color: white;
     background: #46166B;
@@ -186,13 +199,22 @@ form{
     color: white;
     background: #46166B;
     border: 3px black solid;
-    width: 82px;
+    width: 30px;
     height: 35px;
     text-align: center;
 }
 
 .editUserBtn:hover{
     background: #DB9F11;
+}
+
+.deleteUserBtn{
+    color: white;
+    background: red;
+    border: 3px black solid;
+    width: 30px;
+    height: 35px;
+    text-align: center;
 }
 
 .headerStudent{
@@ -212,3 +234,114 @@ form{
 .newPSWMdl{
     margin: 0 auto;
 }
+
+
+.newAssMdl{
+    margin: 0 auto;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.coursePageButtons{
+    margin-top: 15px;
+    background-color: #46166B;
+    text-decoration: none;
+    width: 280px;
+    border-radius: 5px;
+    border: 2px solid #DB9F11;
+}
+
+.coursePageButtons:hover{
+    background-color: white;
+}
+
+
+#descriptionArea {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font: medium -moz-fixed;
+    font: -webkit-small-control;
+    overflow: auto;
+    margin-left: 150px;
+    margin-right: 150px;
+    height: 300px;
+}
+
+.courseTitle{
+    color: #46166B;
+    font-style: bold;
+}
+
+.courseTitle:hover{
+    color: #DB9F11;
+    font-style: bold;
+}
+
+.addButton {
+    margin-top: 40px;
+    height: 150px;
+    width: 150px;
+    background-image: url(add.jpg);
+    border: none;
+}
+
+.row{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+

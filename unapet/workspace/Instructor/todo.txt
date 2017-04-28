@@ -1,1 +1,22 @@
-1. Make a better course description area (maybe edit button).
+GENERAL ISSUES
+2. Make checks to make sure the user isn't entering characters when they should only be entering numbers.
+3. Add a confirmation alert when password has been successfully changed.
+
+SI ISSUES
+1. Grade set to view instead of alter //fixed - TG
+2. click the analyze button will be attached to view grades flag
+3. View source code from students flagchnages on cloud 9 after 
+
+FIX DROPDOWN MENU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+SCHEDULE:
+Move headers and footers back
+Push to github
+make an alert for successful new password request
+Make a note on edit assignments screen that new testcases will override all the others previously uploaded. Do the same for SI.
+    //done for SI
+look at implementing html in course description
+change cpp file name to submission number on grade screen
+add actions to forms
+finish adding user manual to footer
+change email field to username field in create user
