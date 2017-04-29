@@ -65,6 +65,7 @@ func HandleError(err error) {
 	}
 }
 
+/*
 func HandleErrorHTTP(err error, res http.ResponseWriter) {
 
 	if err != nil {
@@ -72,6 +73,7 @@ func HandleErrorHTTP(err error, res http.ResponseWriter) {
 		os.Exit(0)
 	}
 }
+*/
 
 func RedirectTo(page string) {
 	fmt.Printf("HTTP/1.1 303 See other\r\n")
