@@ -1,4 +1,6 @@
-// evaluateFunctionTesting
+// Eileen Drass 
+//evaluateFunctionTesting
+// This file was used to test the evaluate function. 
 // General TODO's:
 //		Maybe pass result struct around as a pointer, more speed, less memory
 //		Add some kind of erorr logging, for when true errors occur, i.e. directory not existing that's suppossed to exist. Also need to notify admin
