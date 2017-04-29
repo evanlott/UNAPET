@@ -1,6 +1,6 @@
 // Eileen Drass
 // deleteAssingmentFunctionTesting
-// This file was used to test the deleteAssignment funciton.
+// This file was used to test the deleteAssignment function.
 
 package main
 
