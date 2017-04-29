@@ -133,6 +133,10 @@ func editStartEndAssignment(courseName string, assignmentName string, startDate 
 	}
 
 	defer db.Close()
+	
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	res, err := db.Exec("update Assignments set StartDate=?, EndDate=? where courseName=? and AssignmentName=?", startDate+" 23:59:59", endDate+" 23:59:59", courseName, assignmentName)
 
