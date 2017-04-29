@@ -26,6 +26,13 @@ func createUser(firstName string, MI string, lastName string, username string, p
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+	
+	if err != nil{
+		return errors.New("Failed to connect to database.")
+	}
+	
 
 	//hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 
