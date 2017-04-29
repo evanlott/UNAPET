@@ -32,6 +32,34 @@ func mayBeNull(candidate int) sql.NullInt64 {
 	return retVal
 }
 
+// Returns -1 if NULL scanned out of DB!
+func nullInt(candidate sql.NullInt64) int {
+
+	if candidate.Valid == false {
+		return -1
+	}
+
+	return int(candidate.Int64)
+}
+
+func nullBool(candidate sql.NullBool) bool {
+
+	if candidate.Valid == false {
+		return false
+	}
+
+	return candidate.Bool
+}
+
+func nullString(candidate sql.NullString) string {
+
+	if candidate.Valid == false {
+		return candidate.String
+	}
+
+	return ""
+}
+
 // returns true or false if user is enrolled in class or not
 // Evan
 func isEnrolled(userID int, courseName string) (bool, error) {

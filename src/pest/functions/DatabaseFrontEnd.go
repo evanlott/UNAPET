@@ -57,7 +57,7 @@ type SubmissionInfo struct {
 	StudentUsername string
 	Grade           int
 	Comments        string
-	Compiled        int
+	Compiled        bool // changed this, will it cause problems? was int
 	Results         string
 	SubmissionNum   int
 }
@@ -84,9 +84,16 @@ func BuildCourseStruct(CourseName string) (CourseInfo, error) {
 	if rows.Next() == false {
 		return course, errors.New("Invalid Course.")
 	} else {
+
+		var si1 sql.NullInt64
+		var si2 sql.NullInt64
+
 		rows.Scan(&course.CourseName, &course.DisplayName, &course.CourseDescription,
-			&course.InstructorUserID, &course.StartDate, &course.EndDate, &course.Si1UserID,
-			&course.Si2UserID, &course.SiGradeFlag, &course.SiTestFlag)
+			&course.InstructorUserID, &course.StartDate, &course.EndDate, &si1,
+			&si2, &course.SiGradeFlag, &course.SiTestFlag)
+
+		course.Si1UserID = nullInt(si1)
+		course.Si2UserID = nullInt(si2)
 	}
 
 	rows, err = db.Query("select Username from Users where UserID = ?", course.InstructorUserID)
@@ -224,9 +231,21 @@ func buildSubmissionStruct(AssignmentName string, CourseName string) (Submission
 	if rows.Next() == false {
 		return submission, errors.New("Invalid submission.")
 	} else {
+
+		var grade sql.NullInt64
+		var comments sql.NullString
+		var compiled sql.NullBool
+		var results sql.NullString
+
 		rows.Scan(&submission.CourseName, &submission.AssignmentName,
 			&submission.StudentUserID, &submission.Grade, &submission.Comments,
 			&submission.Compiled, &submission.Results, &submission.SubmissionNum)
+
+		submission.Grade = nullInt(grade)
+		submission.Comments = nullString(comments)
+		submission.Compiled = nullBool(compiled)
+		submission.Results = nullString(results)
+
 	}
 
 	rows, err = db.Query("select Username from Users where UserID = ?", submission.StudentUserID)
