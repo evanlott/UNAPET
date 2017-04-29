@@ -82,6 +82,12 @@ func deleteAssignment(courseName string, assignmentName string) error {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	res, err := db.Exec("delete from Assignments where (AssignmentName =? and courseName =?)", assignmentName, courseName)
 
