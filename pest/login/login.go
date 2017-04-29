@@ -70,9 +70,9 @@ func login(userName string, password string, res http.ResponseWriter, req *http.
 	}
 
 	// load this from config file
-	minutes := 5
+	minutes := 1500
 
-	expiration := time.Now().Local().Add(time.Duration(minutes) * time.Second)
+	expiration := time.Now().Local().Add(time.Duration(minutes) * time.Minute)
 
 	rand.Seed(time.Now().UTC().UnixNano())
 
@@ -85,7 +85,7 @@ func login(userName string, password string, res http.ResponseWriter, req *http.
 	}
 
 	// TODO : make sure cookies are actually expiring
-	loginCookie := http.Cookie{Name: "sessionID", Value: string(sessionID[:]), Expires: expiration}
+	loginCookie := http.Cookie{Name: "sessionID", Value: string(sessionID[:]), Expires: expiration, MaxAge: (60 * 60)}
 
 	http.SetCookie(res, &loginCookie)
 
@@ -184,6 +184,16 @@ func main() {
 
 		if req.FormValue("action") == "login" {
 			err = login(username, password, res, req)
+		} else if req.FormValue("action") == "logout" {
+
+			_, err := req.Cookie("sessionID")
+
+			if err != nil {
+				loginCookie := http.Cookie{Name: "sessionID", Value: "", Expires: time.Date(2000, time.November, 10, 23, 0, 0, 0, time.UTC), MaxAge: -1}
+				http.SetCookie(res, &loginCookie)
+			}
+
+			err = logout(username)
 		} else {
 			auth, _ := isLoggedIn(username)
 			if auth == true {
