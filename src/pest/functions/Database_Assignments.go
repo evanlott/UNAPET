@@ -29,14 +29,20 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 
 	defer db.Close()
 
-	res, err := db.Exec("INSERT INTO `Assignments` (`courseName`, `AssignmentDisplayName`, `AssignmentName`, `StartDate`, `EndDate`, `MaxRuntime`, `CompilerOptions`, `NumTestCases`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", courseName, assignmentDisplayName, assignmentName, startDate+" 23:59:59", endDate+" 23:59:59", runtime, compilerOptions, numTestCases)
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	if compilerOptions == "" {
 		compilerOptions = "NULL"
 	}
 
+	res, err := db.Exec("INSERT INTO `Assignments` (`courseName`, `AssignmentDisplayName`, `AssignmentName`, `StartDate`, `EndDate`, `MaxRuntime`, `CompilerOptions`, `NumTestCases`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", courseName, assignmentDisplayName, assignmentName, startDate+" 23:59:59", endDate+" 23:59:59", runtime, compilerOptions, numTestCases)
+
 	if err != nil {
-		return errors.New("Create assignment failed. Please fill out alll fields." + courseName + assignmentDisplayName + assignmentName + compilerOptions + startDate + endDate)
+		return errors.New("Create assignment failed. Please do not create a duplicate assignment, and please fill out all fields." + courseName + assignmentDisplayName + assignmentName + compilerOptions + startDate + endDate)
 	}
 
 	rowsAffected, err := res.RowsAffected()
@@ -49,13 +55,10 @@ func createAssignment(courseName string, assignmentDisplayName string, assignmen
 	/*
 		// TODO : verify query on server, figure out how to pull test cases from UI and upload to server
 		res, err = db.Exec("ALTER TABLE GradeReport ADD " + assignmentName + " tinyint")
-
 		if err != nil {
 			panic("Error adding assignment to GradeReport")
 		}
-
 		// need rows affected check
-
 	*/
 
 	return nil
