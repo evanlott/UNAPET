@@ -84,6 +84,12 @@ func deleteCourse(courseName string) error {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	res, err := db.Exec("delete from CourseDescription where courseName =?", courseName)
 
@@ -131,6 +137,12 @@ func editCourseDescription(courseName string, courseDescription string) error {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	_, err = db.Exec("UPDATE CourseDescription SET CourseDescription.CourseDescription=? WHERE CourseDescription.courseName=? ", courseDescription, courseName)
 
@@ -160,6 +172,12 @@ func editStartEndCourse(courseName string, startDate string, endDate string) err
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	res, err := db.Exec("update CourseDescription set StartDate=?, EndDate=? where courseName=?", startDate+" 23:59:59", endDate+" 23:59:59", courseName)
 
