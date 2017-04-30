@@ -18,6 +18,13 @@ const PRIV_SI = 5
 const PRIV_INSTRUCTOR = 10
 const PRIV_ADMIN = 15
 
+//---------------------------------------------------------------------------
+//Inputs: candidate
+//Outputs: returns the nullable value
+//Written By: Nathan Huckaba
+//Purpose: This function handles nullable values so they are handled safely 
+//	in the database. 
+//---------------------------------------------------------------------------
 func mayBeNull(candidate int) sql.NullInt64 {
 
 	if candidate == 0 {
@@ -32,7 +39,13 @@ func mayBeNull(candidate int) sql.NullInt64 {
 	return retVal
 }
 
-// Returns -1 if NULL scanned out of DB!
+//---------------------------------------------------------------------------
+//Inputs: candidate
+//Outputs: returns -1 if NULL is scanned out of the database
+//Written By: Nathan Huckaba
+//Purpose: This function handles nullable values so they are handled safely 
+//	in the database. 
+//---------------------------------------------------------------------------
 func nullInt(candidate sql.NullInt64) int {
 
 	if candidate.Valid == false {
@@ -42,6 +55,13 @@ func nullInt(candidate sql.NullInt64) int {
 	return int(candidate.Int64)
 }
 
+//---------------------------------------------------------------------------
+//Inputs: candidate
+//Outputs: returns candidate bool
+//Written By: Nathan Huckaba
+//Purpose: If there is a supposed-to-be bool value in the database which is 
+//	NULL, this function sets that value to false. 
+//---------------------------------------------------------------------------
 func nullBool(candidate sql.NullBool) bool {
 
 	if candidate.Valid == false {
@@ -51,6 +71,13 @@ func nullBool(candidate sql.NullBool) bool {
 	return candidate.Bool
 }
 
+//---------------------------------------------------------------------------
+//Inputs: candidate
+//Outputs: returns candidate string
+//Written By: Nathan Huckaba
+//Purpose: If there is a supposed-to-be string value in the database which
+//	is NULL, this function sets that value to a blank string. 
+//---------------------------------------------------------------------------
 func nullString(candidate sql.NullString) string {
 
 	if candidate.Valid == false {
@@ -60,8 +87,15 @@ func nullString(candidate sql.NullString) string {
 	return ""
 }
 
-// returns true or false if user is enrolled in class or not
-// Evan
+//---------------------------------------------------------------------------
+//Inputs: userID and course name
+//Outputs: This function returns true if a user is enrolled in a class. It 
+//	returns false if a user is not enrolled in a class. It returns an
+// 	error if an error occurs. 
+//Written By: Evan Lott
+//Purpose: This function determines whether or not a user is enrolled in
+//	class. 
+//---------------------------------------------------------------------------
 func isEnrolled(userID int, courseName string) (bool, error) {
 
 	enabled := 1
@@ -74,6 +108,12 @@ func isEnrolled(userID int, courseName string) (bool, error) {
 	}
 
 	defer db.Close()
+		
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	rows, err := db.Query("SELECT Enabled FROM Users WHERE UserID =?", userID)
 
@@ -110,8 +150,15 @@ func isEnrolled(userID int, courseName string) (bool, error) {
 	return true, nil
 }
 
-// returns T or F if assignment is availible or not... assignment start dateTime < time.NOW() < assignment end dateTime
-// Evan, Eileen
+//---------------------------------------------------------------------------
+//Inputs: course name and assignment name
+//Outputs: This function returns true if an assignment is available. It 
+//	returns false if an assignment is not available. It returns an
+// 	error if an error occurs. 
+//Written By: Evan Lott and Eileen Drass
+//Purpose: This function determines whether an assignment is available or 
+// or not. 
+//---------------------------------------------------------------------------
 func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME+"?parseTime=true")
@@ -121,7 +168,13 @@ func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
 
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
+	
 	rows, err := db.Query("SELECT StartDate, EndDate FROM Assignments WHERE AssignmentName =?", assignmentName)
 
 	if err != nil {
@@ -146,8 +199,13 @@ func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 	return false, nil
 }
 
-// returns T or F if course is open or not
-// Evan, Eileen
+//---------------------------------------------------------------------------
+//Inputs: course name 
+//Outputs: This function returns true if a course is open. It returns
+//	false if a course is closed. It returns an error if an error occurs.
+//Written By: Evan Lott and Eileen Drass
+//Purpose: This function determines whether a course is open or not. 
+//---------------------------------------------------------------------------
 func courseOpen(courseName string) (bool, error) {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME+"?parseTime=true")
@@ -157,6 +215,12 @@ func courseOpen(courseName string) (bool, error) {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	rows, err := db.Query("SELECT StartDate, EndDate FROM CourseDescription WHERE courseName =?", courseName)
 
@@ -190,7 +254,12 @@ func zipAssignment(courseName string, assignmentName) {}
 func deleteTestCase(courseName string, assignmentName string, testCaseNum int) error {}
 */
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: student, course name, assignment name, submission number
+//Outputs: This function returns an error if an error occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function inserts a submission into the Submissions table. 
+//---------------------------------------------------------------------------
 func insertSubmission(student int, courseName string, assignmentName string, subNum int) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
@@ -199,7 +268,13 @@ func insertSubmission(student int, courseName string, assignmentName string, sub
 		return errors.New("No connection")
 	}
 
-	defer db.Close()
+	defer db.Close()	
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	res, err := db.Exec("INSERT INTO `Submissions` (`courseName`, `AssignmentName`, `Student`, `Grade`, `comment`, `Compile`, `Results`, `SubmissionNumber`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", courseName, assignmentName, student, nil, nil, nil, nil, subNum)
 
@@ -217,7 +292,12 @@ func insertSubmission(student int, courseName string, assignmentName string, sub
 
 }
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: userID
+//Outputs: This function returns an error if an error occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function selects a user from the Users table. 
+//---------------------------------------------------------------------------
 func getUserName(userID int) (string, error) {
 
 	var userName string
@@ -229,6 +309,12 @@ func getUserName(userID int) (string, error) {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	rows, err := db.Query("select UserName from Users where UserID=?", userID)
 
@@ -248,7 +334,12 @@ func getUserName(userID int) (string, error) {
 
 }
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: course name
+//Outputs: This function returns an error if an error occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function selects the last assignment. 
+//---------------------------------------------------------------------------
 func getLastAssignmentName(courseName string) (string, error) {
 
 	name := "-1"
@@ -260,6 +351,12 @@ func getLastAssignmentName(courseName string) (string, error) {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	rows, err := db.Query("select AssignmentName from Assignments where courseName=? order by AssignmentName DESC limit 1", courseName)
 
@@ -279,7 +376,13 @@ func getLastAssignmentName(courseName string) (string, error) {
 
 }
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: course name, assignment name, student
+//Outputs: This function returns the last submission number. It returns an
+//	error if an error occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function selects a student's most recent submission. 
+//---------------------------------------------------------------------------
 func getLastSubmissionNum(courseName string, assignmentName string, student int) (int, error) {
 
 	lastSubNum := -1
@@ -291,6 +394,12 @@ func getLastSubmissionNum(courseName string, assignmentName string, student int)
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	rows, err := db.Query("select SubmissionNumber from Submissions where Student=? and courseName=? and AssignmentName=? order by SubmissionNumber DESC limit 1", student, courseName, assignmentName)
 
@@ -309,8 +418,13 @@ func getLastSubmissionNum(courseName string, assignmentName string, student int)
 	return lastSubNum, nil
 }
 
-// return a users priv level
-// Evan
+//---------------------------------------------------------------------------
+//Inputs: userID
+//Outputs: This function returns a user's privilege level. It returns an
+//	error if an error occurs. 
+//Written By: Evan Lott
+//Purpose: This function gets a  user's privilege level. 
+//---------------------------------------------------------------------------
 func getPrivLevel(userID int) (int, error) {
 
 	privLevel := -1
@@ -321,6 +435,12 @@ func getPrivLevel(userID int) (int, error) {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	rows, err := db.Query("SELECT privelegeLevel FROM Users WHERE UserID =?", userID)
 
@@ -339,8 +459,14 @@ func getPrivLevel(userID int) (int, error) {
 	return privLevel, nil
 }
 
-// returns T or F if user is instructor for the course or not
-// Evan
+//---------------------------------------------------------------------------
+//Inputs: userID and course name
+//Outputs: This function returns true if a user is an instructor. It returns
+//	false if a user is not an instructor. It returns an error if an error
+//	occurs. 
+//Written By: Evan Lott
+//Purpose: This function determines whether a user is an instructor or not. 
+//---------------------------------------------------------------------------
 func isInstructor(userID int, courseName string) (bool, error) {
 
 	retVal := false
@@ -352,6 +478,12 @@ func isInstructor(userID int, courseName string) (bool, error) {
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	rows, err := db.Query("SELECT firstName FROM Users WHERE UserID =?", userID)
 
