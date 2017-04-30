@@ -1,4 +1,9 @@
 // Test2
+// April 30, 2017
+// Testing each method and testing that every error message appears accordingly
+// Todd Gibson
+// DatabaseFrontEnd.go
+//------------------------------------------------------------------------------
 package main
 
 /*
@@ -97,8 +102,250 @@ func main() {
 		BuildAssignmentStruct("vd", "JerkinsCS15502SP17") -- should fail -- passed test case
 	*/
 
-	//Test buildSubmissionStruct
-	//buildSubmissionStruct(AssignmentName string, CourseName string)
+	//Test buildSubmissionStruct -- Todd Gibson Testing
+	//buildSubmissionStruct("0", "TerwilligerCS15501SP17")
+	//buildSubmissionStruct("1", "JerkinsCS15502SP17")
+
+	//LoadInstructorCards(10003)
+	//LoadStudentCourse(10113)
+	//LoadStudentCourse(10009)
+
+	//LoadAssignments("JerkinsCS15502SP17")
+	//LoadAssignments("hi")
+
+	//LoadLastSubmission(10104, "JerkinsCS15502SP17", "1")
+
+	//LoadStudentsInCourse("JerkinsCS15502SP17")
+	//LoadStudentsInCourse("JerkinsCS15502")
+
+	//LoadAllUsers()
+
+}
+func LoadAllUsers() ([]UserInfo, error) {
+
+	var users []UserInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return users, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("SELECT Username from Users")
+
+	if err != nil {
+		return users, errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		var user string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&user)
+
+		userStruct, err := BuildUserStruct(user)
+
+		if err != nil {
+			return users, err
+		}
+
+		users = append(users, userStruct)
+	}
+	fmt.Println(users)
+	return users, nil
+}
+func LoadStudentsInCourse(CourseName string) ([]UserInfo, error) {
+
+	var users []UserInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return users, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("SELECT Username from Users where UserID IN (SELECT Student from StudentCourses where CourseName = ?)", CourseName)
+
+	if err != nil {
+		fmt.Println("there is a query error")
+		return users, errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		var user string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&user)
+
+		userStruct, err := BuildUserStruct(user)
+
+		if err != nil {
+			fmt.Println("error with users")
+			return users, err
+		}
+
+		users = append(users, userStruct)
+	}
+
+	fmt.Println(users)
+	return users, nil
+}
+
+func LoadLastSubmission(student int, CourseName string, AssignmentName string) (SubmissionInfo, error) {
+
+	var submission SubmissionInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return submission, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	//I know this seems unecessarily long, but it is what I have to do to survive
+	rows, err := db.Query("select * from Submissions where student=? and CourseName=? and AssignmentName=? and SubmissionNumber=(Select Max(SubmissionNumber)from Submissions where student=? and CourseName=? and AssignmentName=?)", student, CourseName, AssignmentName, student, CourseName, AssignmentName)
+
+	if err != nil {
+		return submission, errors.New("Query error.")
+	}
+
+	//should just be able to call buildSubmissionStruct function, but not sure
+	//how to do this with specific submission number
+	if rows.Next() == false {
+		return submission, errors.New("Invalid submission.")
+	} else {
+		rows.Scan(&submission.CourseName, &submission.AssignmentName,
+			&submission.StudentUserID, &submission.Grade, &submission.Comments,
+			&submission.Compiled, &submission.Results, &submission.SubmissionNum)
+	}
+	fmt.Println(submission)
+	return submission, nil
+}
+func LoadAssignments(CourseName string) ([]AssignmentInfo, error) {
+
+	var assignments []AssignmentInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return assignments, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select AssignmentName from Assignments where CourseName=?", CourseName)
+
+	if err != nil {
+		fmt.Println("query call error")
+		return assignments, errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		var AssignmentName string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&AssignmentName)
+
+		assignmentStruct, err := BuildAssignmentStruct(AssignmentName, CourseName)
+
+		if err != nil {
+			return assignments, err
+		}
+
+		assignments = append(assignments, assignmentStruct)
+	}
+	fmt.Println("---------------")
+	fmt.Println(assignments)
+	fmt.Println("---------------")
+	return assignments, nil
+
+}
+func LoadStudentCourse(UserID int) (CourseInfo, error) {
+
+	var course CourseInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return course, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select CourseName from StudentCourses where Student=?", UserID)
+
+	if err != nil {
+		return course, errors.New("Query error.")
+	}
+
+	if rows.Next() == false {
+		fmt.Println("Student not in course")
+		return course, errors.New("Student is not enrolled in a course.")
+	}
+
+	var CourseName string
+
+	rows.Scan(&CourseName)
+
+	course, err = BuildCourseStruct(CourseName)
+
+	if err != nil {
+		return course, err
+	}
+	fmt.Println(course)
+	return course, nil
+}
+func LoadInstructorCards(UserID int) ([]CourseInfo, error) {
+
+	var courses []CourseInfo
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return courses, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("select CourseName from CourseDescription where Instructor=?", UserID)
+
+	if err != nil {
+		return courses, errors.New("Query error.")
+	}
+
+	for i := 0; ; i++ {
+		var CourseName string
+
+		if rows.Next() == false {
+			break
+		}
+
+		rows.Scan(&CourseName)
+
+		courseStruct, err := BuildCourseStruct(CourseName)
+
+		if err != nil {
+			return courses, err
+		}
+
+		courses = append(courses, courseStruct)
+	}
+	fmt.Println(courses)
+	return courses, nil
 }
 
 func buildSubmissionStruct(AssignmentName string, CourseName string) (SubmissionInfo, error) {
@@ -120,6 +367,7 @@ func buildSubmissionStruct(AssignmentName string, CourseName string) (Submission
 	}
 
 	if rows.Next() == false {
+		fmt.Println("error! invalid submission")
 		return submission, errors.New("Invalid submission.")
 	} else {
 
@@ -142,15 +390,55 @@ func buildSubmissionStruct(AssignmentName string, CourseName string) (Submission
 	rows, err = db.Query("select Username from Users where UserID = ?", submission.StudentUserID)
 
 	if err != nil {
+		fmt.Println("error! DB Error")
 		return submission, errors.New("DB error")
 	}
 
 	if rows.Next() == false {
+		fmt.Println("error! cannot get username")
 		return submission, errors.New("Cannot get username.")
 	} else {
 		rows.Scan(&submission.StudentUsername)
 	}
-
+	fmt.Println("------------------------")
+	fmt.Println("CourseName")
+	fmt.Println(submission.CourseName)
+	fmt.Println("------------------------")
+	fmt.Println("AssignmentName")
+	fmt.Println(submission.AssignmentName)
+	fmt.Println("------------------------")
+	fmt.Println("StudentUserID")
+	fmt.Println(submission.StudentUserID)
+	fmt.Println("------------------------")
+	fmt.Println("StudentUsername")
+	fmt.Println(submission.StudentUsername)
+	fmt.Println("------------------------")
+	fmt.Println("Grade")
+	fmt.Println(submission.Grade)
+	fmt.Println("------------------------")
+	fmt.Println("Comments")
+	fmt.Println(submission.Comments)
+	fmt.Println("------------------------")
+	fmt.Println("Compiled")
+	fmt.Println(submission.Compiled)
+	fmt.Println("------------------------")
+	fmt.Println("Results")
+	fmt.Println(submission.Results)
+	fmt.Println("------------------------")
+	fmt.Println("SubmissionNum")
+	fmt.Println(submission.SubmissionNum)
+	fmt.Println("------------------------")
+	/*
+		CourseName      string
+		AssignmentName  string
+		StudentUserID   int
+		StudentUsername string
+		Grade           int
+		Comments        string
+		Compiled        bool // changed this, will it cause problems? was int
+		Results         string
+		SubmissionNum
+	*/
 	return submission, nil
 }
 
