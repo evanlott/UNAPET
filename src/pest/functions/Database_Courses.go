@@ -142,15 +142,22 @@ func editCourseDescription(courseName string, courseDescription string) error {
 	if err != nil {
 		return errors.New("Failed to connect to the database.")
 	}
-
-	_, err = db.Exec("UPDATE CourseDescription SET CourseDescription.CourseDescription=? WHERE CourseDescription.courseName=? ", courseDescription, courseName)
+	
+	res, err := db.Exec("UPDATE CourseDescription SET CourseDescription.CourseDescription=? WHERE CourseDescription.courseName=? ", courseDescription, courseName)
 
 	if err != nil {
+		fmt.Println("Update failed.")
 		return errors.New("Update failed.")
 	}
 
-	return nil
+	rowsAffected, err := res.RowsAffected()
 
+	if rowsAffected != 1 {
+		fmt.Println("Query didn't match any courses.")
+		return errors.New("Query didn't match any courses.")
+	}
+
+	return nil
 }
 
 //---------------------------------------------------------------------------
