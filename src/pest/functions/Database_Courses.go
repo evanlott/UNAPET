@@ -8,7 +8,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// TODO not tested yet
 //---------------------------------------------------------------------------
 //Inputs: course name, course display name, course description, instructor
 //	start date for course, end date for course, supplemental
