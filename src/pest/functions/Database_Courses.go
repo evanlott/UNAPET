@@ -38,6 +38,12 @@ func createCourse(courseName string, courseDisplayName string, courseDescription
 	}
 
 	defer db.Close()
+	
+	err = db.Ping()
+
+	if err != nil {
+		return errors.New("Failed to connect to the database.")
+	}
 
 	res, err := db.Exec("INSERT INTO CourseDescription VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", courseName, courseDisplayName, courseDescription, instructor, startDate+" 23:59:59", endDate+" 23:59:59", mayBeNull(si1), mayBeNull(si2), siGradeFlag, siTestCaseFlag)
 
