@@ -1,6 +1,6 @@
 // Eileen Drass
-// isEnabledFunctionTesting
-// This file was used to test the isEnabled function.
+// insertSubmissionFunctionTesting
+// This file was used to test the insertSubmission function.
 package main
 
 import (
