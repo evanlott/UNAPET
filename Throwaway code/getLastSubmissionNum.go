@@ -1,6 +1,6 @@
 // Eileen Drass
 // getLastSubmissionNum
-// This function was used getLastSubmissionNum function
+// This function was used to test the getLastSubmissionNum function
 package main
 
 import (
