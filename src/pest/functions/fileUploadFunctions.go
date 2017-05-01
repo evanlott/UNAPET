@@ -15,7 +15,13 @@ import (
 
 */
 
-// Nathan and Evan
+//---------------------------------------------------------------------------
+//Inputs: http request 
+//Outputs: This returns true along with the form's URL if the upload is
+//	successful. It returns false and an error if it is unsuccessful.
+//Written By: Nathan Huckaba and Evan Lott
+//Purpose: This function allows a user to upload source code. 
+//---------------------------------------------------------------------------
 func sourceCodeUpload(req *http.Request) (bool, string) {
 
 	// check if student is actually in this class
@@ -77,9 +83,13 @@ func sourceCodeUpload(req *http.Request) (bool, string) {
 
  */
 
-// Nathan and Evan
-// must incorporate naming convention into this
-// pull last assignment name, increment it
+//---------------------------------------------------------------------------
+//Inputs: http request
+//Outputs:  This function returns true if the request does not fail along with
+//	the form's URL. It returns false and an error if the request fails.
+//Written By: Nathan Huckaba and Evan Lott
+//Purpose: This function will be used to create and assignment. 
+//---------------------------------------------------------------------------
 func callCreateAssignment(req *http.Request) (bool, string) {
 
 	form := ProcessForm(req)
@@ -156,7 +166,13 @@ func callCreateAssignment(req *http.Request) (bool, string) {
 	return true, form.FromPage
 }
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: http request 
+//Outputs: This returns true along with the form's URL if the upload is
+//	successful. It returns false and an error if it is unsuccessful.
+//Written By: Nathan Huckaba
+//Purpose: This function allows a user to upload a CSV file. 
+//---------------------------------------------------------------------------
 func uploadCSV(req *http.Request) (bool, string) {
 
 	form := ProcessForm(req)
@@ -206,7 +222,13 @@ func uploadCSV(req *http.Request) (bool, string) {
 
  */
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: the path to which the file is to be saved and the file to be
+//	inputted 
+//Outputs: This returns an error if an error occurs.
+//Written By: Nathan Huckaba
+//Purpose: This function saves a file to the server. 
+//---------------------------------------------------------------------------
 func saveFile(savePath string, inputFile io.Reader) error {
 
 	saveFile, err := os.OpenFile(savePath, os.O_CREATE|os.O_WRONLY, os.FileMode(0777))
