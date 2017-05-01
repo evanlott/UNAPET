@@ -12,7 +12,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: username
+//Outputs: This returns true if a user is logged in. It returns false if a 
+//	user is not logged in. It returns an error if an error occurs.
+//Written By: Nathan Huckaba
+//Purpose: This function will be used to determine if a user is logged in
+//	or not. 
+//---------------------------------------------------------------------------
 func isLoggedIn(username string) (bool, error) {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
@@ -36,7 +43,14 @@ func isLoggedIn(username string) (bool, error) {
 	return true, nil
 }
 
-// Nathan, Abdullah, Brad
+//---------------------------------------------------------------------------
+//Inputs: username
+//Outputs: This returns true if a user is logged in. It returns false if a 
+//	user is not logged in. It returns an error if an error occurs.
+//Written By: Nathan Huckaba, Abdullah Karaman, Brad Lanford
+//Purpose: This function will be used to determine if a user is logged in
+//	or not. 
+//---------------------------------------------------------------------------
 func Login(userName string, password string, res http.ResponseWriter, req *http.Request) error {
 
 	// check if num login attempts > max attempts alloed
@@ -100,7 +114,12 @@ func Login(userName string, password string, res http.ResponseWriter, req *http.
 	return nil
 }
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: username
+//Outputs: This function returns an error if an error occurs.
+//Written By: Nathan Huckaba
+//Purpose: This function will log a user out.
+//---------------------------------------------------------------------------
 func Logout(userName string) error {
 
 	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
@@ -122,6 +141,13 @@ func Logout(userName string) error {
 
 // Nathan
 // returns T/F if logged in or not, username, and err
+//---------------------------------------------------------------------------
+//Inputs: http request
+//Outputs: This returns a unsername. It also returns an error if an error
+//	occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function makes sure a user is authorized.
+//---------------------------------------------------------------------------
 func AuthUser(req *http.Request) (string, error) {
 
 	var userName string
