@@ -463,9 +463,64 @@ func getPrivLevel(userID int) (int, error) {
 //Inputs: userID and course name
 //Outputs: This function returns true if a user is an instructor. It returns
 //	false if a user is not an instructor. It returns an error if an error
-//	occurs. 
+//	occurs.
 //Written By: Evan Lott
-//Purpose: This function determines whether a user is an instructor or not. 
+//Purpose: This function determines whether a user is an instructor of a
+//	a course or not.
+//---------------------------------------------------------------------------
+func isInstructor(userID int, courseName string) (bool, error) {
+
+	retVal := false
+
+	db, err := sql.Open("mysql", DB_USER_NAME+":"+DB_PASSWORD+"@unix(/var/run/mysql/mysql.sock)/"+DB_NAME)
+
+	if err != nil {
+		return retVal, errors.New("No connection")
+	}
+
+	defer db.Close()
+
+	err = db.Ping()
+
+	if err != nil {
+		return retVal, errors.New("Failed to connect to the database.")
+	}
+
+	rows, err := db.Query("SELECT LastName FROM Users WHERE UserID =?", userID)
+
+	if err != nil {
+		return retVal, errors.New("Error retrieving instructor name.")
+	}
+
+	defer rows.Close()
+
+	if rows.Next() == false {
+		return retVal, errors.New("Query didn't match any users.")
+	}
+
+	// compare lastName to the name in courseName
+	var lastName string
+
+	rows.Scan(&lastName)
+
+	nameSubstr := courseName[:len(lastName)]
+
+	if lastName != nameSubstr {
+		retVal = false
+	} else {
+		retVal = true
+	}
+
+	return retVal, nil
+}
+//---------------------------------------------------------------------------
+//Inputs: userID and course name
+//Outputs: This function returns true if a user is an instructor for a 
+//	course. It returns false if a user is not an instructor for a 
+//	course. It returns an error if an error occurs. 
+//Written By: Evan Lott and Eileen Drass
+//Purpose: This function determines whether a user is an instructor for a
+//	course or not. 
 //---------------------------------------------------------------------------
 func isInstructor(userID int, courseName string) (bool, error) {
 
