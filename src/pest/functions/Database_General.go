@@ -237,7 +237,7 @@ func courseOpen(courseName string) (bool, error) {
 	var startDate, endDate time.Time
 	currentTime := time.Now()
 
-	rows.Scan(&startDate, endDate)
+	rows.Scan(&startDate, &endDate)
 
 	if startDate.Format("01/02/2006 15:04:05") <= currentTime.Format("01/02/2006 15:04:05") && endDate.Format("01/02/2006 15:04:05") >= currentTime.Format("01/02/2006 15:04:05") {
 		return true, nil
