@@ -367,7 +367,7 @@ func getLastAssignmentName(courseName string) (string, error) {
 	defer rows.Close()
 
 	if rows.Next() == false {
-		return name, errors.New("No submission for user.")
+		return name, errors.New("No assignment names matched with query.")
 	}
 
 	rows.Scan(&name)
