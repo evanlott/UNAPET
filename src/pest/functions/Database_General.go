@@ -112,7 +112,7 @@ func isEnrolled(userID int, courseName string) (bool, error) {
 	err = db.Ping()
 
 	if err != nil {
-		return errors.New("Failed to connect to the database.")
+		return false, errors.New("Failed to connect to the database.")
 	}
 
 	rows, err := db.Query("SELECT Enabled FROM Users WHERE UserID =?", userID)
@@ -172,7 +172,7 @@ func assignmentOpen(courseName string, assignmentName string) (bool, error) {
 	err = db.Ping()
 
 	if err != nil {
-		return errors.New("Failed to connect to the database.")
+		return false, errors.New("Failed to connect to the database.")
 	}
 	
 	rows, err := db.Query("SELECT StartDate, EndDate FROM Assignments WHERE AssignmentName =?", assignmentName)
@@ -219,7 +219,7 @@ func courseOpen(courseName string) (bool, error) {
 	err = db.Ping()
 
 	if err != nil {
-		return errors.New("Failed to connect to the database.")
+		return false, errors.New("Failed to connect to the database.")
 	}
 
 	rows, err := db.Query("SELECT StartDate, EndDate FROM CourseDescription WHERE courseName =?", courseName)
@@ -313,7 +313,7 @@ func getUserName(userID int) (string, error) {
 	err = db.Ping()
 
 	if err != nil {
-		return errors.New("Failed to connect to the database.")
+		return userName, errors.New("Failed to connect to the database.")
 	}
 
 	rows, err := db.Query("select UserName from Users where UserID=?", userID)
@@ -355,7 +355,7 @@ func getLastAssignmentName(courseName string) (string, error) {
 	err = db.Ping()
 
 	if err != nil {
-		return errors.New("Failed to connect to the database.")
+		return name, errors.New("Failed to connect to the database.")
 	}
 
 	rows, err := db.Query("select AssignmentName from Assignments where courseName=? order by AssignmentName DESC limit 1", courseName)
@@ -398,7 +398,7 @@ func getLastSubmissionNum(courseName string, assignmentName string, student int)
 	err = db.Ping()
 
 	if err != nil {
-		return errors.New("Failed to connect to the database.")
+		return lastSubNum, errors.New("Failed to connect to the database.")
 	}
 
 	rows, err := db.Query("select SubmissionNumber from Submissions where Student=? and courseName=? and AssignmentName=? order by SubmissionNumber DESC limit 1", student, courseName, assignmentName)
@@ -439,7 +439,7 @@ func getPrivLevel(userID int) (int, error) {
 	err = db.Ping()
 
 	if err != nil {
-		return errors.New("Failed to connect to the database.")
+		return privLevel, errors.New("Failed to connect to the database.")
 	}
 
 	rows, err := db.Query("SELECT privelegeLevel FROM Users WHERE UserID =?", userID)
@@ -482,7 +482,7 @@ func isInstructor(userID int, courseName string) (bool, error) {
 	err = db.Ping()
 
 	if err != nil {
-		return errors.New("Failed to connect to the database.")
+		return retVal, errors.New("Failed to connect to the database.")
 	}
 
 	rows, err := db.Query("SELECT firstName FROM Users WHERE UserID =?", userID)
