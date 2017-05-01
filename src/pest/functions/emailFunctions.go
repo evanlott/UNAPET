@@ -7,7 +7,12 @@ import (
 	"time"
 )
 
-// Nathan
+//---------------------------------------------------------------------------
+//Inputs: userName
+//Outputs: This function returns an	error if an error occurs. 
+//Written By: Nathan Huckaba
+//Purpose: This function sends a user an email with a new, random password.
+//---------------------------------------------------------------------------
 func sendRandomPassword(userName string) error {
 
 	// verify user exists first..
