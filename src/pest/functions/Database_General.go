@@ -442,7 +442,7 @@ func getPrivLevel(userID int) (int, error) {
 		return privLevel, errors.New("Failed to connect to the database.")
 	}
 
-	rows, err := db.Query("SELECT privelegeLevel FROM Users WHERE UserID =?", userID)
+	rows, err := db.Query("SELECT PrivLevel FROM Users WHERE UserID =?", userID)
 
 	if err != nil {
 		return privLevel, errors.New("Error retrieving privelege level.")
